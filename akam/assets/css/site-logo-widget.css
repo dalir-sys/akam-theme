@@ -1,0 +1,40 @@
+/* Elementor website logo widget — light sweep effect. */
+.webmz-site-logo__link.light-sweep-effect {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.webmz-site-logo__link.light-sweep-effect::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+        105deg,
+        transparent 38%,
+        rgba(255, 255, 255, 0.55) 50%,
+        transparent 62%
+    );
+    transform: translateX(-120%);
+    animation: webmz-logo-light-sweep 5s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes webmz-logo-light-sweep {
+    0%,
+    85%,
+    100% {
+        transform: translateX(-120%);
+    }
+
+    15% {
+        transform: translateX(120%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .webmz-site-logo__link.light-sweep-effect::after {
+        animation: none;
+    }
+}

@@ -1,0 +1,181 @@
+/* Zhaaket top products box widget */
+
+.elementor-widget-webmz-zhaaket-top-products-box {
+	max-width: 100%;
+}
+
+.webmz-ztpb {
+	--webmz-ztpb-decor-color: var(--webmz-color-secondary, #092c4c);
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	overflow: hidden;
+	font-family: var(--webmz-font-family, Tahoma, Arial, sans-serif);
+	background: linear-gradient(
+		180deg,
+		var(--webmz-account-accent-light, #fff4e7) 0%,
+		var(--webmz-color-primary-light, #ffffff) 100%
+	);
+	border: 1px solid rgba(255, 255, 255, 0.85);
+	box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08);
+}
+
+.webmz-ztpb__decor {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	z-index: 0;
+	opacity: 0.35;
+	background-image:
+		repeating-linear-gradient(
+			90deg,
+			transparent,
+			transparent 23px,
+			color-mix(in srgb, var(--webmz-ztpb-decor-color) 18%, transparent) 23px,
+			color-mix(in srgb, var(--webmz-ztpb-decor-color) 18%, transparent) 24px
+		),
+		url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 80' preserveAspectRatio='none'%3E%3Cpath d='M0 42 C40 18 80 58 120 34 C160 10 200 50 240 30 C280 10 300 28 320 22' fill='none' stroke='%23f5c542' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+	background-repeat: repeat, no-repeat;
+	background-size: auto, 100% 72px;
+	background-position: center top, center 38%;
+}
+
+.webmz-ztpb__products,
+.webmz-ztpb__title,
+.webmz-ztpb__subtitle,
+.webmz-ztpb__buttons {
+	position: relative;
+	z-index: 1;
+}
+
+.webmz-ztpb__products {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 12px;
+	width: min(100%, 220px);
+	margin-bottom: 18px;
+}
+
+.webmz-ztpb__product {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+	min-width: 0;
+	text-decoration: none;
+	color: inherit;
+}
+
+a.webmz-ztpb__product:hover .webmz-ztpb__product-label,
+a.webmz-ztpb__product:focus-visible .webmz-ztpb__product-label {
+	color: var(--webmz-color-primary, #0878f9);
+}
+
+.webmz-ztpb__product-thumb {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 56px;
+	height: 56px;
+	padding: 0;
+	background: #ffffff;
+	border-radius: 8px !important;
+	box-shadow: 0 6px 18px rgba(15, 23, 42, 0.1);
+	overflow: hidden;
+}
+
+.webmz-ztpb__product-thumb img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 8px !important;
+}
+
+.webmz-ztpb__product-thumb-placeholder {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border-radius: 8px !important;
+	background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+}
+
+.webmz-ztpb__product-label {
+	display: block;
+	max-width: 100%;
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 1.45;
+	color: var(--webmz-color-text-dark, #111827);
+	text-wrap: balance;
+}
+
+.webmz-ztpb__title {
+	margin: 0;
+	font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+	font-weight: 800;
+	line-height: 1.4;
+	color: var(--webmz-color-text-dark, #111827);
+}
+
+.webmz-ztpb__subtitle {
+	margin: 6px 0 0;
+	font-size: 0.92rem;
+	font-weight: 500;
+	line-height: 1.5;
+	color: var(--webmz-color-text-gray, #64748b);
+}
+
+.webmz-ztpb__buttons {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: stretch;
+	justify-content: center;
+	gap: 10px;
+	width: 100%;
+	margin-top: 20px;
+}
+
+.webmz-ztpb__btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex: 1 1 calc(50% - 8px);
+	min-width: 0;
+	min-height: 44px;
+	padding: 12px 16px;
+	border: 0;
+	border-radius: 10px;
+	text-decoration: none;
+	font-size: 0.92rem;
+	font-weight: 700;
+	line-height: 1.3;
+	color: #ffffff;
+	background: linear-gradient(
+		90deg,
+		var(--webmz-color-primary, #0878f9) 0%,
+		var(--webmz-color-primary-hover, #0662cc) 100%
+	);
+	transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.webmz-ztpb__btn:hover,
+.webmz-ztpb__btn:focus-visible {
+	color: #ffffff;
+	transform: translateY(-1px);
+	box-shadow: 0 8px 20px color-mix(in srgb, var(--webmz-color-primary, #0878f9) 35%, transparent);
+	filter: brightness(1.03);
+}
+
+@media (max-width: 420px) {
+	.webmz-ztpb__buttons {
+		flex-direction: column;
+	}
+
+	.webmz-ztpb__btn {
+		flex-basis: auto;
+		width: 100%;
+	}
+}

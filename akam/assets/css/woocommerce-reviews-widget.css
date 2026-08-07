@@ -1,0 +1,107 @@
+.webmz-wc-reviews-widget {
+    scroll-margin-top: 96px;
+}
+
+.webmz-wc-reviews-widget .webmz-wc-reviews-header-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.webmz-wc-reviews-average {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 14px;
+    border-radius: 999px;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #9a3412;
+}
+
+.webmz-wc-reviews-average strong {
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.webmz-wc-review-stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.webmz-wc-review-star {
+    color: #cbd5e1;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.webmz-wc-review-star.is-filled {
+    color: #f59e0b;
+}
+
+.webmz-wc-review-rating-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.webmz-wc-review-rating-field[hidden] {
+    display: none;
+}
+
+.webmz-wc-review-rating-label {
+    color: var(--webmz-comments-muted, #64748b);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.webmz-wc-review-rating-input {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.webmz-wc-review-rating-star {
+    appearance: none;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: #fff;
+    color: #cbd5e1;
+    font-size: 22px;
+    line-height: 1;
+    transition: all 0.2s ease;
+    box-shadow: inset 0 0 0 1px var(--webmz-comments-border, #e8eef6);
+}
+
+.webmz-wc-review-rating-star.is-hover,
+.webmz-wc-review-rating-star.is-active {
+    color: #f59e0b;
+    background: #fffbeb;
+    box-shadow: inset 0 0 0 1px #fcd34d;
+}
+
+.webmz-comment-chat-item.is-review .webmz-comment-chat-bubble {
+    background: #fff;
+}
+
+.webmz-comment-chat-author-wrap .webmz-wc-review-stars {
+    margin-inline-start: 4px;
+}
+
+@media (max-width: 767px) {
+    .webmz-wc-reviews-widget .webmz-comments-header {
+        align-items: stretch;
+    }
+
+    .webmz-wc-reviews-widget .webmz-wc-reviews-header-meta {
+        align-self: flex-start;
+    }
+}

@@ -1,0 +1,77 @@
+.webmz-teacher-meta-section + .webmz-teacher-meta-section {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.webmz-teacher-meta-section h4 {
+    margin: 0 0 12px;
+}
+
+.webmz-teacher-list-wrap {
+    display: grid;
+    gap: 10px;
+}
+
+.webmz-teacher-list-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.webmz-teacher-list-row .regular-text {
+    flex: 1;
+}
+
+.webmz-teacher-remove-row {
+    min-width: 34px;
+    padding: 0 10px;
+}
+
+.webmz-teacher-courses-wrap {
+    display: grid;
+    gap: 8px;
+    max-height: 280px;
+    overflow: auto;
+}
+
+.webmz-teacher-course-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.webmz-teacher-media-field__preview {
+    width: 80px;
+    height: 80px;
+    border: 1px solid #c3c4c7;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f6f7f7;
+    margin-bottom: 8px;
+}
+
+.webmz-teacher-media-field__preview.is-empty .description {
+    margin: 0;
+    text-align: center;
+    font-size: 12px;
+    padding: 8px;
+}
+
+.webmz-teacher-media-field__preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.webmz-teacher-media-field__actions {
+    display: flex;
+    gap: 8px;
+    margin: 0 0 6px;
+}

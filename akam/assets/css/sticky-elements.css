@@ -1,0 +1,111 @@
+/**
+ * WebMZ Elementor sticky header controls.
+ * The sticky element keeps its original visual top/width while it is fixed.
+ */
+:root {
+	--webmz-admin-bar-offset: 0px;
+}
+.webmz-sticky-element {
+	will-change: transform;
+}
+
+.webmz-sticky-element.is-webmz-sticky {
+	position: fixed !important;
+	top: var(--webmz-sticky-top, 0px) !important;
+	z-index: 9999;
+	transition: transform 0.28s ease, box-shadow 0.28s ease, opacity 0.28s ease;
+}
+
+.webmz-sticky-element.is-webmz-sticky.is-webmz-sticky-visible {
+	transform: translate3d(0, 0, 0);
+	opacity: 1;
+}
+
+.webmz-sticky-element.is-webmz-sticky.is-webmz-sticky-hidden {
+	transform: translate3d(0, -120%, 0);
+	opacity: 0;
+	pointer-events: none;
+}
+
+.webmz-sticky-placeholder {
+	display: none;
+	width: 100%;
+	min-height: 1px;
+	pointer-events: none;
+}
+
+.webmz-sticky-placeholder.is-active {
+	display: block;
+}
+
+/**
+ * WebMZ Elementor sticky container controls.
+ */
+.webmz-sticky-container-element {
+	will-change: top, transform;
+}
+
+.webmz-sticky-boundary {
+	position: relative;
+}
+
+/* Only when the column/container itself is sticky. */
+.e-con-inner > .e-con.e-child.webmz-sticky-container--stay-in-column,
+.e-con-inner > .elementor-column.webmz-sticky-container--stay-in-column,
+.webmz-sticky-boundary-column.webmz-sticky-container--stay-in-column {
+	align-self: flex-start !important;
+	height: auto !important;
+}
+
+.webmz-sticky-overflow-visible {
+	overflow: visible !important;
+}
+
+.webmz-sticky-container-element.webmz-sticky-container--stay-in-column {
+	position: sticky !important;
+	top: calc(var(--webmz-sticky-container-offset, 0px) + var(--webmz-admin-bar-offset, 0px)) !important;
+	align-self: flex-start !important;
+	z-index: 99;
+}
+
+.webmz-sticky-container-element.is-webmz-sticky-container-fixed,
+.webmz-sticky-container-element.is-webmz-sticky-container-bottom {
+	position: fixed !important;
+	z-index: 99;
+}
+
+.webmz-sticky-container-element.is-webmz-sticky-container-fixed {
+	top: var(--webmz-sticky-container-top, 0px) !important;
+}
+
+/**
+ * Disable sticky output inside Elementor editor preview.
+ */
+.elementor-editor-active .webmz-sticky-element.is-webmz-sticky,
+.elementor-editor-preview .webmz-sticky-element.is-webmz-sticky,
+.elementor-edit-mode .webmz-sticky-element.is-webmz-sticky,
+.elementor-editor-active .webmz-sticky-container-element.webmz-sticky-container--stay-in-column,
+.elementor-editor-preview .webmz-sticky-container-element.webmz-sticky-container--stay-in-column,
+.elementor-edit-mode .webmz-sticky-container-element.webmz-sticky-container--stay-in-column,
+.elementor-editor-active .webmz-sticky-container-element.is-webmz-sticky-container-fixed,
+.elementor-editor-preview .webmz-sticky-container-element.is-webmz-sticky-container-fixed,
+.elementor-edit-mode .webmz-sticky-container-element.is-webmz-sticky-container-fixed,
+.elementor-editor-active .webmz-sticky-container-element.is-webmz-sticky-container-bottom,
+.elementor-editor-preview .webmz-sticky-container-element.is-webmz-sticky-container-bottom,
+.elementor-edit-mode .webmz-sticky-container-element.is-webmz-sticky-container-bottom {
+	position: static !important;
+	top: auto !important;
+	left: auto !important;
+	right: auto !important;
+	width: auto !important;
+	transform: none !important;
+	opacity: 1 !important;
+	pointer-events: auto !important;
+	z-index: auto !important;
+}
+
+.elementor-editor-active .webmz-sticky-placeholder.is-active,
+.elementor-editor-preview .webmz-sticky-placeholder.is-active,
+.elementor-edit-mode .webmz-sticky-placeholder.is-active {
+	display: none !important;
+}

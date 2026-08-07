@@ -1,0 +1,88 @@
+/* Footer contact methods widget */
+
+.webmz-footer-contact {
+    direction: rtl;
+    text-align: right;
+    font-family: var(--webmz-font-family, Tahoma, Arial, sans-serif);
+}
+
+.webmz-footer-contact__heading {
+    margin: 0 0 18px;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.8;
+    color: var(--webmz-color-text-navy, #102d50);
+}
+
+.webmz-footer-contact__text-before,
+.webmz-footer-contact__text-after {
+    color: inherit;
+}
+
+.webmz-footer-contact__text-brand {
+    color: var(--webmz-color-primary, #0878f9);
+    font-weight: 700;
+}
+
+.webmz-footer-contact__list {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+}
+
+.webmz-footer-contact__item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+    direction: ltr;
+}
+
+a.webmz-footer-contact__item:hover {
+    color: inherit;
+}
+
+a.webmz-footer-contact__item:hover .webmz-footer-contact__text {
+    color: var(--webmz-color-primary, #0878f9);
+}
+
+.webmz-footer-contact__text {
+    flex: 0 1 auto;
+    text-align: right;
+    direction: rtl;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.7;
+    color: var(--webmz-color-text-navy, #102d50);
+    transition: color 0.2s ease;
+}
+
+.webmz-footer-contact__item--large .webmz-footer-contact__text {
+    font-size: clamp(22px, 2.4vw, 30px);
+    font-weight: 800;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+}
+
+.webmz-footer-contact__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    color: var(--webmz-color-text-navy, #102d50);
+    line-height: 0;
+}
+
+.webmz-footer-contact__icon svg,
+.webmz-footer-contact__icon i {
+    display: block;
+    width: 24px;
+    height: 24px;
+    font-size: 22px;
+}

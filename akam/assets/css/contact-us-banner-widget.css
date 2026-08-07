@@ -1,0 +1,210 @@
+/* Contact Us banner — horizontal RTL layout with protruding image */
+
+.elementor-widget-webmz-contact-us-banner {
+    overflow: visible;
+}
+
+.webmz-cu-banner {
+    --cu-radius: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(16px, 2.5vw, 28px);
+    min-height: 180px;
+    padding: clamp(20px, 2.5vw, 32px) clamp(20px, 2.5vw, 36px);
+    border-radius: var(--cu-radius);
+    direction: rtl;
+    overflow: visible;
+    font-family: var(--webmz-font-family, Tahoma, Arial, sans-serif);
+}
+
+/* Image — right side in RTL, protrudes from top and bottom */
+.webmz-cu-banner__media {
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+    align-self: flex-end;
+    margin-top: -60px;
+    margin-bottom: -28px;
+    line-height: 0;
+}
+
+.webmz-cu-banner__media-img {
+    display: block;
+    width: 200px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: center bottom;
+}
+
+/* Content — center */
+.webmz-cu-banner__body {
+    position: relative;
+    z-index: 1;
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.webmz-cu-banner__title {
+    margin: 0;
+    font-size: clamp(18px, 2.2vw, 26px);
+    font-weight: 800;
+    line-height: 1.4;
+    color: #ffffff;
+}
+
+.webmz-cu-banner__description {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: clamp(13px, 1.4vw, 15px);
+    line-height: 1.85;
+}
+
+.webmz-cu-banner__phone-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    margin-top: 4px;
+}
+
+.webmz-cu-banner__phone {
+    color: #ffffff;
+    font-size: clamp(16px, 1.8vw, 20px);
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: opacity 0.2s ease;
+}
+
+.webmz-cu-banner__phone:hover {
+    opacity: 0.85;
+    color: #ffffff;
+}
+
+.webmz-cu-banner__call-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 24px;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #7c3aed;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.webmz-cu-banner__call-btn:hover {
+    color: #7c3aed;
+    transform: translateY(-1px);
+}
+
+/* Contact buttons — left side in RTL */
+.webmz-cu-banner__contacts {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.webmz-cu-banner__contact-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 200px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.webmz-cu-banner__contact-btn:hover {
+    color: #ffffff;
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+}
+
+.webmz-cu-banner__contact-arrow {
+    flex-shrink: 0;
+    font-size: 18px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.webmz-cu-banner__contact-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    text-align: right;
+}
+
+.webmz-cu-banner__contact-icon {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .webmz-cu-banner__media {
+        display: none;
+    }
+
+    .webmz-cu-banner {
+        flex-wrap: wrap;
+        min-height: 0;
+    }
+
+    .webmz-cu-banner__contacts {
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .webmz-cu-banner__contact-btn {
+        flex: 1 1 calc(50% - 6px);
+        min-width: 0;
+    }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+    .webmz-cu-banner {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+        padding: 20px 16px;
+    }
+
+    .webmz-cu-banner__phone-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .webmz-cu-banner__contact-btn {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .webmz-cu-banner__call-btn,
+    .webmz-cu-banner__contact-btn,
+    .webmz-cu-banner__phone {
+        transition: none;
+    }
+}

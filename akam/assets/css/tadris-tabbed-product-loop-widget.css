@@ -1,0 +1,186 @@
+.webmz-tpl {
+    --webmz-tpl-primary: var(--webmz-color-primary, #0878f9);
+    direction: rtl;
+    font-family: var(--webmz-font-family, Tahoma, Arial, sans-serif);
+    color: var(--webmz-color-text-dark, #111827);
+}
+
+.webmz-tpl__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.webmz-tpl__title {
+    margin: 0;
+    font-size: clamp(22px, 2.5vw, 32px);
+    font-weight: 900;
+    line-height: 1.4;
+    color: var(--webmz-color-secondary, #092c4c);
+}
+
+.webmz-tpl__view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--webmz-color-text-gray, #64748b);
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color .2s ease, transform .2s ease;
+}
+
+.webmz-tpl__view-all:hover {
+    color: var(--webmz-color-primary, #0878f9);
+    transform: translateY(-1px);
+}
+
+.webmz-tpl__view-all-icon {
+    display: inline-flex;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.webmz-tpl__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.webmz-tpl__tab {
+    appearance: none;
+    border: 1px solid rgba(15, 23, 42, .08);
+    background: #fff;
+    color: var(--webmz-color-text-dark, #111827);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, .05);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    line-height: 1.2;
+    min-height: 42px;
+    padding: 10px 22px;
+    border-radius: 999px;
+    transition: background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+
+.webmz-tpl__tab:hover {
+    transform: translateY(-1px);
+}
+
+.webmz-tpl__tab.is-active {
+    background: var(--webmz-tpl-primary, var(--webmz-color-primary, #0878f9));
+    border-color: var(--webmz-tpl-primary, var(--webmz-color-primary, #0878f9));
+    color: #fff;
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--webmz-tpl-primary, var(--webmz-color-primary, #0878f9)) 28%, transparent);
+}
+
+.webmz-tpl__panels {
+    position: relative;
+}
+
+.webmz-tpl__panel {
+    display: none;
+}
+
+.webmz-tpl__panel.is-active {
+    display: block;
+    animation: webmz-tpl-panel-in .35s ease both;
+}
+
+.webmz-tpl__panel-inner {
+    min-height: 40px;
+}
+
+.webmz-tpl__panel.is-loading .webmz-tpl__panel-inner {
+    opacity: .35;
+    pointer-events: none;
+}
+
+.webmz-tpl__loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--webmz-color-text-gray, #64748b);
+    font-weight: 700;
+}
+
+.webmz-tpl__loading[hidden] {
+    display: none !important;
+}
+
+.webmz-tpl__loading-spinner {
+    width: 22px;
+    height: 22px;
+    border: 2px solid rgba(15, 23, 42, .12);
+    border-top-color: var(--webmz-tpl-primary, var(--webmz-color-primary, #0878f9));
+    border-radius: 50%;
+    animation: webmz-tpl-spin .8s linear infinite;
+}
+
+.webmz-tpl__empty {
+    padding: 32px 16px;
+    border-radius: 16px;
+    background: rgba(15, 23, 42, .03);
+    color: var(--webmz-color-text-gray, #64748b);
+    text-align: center;
+    font-weight: 700;
+}
+
+@keyframes webmz-tpl-panel-in {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes webmz-tpl-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 767px) {
+    .webmz-tpl__header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .webmz-tpl__view-all {
+        justify-content: center;
+    }
+
+    .webmz-tpl__tabs {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 4px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .webmz-tpl__tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .webmz-tpl__tab {
+        flex: 0 0 auto;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .webmz-tpl__panel.is-active,
+    .webmz-tpl__loading-spinner {
+        animation: none;
+    }
+}

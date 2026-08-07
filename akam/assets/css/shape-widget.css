@@ -1,0 +1,50 @@
+.webmz-shape-wrap {
+	display: flex;
+	align-items: center;
+	width: 100%;
+}
+
+.webmz-shape-link {
+	display: inline-flex;
+	line-height: 0;
+	text-decoration: none;
+	color: inherit;
+}
+
+.webmz-shape {
+	--webmz-shape-color: #111827;
+	--webmz-shape-stroke-width: 4px;
+	display: block;
+	flex: 0 0 auto;
+	overflow: visible;
+}
+
+.webmz-shape__inner :is(path, rect, circle, ellipse, polygon, line) {
+	fill: var(--webmz-shape-color);
+	stroke: none;
+}
+
+.webmz-shape--stroke .webmz-shape__inner :is(path, rect, circle, ellipse, polygon, line) {
+	fill: none;
+	stroke: var(--webmz-shape-color);
+	stroke-width: var(--webmz-shape-stroke-width);
+}
+
+.webmz-shape--stroke .webmz-shape__inner [fill="none"] {
+	fill: none;
+}
+
+.webmz-shape--swirling_sun .webmz-shape__inner circle {
+	fill: var(--webmz-shape-color);
+}
+
+.webmz-shape--swirling_sun .webmz-shape__inner path {
+	fill: none;
+	stroke: var(--webmz-shape-color);
+	stroke-width: var(--webmz-shape-stroke-width);
+}
+
+.webmz-shape-link:hover .webmz-shape,
+.webmz-shape-link:focus-visible .webmz-shape {
+	opacity: 0.85;
+}

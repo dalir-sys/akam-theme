@@ -1,0 +1,179 @@
+/**
+ * Shared loop image rules — preserve natural aspect ratio, no forced crop.
+ *
+ * @package WebMZ
+ */
+
+.theme-loop-image,
+img.theme-loop-image {
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+	display: block;
+	object-fit: contain;
+}
+
+/* Post cards */
+.webmz-post-card__image {
+	display: block;
+	overflow: hidden;
+	background: var(--webmz-soft, #f3f4f6);
+}
+
+.webmz-post-card__image img,
+.webmz-post-card__image .theme-loop-image {
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+	display: block;
+	object-fit: contain;
+}
+
+/* Product loop cards (type 1–3) */
+.tadris-product-type-1 .product-type-1-figure img,
+.tadris-product-type-2 .product-type-2-figure img,
+.tadris-product-type-3 .product-type-3-figure img,
+.tadris-product-type-1 .product-type-1-figure .theme-loop-image,
+.tadris-product-type-2 .product-type-2-figure .theme-loop-image,
+.tadris-product-type-3 .product-type-3-figure .theme-loop-image {
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+	display: block;
+	object-fit: contain;
+}
+
+/* Blog archive */
+.webmz-blog-archive-card__image {
+	display: block;
+	overflow: hidden;
+}
+
+.webmz-blog-archive-card__image img,
+.webmz-blog-archive-card__image .theme-loop-image {
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+	display: block;
+	object-fit: contain;
+}
+
+/* Blog type-1 is a full-bleed cover card (related posts featured, etc.). */
+.tadris-blog-type-1 .blog-type-1-figure img,
+.tadris-blog-type-1 .blog-type-1-figure .theme-loop-image,
+.tadris-blog-type-1 .blog-type-1-no-image {
+	width: 100%;
+	max-width: 100%;
+	height: 100%;
+	display: block;
+	object-fit: cover;
+}
+
+/* Other blog loop card types keep natural aspect ratio. */
+.tadris-blog-type-2 .blog-type-2-figure img,
+.tadris-blog-type-3 .blog-type-3-figure img,
+.tadris-blog-tile-card .blog-tile-figure img,
+.tadris-blog-type-2 .blog-type-2-no-image,
+.tadris-blog-type-3 .blog-type-3-no-image,
+.tadris-blog-tile-card .blog-tile-no-image {
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+	display: block;
+	object-fit: contain;
+}
+
+/* Podcast loop */
+.tadris-podcast-type-1 .podcast-type-1-figure img {
+	width: 100%;
+	max-width: 186px;
+	height: auto;
+	display: block;
+	object-fit: contain;
+	border-radius: 8px !important;
+}
+
+/* Store archive */
+.webmz-store-archive__grid .tadris-product-type-1--store-archive .product-type-1-figure img {
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+	display: block;
+	object-fit: contain;
+}
+
+/* Ajax search results */
+.webmz-search-product__image img,
+.webmz-search-post__image img,
+.webmz-search-popup__result-image img {
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+	display: block;
+	object-fit: contain;
+}
+
+/* View history */
+.webmz-view-history__poster img,
+.webmz-view-history__poster .theme-loop-image {
+	width: 100% !important;
+	max-width: 100% !important;
+	height: auto !important;
+	display: block;
+	object-fit: contain !important;
+}
+
+/* Teachers */
+.webmz-teacher-card__image,
+.webmz-pro-teacher-card__image,
+.webmz-teacher-single-hero__media img {
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+	display: block;
+	object-fit: contain;
+}
+
+/* Zhaket blog loop — full width, no crop */
+.webmz-zbl__card-image img,
+.webmz-zbl__card-image .theme-loop-image {
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+	display: block;
+	object-fit: contain;
+}
+
+/* Zhaket / Elementor loop widgets */
+.webmz-zbl-card__media img,
+.webmz-zpl-card__media img,
+.webmz-zpt-card__media img,
+.webmz-zpt-tab-product__thumb img,
+.webmz-zbc-item__thumb img,
+.webmz-zbc-featured__media img,
+.webmz-zvs-slide__media img,
+.webmz-zsb-banner__media img,
+.webmz-file-loop__thumb img,
+.webmz-file-loop__card-image img,
+.webmz-sos-card__poster img,
+.webmz-sos-slide__poster img,
+.webmz-ytp__item-thumb,
+.webmz-related-posts-grid__image img,
+.webmz-dynamic-featured-image img {
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+	display: block;
+	object-fit: contain;
+}
+
+/* Cart/checkout product thumbs (small but uncropped) */
+.webmz-hcart__image,
+.woocommerce-cart .product-thumbnail img,
+.woocommerce-checkout-review-order-table .product-thumbnail img {
+	width: 72px;
+	max-width: 72px;
+	height: auto !important;
+	display: block;
+	object-fit: contain;
+}

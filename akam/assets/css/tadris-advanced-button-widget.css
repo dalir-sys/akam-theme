@@ -1,0 +1,37 @@
+.tadris-advanced-button {
+	display: flex;
+	width: 100%;
+}
+
+.tadris-advanced-button__link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	border: 0;
+	cursor: pointer;
+	line-height: 1.4;
+}
+
+.tadris-advanced-button__link--full {
+	display: flex;
+	width: 100%;
+}
+
+.tadris-advanced-button__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	line-height: 1;
+	transition: inherit;
+}
+
+.tadris-advanced-button__icon svg,
+.tadris-advanced-button__icon i {
+	display: block;
+}
+
+.tadris-advanced-button__text {
+	display: inline-block;
+}

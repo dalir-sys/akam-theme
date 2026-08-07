@@ -1,0 +1,355 @@
+/* Zhaket "Why Buy" footer trust box */
+
+.webmz-zwb {
+    direction: rtl;
+    text-align: right;
+    font-family: var(--webmz-font-family, Tahoma, Arial, sans-serif);
+}
+
+.webmz-zwb__box {
+    position: relative;
+    overflow: hidden;
+    background: var(--webmz-color-secondary, #092c4c);
+    background-image: radial-gradient(ellipse at 80% 50%, rgba(255, 152, 0, 0.06) 0%, transparent 60%);
+    border-radius: 16px;
+    padding: 32px 40px;
+}
+
+.webmz-zwb__grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    align-items: center;
+    gap: 24px;
+}
+
+/* ── Heading column ── */
+
+.webmz-zwb__col--heading {
+    position: relative;
+}
+
+.webmz-zwb__heading {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 80px;
+}
+
+.webmz-zwb__heading-content {
+    position: relative;
+    z-index: 2;
+}
+
+.webmz-zwb__heading-title {
+    margin: 0 0 8px;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--webmz-color-primary-light, #ffffff);
+}
+
+.webmz-zwb__heading-subtitle {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--webmz-color-text-gray, #94a3b8);
+}
+
+.webmz-zwb__decoration {
+    position: absolute;
+    inset-inline-end: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100px;
+    height: 100px;
+    color: #ff9800;
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.webmz-zwb__decoration svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* ── Shared cell layout ── */
+
+.webmz-zwb__col {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+}
+
+.webmz-zwb__col--heading {
+    justify-content: flex-start;
+}
+
+.webmz-zwb__cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+    width: 100%;
+}
+
+/* ── Stat values ── */
+
+.webmz-zwb__stat {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--webmz-color-primary-light, #ffffff);
+    letter-spacing: -0.02em;
+}
+
+/* ── Labels ── */
+
+.webmz-zwb__label {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--webmz-color-primary-light, #ffffff);
+    opacity: 0.9;
+}
+
+/* ── Stars ── */
+
+.webmz-zwb__stars {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    color: #ff9800;
+    line-height: 0;
+}
+
+.webmz-zwb__star {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+}
+
+.webmz-zwb__stars svg,
+.webmz-zwb__stars i {
+    display: block;
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+}
+
+/* ── Product logos ── */
+
+.webmz-zwb__logos {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.webmz-zwb__logo {
+    display: block;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+/* ── Guarantee icon ── */
+
+.webmz-zwb__guarantee-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+}
+
+.webmz-zwb__guarantee-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--webmz-color-primary-light, #ffffff);
+    line-height: 0;
+}
+
+.webmz-zwb__guarantee-icon svg,
+.webmz-zwb__guarantee-icon i {
+    display: block;
+    width: 48px;
+    height: 48px;
+    font-size: 48px;
+}
+
+.webmz-zwb__guarantee-image {
+    display: block;
+    max-width: 56px;
+    max-height: 56px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+/* ── Security badges ── */
+
+.webmz-zwb__badges {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.webmz-zwb__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+.webmz-zwb__badge-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    color: inherit;
+}
+
+.webmz-zwb__badge-icon svg,
+.webmz-zwb__badge-icon i {
+    display: block;
+    width: 12px;
+    height: 12px;
+    font-size: 12px;
+}
+
+.webmz-zwb__badge-text {
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+}
+
+/* ── Responsive: tablet ── */
+
+@media (max-width: 1024px) {
+    .webmz-zwb__grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .webmz-zwb__col--heading {
+        grid-column: 1 / -1;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .webmz-zwb__heading {
+        justify-content: center;
+    }
+
+    .webmz-zwb__heading-content {
+        text-align: center;
+    }
+
+    .webmz-zwb__decoration {
+        inset-inline-end: 0;
+    }
+
+    .webmz-zwb__stat {
+        font-size: 24px;
+    }
+}
+
+/* ── Responsive: mobile stack ── */
+
+@media (max-width: 767px) {
+    .webmz-zwb__box {
+        padding: 24px 20px;
+    }
+
+    .webmz-zwb--stack-mobile .webmz-zwb__grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .webmz-zwb--stack-mobile .webmz-zwb__col--heading {
+        grid-column: auto;
+    }
+
+    .webmz-zwb--stack-mobile .webmz-zwb__col {
+        justify-content: center;
+    }
+
+    .webmz-zwb--stack-mobile .webmz-zwb__heading {
+        justify-content: center;
+        min-height: auto;
+    }
+
+    .webmz-zwb--stack-mobile .webmz-zwb__heading-title {
+        font-size: 18px;
+    }
+
+    .webmz-zwb--stack-mobile .webmz-zwb__stat {
+        font-size: 22px;
+    }
+
+    .webmz-zwb--stack-mobile .webmz-zwb__decoration {
+        width: 70px;
+        height: 70px;
+        opacity: 0.1;
+    }
+}
+
+@media (max-width: 575px) {
+    .webmz-zwb__box {
+        padding: 20px 16px;
+        border-radius: 12px;
+    }
+
+    .webmz-zwb__heading-title {
+        font-size: 17px;
+    }
+
+    .webmz-zwb__heading-subtitle {
+        font-size: 12px;
+    }
+
+    .webmz-zwb__stat {
+        font-size: 20px;
+    }
+
+    .webmz-zwb__label {
+        font-size: 12px;
+    }
+
+    .webmz-zwb__guarantee-icon svg,
+    .webmz-zwb__guarantee-icon i {
+        width: 40px;
+        height: 40px;
+        font-size: 40px;
+    }
+}
+
+/* ── 2-column grid on small tablets when not stacking ── */
+
+@media (max-width: 767px) {
+    .webmz-zwb:not(.webmz-zwb--stack-mobile) .webmz-zwb__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .webmz-zwb:not(.webmz-zwb--stack-mobile) .webmz-zwb__col--heading {
+        grid-column: 1 / -1;
+    }
+}

@@ -1,0 +1,59 @@
+/* هدینگ انیمیشن — typing effect on rotating accent word */
+.tadris-heading-animation {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+.tadris-heading-animation__title {
+    margin: 0;
+    font-size: clamp(24px, 3vw, 40px);
+    font-weight: 800;
+    line-height: 1.5;
+    color: #000;
+}
+
+.tadris-heading-animation__prefix,
+.tadris-heading-animation__suffix {
+    display: inline;
+    color: inherit;
+}
+
+.tadris-heading-animation__typed-line {
+    display: inline;
+    white-space: nowrap;
+}
+
+.tadris-heading-animation__typed {
+    display: inline;
+    color: #f21e3f;
+    font-weight: inherit;
+}
+
+.tadris-heading-animation__cursor {
+    display: inline;
+    color: #f21e3f;
+    font-weight: 300;
+    animation: tadris-heading-cursor-blink 0.8s step-end infinite;
+}
+
+.tadris-heading-animation[data-show-cursor="no"] .tadris-heading-animation__cursor {
+    display: none;
+}
+
+@keyframes tadris-heading-cursor-blink {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tadris-heading-animation__cursor {
+        animation: none;
+    }
+}

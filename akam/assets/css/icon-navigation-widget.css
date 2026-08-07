@@ -1,0 +1,170 @@
+/**
+ * WebMZ icon-oriented navigation menu widget.
+ */
+.webmz-icon-nav {
+	--webmz-icon-nav-accent: var(--webmz-color-text-gray, #8b95a7);
+	--webmz-icon-nav-accent-hover: var(--webmz-color-primary, #0878f9);
+}
+
+.webmz-icon-nav__list--root {
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	gap: 32px;
+}
+
+.webmz-icon-nav__list--root > .webmz-icon-nav__item {
+	position: static;
+}
+
+.webmz-icon-nav__list--root > .webmz-icon-nav__item > .webmz-icon-nav__link {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	min-height: 0;
+	padding: 8px 16px;
+	border-radius: 0;
+	color: var(--webmz-icon-nav-accent);
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1.6;
+	text-align: center;
+	text-decoration: none !important;
+	background: transparent;
+	transition: color .2s ease;
+}
+
+.webmz-icon-nav__list--root > .webmz-icon-nav__item > .webmz-icon-nav__link > .webmz-icon-nav__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	margin: 0;
+	flex-shrink: 0;
+	color: currentColor;
+}
+
+.webmz-icon-nav__icon svg,
+.webmz-icon-nav__icon img,
+.webmz-icon-nav__icon .webmz-nav__icon-image {
+	display: block;
+	width: 100%;
+	height: 100%;
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: contain;
+}
+
+.webmz-icon-nav__label {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	max-width: 100%;
+}
+
+.webmz-icon-nav__text {
+	display: block;
+	white-space: nowrap;
+}
+
+.webmz-icon-nav__arrow {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	color: currentColor;
+}
+
+.webmz-icon-nav__arrow svg {
+	display: block;
+	width: 14px;
+	height: 14px;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	transition: transform .2s ease;
+}
+
+.webmz-icon-nav__list--root > .webmz-icon-nav__item:hover > .webmz-icon-nav__link,
+.webmz-icon-nav__list--root > .webmz-icon-nav__item:focus-within > .webmz-icon-nav__link,
+.webmz-icon-nav__list--root > .webmz-icon-nav__item.is-current > .webmz-icon-nav__link,
+.webmz-icon-nav__list--root > .webmz-icon-nav__item.is-current-ancestor > .webmz-icon-nav__link {
+	color: var(--webmz-icon-nav-accent-hover);
+}
+
+.webmz-icon-nav__list--root > .webmz-icon-nav__item.is-submenu-open > .webmz-icon-nav__link .webmz-icon-nav__arrow svg,
+.webmz-icon-nav__list--root > .webmz-icon-nav__item.is-mega-menu-open > .webmz-icon-nav__link .webmz-icon-nav__arrow svg {
+	transform: rotate(180deg);
+}
+
+.webmz-icon-nav__list--root > .webmz-icon-nav__item > .webmz-icon-nav__toggle {
+	display: none;
+}
+
+.webmz-icon-nav--trigger-click .webmz-icon-nav__list--root > .webmz-icon-nav__item.has-children > .webmz-icon-nav__toggle {
+	position: absolute;
+	z-index: 2;
+	inset-inline-end: auto;
+	inset-inline-start: 50%;
+	bottom: 0;
+	top: auto;
+	display: inline-flex;
+	width: 28px;
+	height: 20px;
+	transform: translateX(-50%);
+}
+
+.webmz-icon-nav--trigger-click .webmz-icon-nav__list--root > .webmz-icon-nav__item.has-children > .webmz-icon-nav__link {
+	padding-bottom: 24px;
+}
+
+.webmz-icon-nav__submenu .webmz-icon-nav__link {
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 8px;
+	min-height: 40px;
+	padding: 10px 12px;
+	text-align: start;
+}
+
+.webmz-icon-nav__submenu .webmz-icon-nav__icon {
+	width: 20px;
+	height: 20px;
+}
+
+.webmz-icon-nav__submenu .webmz-icon-nav__label {
+	justify-content: flex-start;
+}
+
+.webmz-icon-nav[data-webmz-icon-nav] .webmz-icon-nav__mega-menu {
+	width: var(--webmz-mega-menu-width, calc(100vw - 48px));
+}
+
+@media (max-width: 767px) {
+	.webmz-icon-nav__list--root {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 4px;
+	}
+
+	.webmz-icon-nav__list--root > .webmz-icon-nav__item > .webmz-icon-nav__link {
+		flex-direction: row;
+		justify-content: flex-start;
+		text-align: start;
+	}
+
+	.webmz-icon-nav__label {
+		justify-content: flex-start;
+	}
+
+	.webmz-icon-nav__text {
+		white-space: normal;
+	}
+}

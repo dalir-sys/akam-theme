@@ -1,0 +1,617 @@
+.webmz-otp-auth {
+    --webmz-otp-primary: var(--webmz-color-primary, #0878f9);
+    background: #fff;
+    border: 1px solid rgba(16, 45, 80, .08);
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 20px 60px rgba(16, 45, 80, .08);
+    font-family: var(--webmz-font-family, inherit);
+    color: var(--webmz-color-text-dark, #111827);
+    max-width: 440px;
+    width: 100%;
+    box-sizing: border-box
+}
+
+.webmz-otp-auth__head {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px
+}
+
+.webmz-otp-auth__head strong {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--webmz-color-text-navy, #102d50)
+}
+
+.webmz-otp-auth__head span,
+.webmz-otp-auth__hint {
+    color: var(--webmz-color-text-gray, #64748b);
+    font-size: 14px;
+    line-height: 1.9
+}
+
+.webmz-otp-step {
+    display: none;
+    gap: 14px;
+    flex-direction: column
+}
+
+.webmz-otp-step.is-active {
+    display: flex
+}
+
+.webmz-otp-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 800
+}
+
+.webmz-otp-field input {
+    height: 54px;
+    border: 1px solid #dbe7f2 !important;
+    border-radius: 16px !important;
+    background: #f7fbff !important;
+    padding: 0 16px !important;
+    font-family: var(--webmz-font-family, inherit) !important;
+    box-shadow: none !important;
+    outline: none !important
+}
+
+.webmz-otp-field input:focus {
+    border-color: var(--webmz-otp-primary) !important;
+    background: #fff !important
+}
+
+.webmz-otp-button {
+    height: 54px;
+    border: 0;
+    border-radius: 16px;
+    background: var(--webmz-otp-primary);
+    color: #fff;
+    font-weight: 900;
+    font-family: var(--webmz-font-family, inherit);
+    cursor: pointer;
+    box-shadow: 0 12px 30px color-mix(in srgb, var(--webmz-otp-primary) 28%, transparent);
+    transition: .2s
+}
+
+.webmz-otp-button:hover {
+    transform: translateY(-1px);
+    background: var(--webmz-color-primary-hover, var(--webmz-otp-primary))
+}
+
+.webmz-otp-button:disabled,
+.webmz-otp-resend:disabled {
+    opacity: .65;
+    cursor: not-allowed
+}
+
+.webmz-otp-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap
+}
+
+.webmz-otp-actions .webmz-otp-button {
+    flex: 1
+}
+
+.webmz-otp-link,
+.webmz-otp-resend {
+    border: 0;
+    background: #eef6ff;
+    color: var(--webmz-otp-primary);
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-weight: 800;
+    font-family: var(--webmz-font-family, inherit);
+    cursor: pointer
+}
+
+.webmz-otp-resend {
+    width: 100%;
+    margin-top: 4px
+}
+
+.webmz-otp-auth__message {
+    border-radius: 14px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    overflow: auto;
+    max-height: 320px
+}
+
+.webmz-otp-auth__message.is-error {
+    background: #fff1f2;
+    color: #be123c
+}
+
+.webmz-otp-auth__message.is-success {
+    background: #ecfdf5;
+    color: #047857
+}
+
+.webmz-otp-auth__message.is-info {
+    background: #eff6ff;
+    color: #1d4ed8
+}
+
+.webmz-otp-auth__hint.is-demo,
+.webmz-otp-auth__message.is-demo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    white-space: normal
+}
+
+.webmz-otp-demo-code {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 4.5rem;
+    padding: 6px 12px;
+    border-radius: 10px;
+    border: 1px solid #86efac;
+    background: #fff;
+    color: #065f46;
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: 0.28em;
+    line-height: 1.2;
+    box-shadow: 0 4px 12px rgba(4, 120, 87, 0.12)
+}
+
+.webmz-otp-google {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 18px
+}
+
+.webmz-otp-google span {
+    font-size: 12px;
+    color: #94a3b8
+}
+
+.webmz-otp-google a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 50px;
+    border-radius: 15px;
+    background: #fff;
+    border: 1px solid #dbe7f2;
+    text-decoration: none;
+    color: #111827;
+    font-weight: 900
+}
+
+.webmz-otp-popup[hidden] {
+    display: none !important
+}
+
+.webmz-otp-popup {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px
+}
+
+.webmz-otp-popup__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, .58);
+    backdrop-filter: blur(6px)
+}
+
+.webmz-otp-popup__box {
+    position: relative;
+    z-index: 1;
+    width: min(440px, 100%)
+}
+
+.webmz-otp-popup__close {
+    position: absolute;
+    top: -14px;
+    left: -14px;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 50%;
+    background: #fff;
+    color: #111827;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .18);
+    z-index: 2
+}
+
+.webmz-otp-popup-open {
+    overflow: hidden
+}
+
+.webmz-otp-wc-replacement,
+.webmz-otp-checkout-gate {
+    display: flex;
+    justify-content: center;
+    margin: 24px 0
+}
+
+.webmz-otp-account-mobile input {
+    font-family: var(--webmz-font-family, inherit) !important
+}
+
+@media (max-width:600px) {
+    .webmz-otp-auth {
+        padding: 18px;
+        border-radius: 20px
+    }
+
+    .webmz-otp-auth__head strong {
+        font-size: 20px
+    }
+
+    .webmz-otp-popup {
+        align-items: flex-end;
+        padding: 12px
+    }
+
+    .webmz-otp-popup__box .webmz-otp-auth {
+        border-radius: 24px 24px 12px 12px
+    }
+
+    .webmz-otp-popup__close {
+        top: -48px;
+        left: 10px
+    }
+}
+
+/* WebMZ OTP UI refinements */
+.webmz-otp-auth {
+    position: relative;
+    overflow: hidden;
+}
+
+.webmz-otp-auth::before {
+    content: "";
+    position: absolute;
+    inset: -90px auto auto -90px;
+    width: 190px;
+    height: 190px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--webmz-otp-primary) 12%, transparent);
+    pointer-events: none;
+}
+
+.webmz-otp-auth__head {
+    position: relative;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+}
+
+.webmz-otp-auth__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    flex: 0 0 58px;
+    border-radius: 20px;
+    color: var(--webmz-otp-primary);
+    background: color-mix(in srgb, var(--webmz-otp-primary) 12%, #fff);
+}
+
+.webmz-otp-auth__titles {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.webmz-otp-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.webmz-otp-input-wrap>svg {
+    position: absolute;
+    right: 16px;
+    z-index: 2;
+    color: var(--webmz-otp-primary);
+    pointer-events: none;
+}
+
+.webmz-otp-input-wrap input {
+    width: 100%;
+    padding-right: 48px !important;
+    font-weight: 400 !important;
+}
+
+.webmz-otp-button,
+.webmz-otp-link,
+.webmz-otp-resend,
+.webmz-otp-google a {
+    position: relative;
+    z-index: 1;
+    transition: 0.3s;
+    font-weight: normal !important;
+}
+
+.webmz-otp-google a {
+    gap: 10px;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, .07);
+}
+
+.webmz-otp-google a svg {
+    flex: 0 0 auto;
+}
+
+.webmz-otp-popup {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .24s ease, visibility .24s ease;
+}
+
+.webmz-otp-popup.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.webmz-otp-popup__overlay {
+    opacity: 0;
+    transition: opacity .24s ease;
+}
+
+.webmz-otp-popup.is-open .webmz-otp-popup__overlay {
+    opacity: 1;
+}
+
+.webmz-otp-popup__box {
+    opacity: 0;
+    transform: translateY(24px) scale(.96);
+    transition: opacity .26s ease, transform .26s cubic-bezier(.2, .9, .2, 1);
+}
+
+.webmz-otp-popup.is-open .webmz-otp-popup__box {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.webmz-otp-popup.is-closing .webmz-otp-popup__box {
+    opacity: 0;
+    transform: translateY(18px) scale(.97);
+}
+
+.webmz-otp-popup__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0;
+    transition: transform .2s ease, background-color .2s ease, color .2s ease;
+}
+
+.webmz-otp-popup__close svg {
+    display: block;
+}
+
+.webmz-otp-popup__close:hover {
+    transform: rotate(8deg) scale(1.04);
+    color: #fff;
+    background: var(--webmz-otp-primary);
+}
+
+@media (max-width: 600px) {
+    .webmz-otp-popup__box {
+        transform: translateY(40px) scale(1);
+    }
+
+    .webmz-otp-popup.is-open .webmz-otp-popup__box {
+        transform: translateY(0) scale(1);
+    }
+
+    .webmz-otp-auth__head {
+        align-items: flex-start;
+    }
+
+    .webmz-otp-auth__icon {
+        width: 50px;
+        height: 50px;
+        flex-basis: 50px;
+        border-radius: 17px;
+    }
+}
+
+/* WebMZ OTP verification input and account mobile change refinements */
+.webmz-otp-auth [data-webmz-otp-code],
+.webmz-otp-code-input {
+    text-align: center !important;
+    direction: ltr !important;
+    font-size: 24px !important;
+    font-weight: 500 !important;
+    letter-spacing: .45em !important;
+    padding-inline: 18px !important;
+}
+
+.webmz-otp-auth [data-webmz-otp-code]::placeholder,
+.webmz-otp-code-input::placeholder {
+    letter-spacing: .35em;
+    color: #94a3b8;
+}
+
+.webmz-otp-auth [data-webmz-otp-code] {
+    padding-right: 18px !important;
+    padding-left: 18px !important;
+}
+
+.webmz-otp-auth [data-step="code"] .webmz-otp-input-wrap>svg {
+    display: none;
+}
+
+.webmz-otp-link,
+.webmz-otp-resend {
+    background: transparent !important;
+    color: #64748b !important;
+    box-shadow: none !important;
+}
+
+.webmz-otp-link:hover,
+.webmz-otp-resend:hover {
+    color: var(--webmz-otp-primary) !important;
+    background: transparent !important;
+}
+
+.webmz-otp-resend:disabled {
+    background: transparent !important;
+    color: #94a3b8 !important;
+}
+
+.webmz-otp-account-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px !important;
+    border-radius: 20px;
+    background: #f8fbff;
+    border: 1px solid #dbe7f2;
+    margin: 18px 0 !important;
+}
+
+.webmz-otp-account-mobile label {
+    font-weight: 800;
+    color: var(--webmz-color-text-navy, #102d50);
+}
+
+.webmz-otp-account-mobile__current input[readonly] {
+    opacity: 1;
+    background: #eef6ff !important;
+    color: var(--webmz-color-text-navy, #102d50) !important;
+    cursor: default;
+}
+
+.webmz-otp-account-mobile__change,
+.webmz-otp-account-mobile__verify {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.webmz-otp-account-mobile__row {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+}
+
+.webmz-otp-account-mobile__row input {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.webmz-otp-account-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 14px;
+    background: #eef6ff;
+    color: #64748b;
+    font-family: var(--webmz-font-family, inherit);
+    font-weight: 900;
+    cursor: pointer;
+    transition: .2s ease;
+    white-space: nowrap;
+}
+
+.webmz-otp-account-btn:hover {
+    color: var(--webmz-color-primary, #0878f9);
+    background: #e7f2ff;
+}
+
+.webmz-otp-account-btn--primary {
+    color: #fff;
+    background: var(--webmz-color-primary, #0878f9);
+    box-shadow: 0 10px 26px color-mix(in srgb, var(--webmz-color-primary, #0878f9) 25%, transparent);
+}
+
+.webmz-otp-account-btn--primary:hover {
+    color: #fff;
+    background: var(--webmz-color-primary-hover, var(--webmz-color-primary, #0878f9));
+}
+
+.webmz-otp-account-btn:disabled {
+    opacity: .65;
+    cursor: not-allowed;
+}
+
+.webmz-otp-account-mobile__message {
+    border-radius: 14px;
+    padding: 11px 13px;
+    font-size: 13px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    direction: rtl;
+    text-align: right;
+}
+
+.webmz-otp-account-mobile__message.is-error {
+    background: #fff1f2;
+    color: #be123c;
+}
+
+.webmz-otp-account-mobile__message.is-success {
+    background: #ecfdf5;
+    color: #047857;
+}
+
+.webmz-otp-account-mobile__message.is-info {
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+
+.webmz-otp-account-mobile__hint {
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+@media (max-width: 640px) {
+    .webmz-otp-account-mobile__row {
+        flex-direction: column;
+    }
+
+    .webmz-otp-account-btn {
+        width: 100%;
+    }
+}
+
+.webmz-otp-hp {
+    position: absolute !important;
+    left: -9999px !important;
+    top: auto !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}

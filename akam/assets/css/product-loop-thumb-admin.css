@@ -1,0 +1,33 @@
+.webmz-pll-meta__preview {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 96px;
+	height: 96px;
+	margin: 8px 0;
+	border: 1px dashed #c3c4c7;
+	border-radius: 12px;
+	background: #f6f7f7;
+	overflow: hidden;
+}
+
+.webmz-pll-meta__preview img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 12px;
+}
+
+.webmz-pll-meta__preview.is-empty {
+	color: #646970;
+	font-size: 12px;
+	text-align: center;
+	padding: 8px;
+}
+
+.webmz-pll-meta__actions {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}

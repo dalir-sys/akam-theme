@@ -1,0 +1,357 @@
+/* Professional teachers display widget */
+
+.webmz-pro-teachers {
+    width: 100%;
+}
+
+.webmz-pro-teachers__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--webmz-grid-columns, 4), minmax(0, 1fr));
+    gap: var(--webmz-grid-gap, 24px);
+}
+
+.webmz-pro-teachers__slider {
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.webmz-pro-teachers__slider .swiper-slide {
+    height: auto;
+}
+
+.webmz-pro-teachers__empty {
+    padding: 40px 20px;
+    border-radius: 16px;
+    background: var(--webmz-surface, #fff);
+    border: 1px dashed var(--webmz-border, #e5edf4);
+    color: var(--webmz-color-text-gray, #64748b);
+    text-align: center;
+}
+
+/* Card */
+
+.webmz-pro-teacher-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    background: var(--webmz-surface, #fff);
+    border: 1px solid var(--webmz-border, #e5edf4);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: transform .25s ease, border-color .25s ease;
+}
+
+.webmz-pro-teacher-card:hover {
+    border-color: #c9d7e6;
+    transform: translateY(-3px);
+}
+
+.webmz-pro-teacher-card__media-wrap {
+    position: relative;
+}
+
+.webmz-pro-teacher-card__media {
+    display: block;
+    overflow: hidden;
+    background: #eef2f7;
+}
+
+.webmz-pro-teacher-card__image {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    transition: transform .35s ease;
+}
+
+.webmz-pro-teacher-card:hover .webmz-pro-teacher-card__image {
+    transform: scale(1.04);
+}
+
+.webmz-pro-teacher-card__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: var(--webmz-color-primary, #0878f9);
+    font-size: 2.4rem;
+    font-weight: 800;
+}
+
+.webmz-pro-teacher-card__expertise {
+    position: absolute;
+    top: 12px;
+    inset-inline-start: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+    background: #fff;
+    z-index: 2;
+}
+
+.webmz-pro-teacher-card__expertise img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.webmz-pro-teacher-card__expertise-demo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #e03131 40%, #fff 40%, #fff 60%, #1c7ed6 60%);
+}
+
+.webmz-pro-teacher-card__video {
+    position: absolute;
+    bottom: 12px;
+    inset-inline-start: 12px;
+    width: 38px;
+    height: 38px;
+    border: 0;
+    padding: 0;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #e03131;
+    cursor: pointer;
+    z-index: 2;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.webmz-pro-teacher-card__video:hover {
+    transform: scale(1.06);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, .16);
+}
+
+.webmz-pro-teacher-card__video-icon {
+    width: 20px;
+    height: 20px;
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 10l4.553 -2.276a1 1 0 0 1 1.447 .894v6.764a1 1 0 0 1 -1.447 .894l-4.553 -2.276v-4z'/%3E%3Crect x='3' y='6' width='12' height='12' rx='2'/%3E%3C/svg%3E") center/contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 10l4.553 -2.276a1 1 0 0 1 1.447 .894v6.764a1 1 0 0 1 -1.447 .894l-4.553 -2.276v-4z'/%3E%3Crect x='3' y='6' width='12' height='12' rx='2'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+.webmz-pro-teacher-card__body {
+    padding: 18px 16px 22px;
+    text-align: center;
+    flex: 1;
+}
+
+.webmz-pro-teacher-card__name {
+    margin: 0 0 8px;
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1.55;
+}
+
+.webmz-pro-teacher-card__name a {
+    color: #000;
+    text-decoration: none;
+    transition: color .2s ease;
+}
+
+.webmz-pro-teacher-card__name a:hover {
+    color: var(--webmz-color-primary, #0878f9);
+}
+
+.webmz-pro-teacher-card__role {
+    margin: 0 0 6px;
+    color: #e03131;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.6;
+}
+
+.webmz-pro-teacher-card__experience {
+    margin: 0;
+    color: #888;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.7;
+}
+
+/* Slider navigation */
+
+.webmz-pro-teachers__arrow {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--webmz-surface, #fff);
+    border: 1px solid var(--webmz-border, #e5edf4);
+    box-shadow: 0 4px 14px rgba(16, 45, 80, .08);
+    color: var(--webmz-color-text-dark, #111827);
+    transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+
+.webmz-pro-teachers__arrow::after {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.webmz-pro-teachers__arrow:hover {
+    background: var(--webmz-color-primary, #0878f9);
+    border-color: var(--webmz-color-primary, #0878f9);
+    color: #fff;
+}
+
+.webmz-pro-teachers__pagination {
+    position: static;
+    margin-top: 18px;
+}
+
+.webmz-pro-teachers__pagination .swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+    background: #cbd5e1;
+    opacity: 1;
+    transition: transform .2s ease, background-color .2s ease;
+}
+
+.webmz-pro-teachers__pagination .swiper-pagination-bullet-active {
+    background: var(--webmz-color-primary, #0878f9);
+    transform: scale(1.25);
+}
+
+/* Responsive */
+
+@media (max-width: 1024px) {
+    .webmz-pro-teachers__grid {
+        grid-template-columns: repeat(var(--webmz-grid-tablet-columns, 2), minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 767px) {
+    .webmz-pro-teachers__grid {
+        grid-template-columns: repeat(var(--webmz-grid-mobile-columns, 1), minmax(0, 1fr));
+    }
+
+    .webmz-pro-teachers__arrow {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+.webmz-pro-teachers--editor .webmz-pro-teacher-card {
+    pointer-events: none;
+}
+
+/* Video popup modal */
+
+.webmz-pro-teacher-video-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .28s ease, visibility .28s ease;
+}
+
+.webmz-pro-teacher-video-modal.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.webmz-pro-teacher-video-modal__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, .72);
+    backdrop-filter: blur(4px);
+}
+
+.webmz-pro-teacher-video-modal__dialog {
+    position: relative;
+    width: min(920px, 100%);
+    max-height: calc(100vh - 48px);
+    overflow: auto;
+    padding: 20px;
+    border-radius: 20px;
+    background: var(--webmz-surface, #fff);
+    box-shadow: 0 24px 60px rgba(15, 23, 42, .28);
+    transform: translateY(16px) scale(.98);
+    transition: transform .28s ease;
+}
+
+.webmz-pro-teacher-video-modal.is-open .webmz-pro-teacher-video-modal__dialog {
+    transform: translateY(0) scale(1);
+}
+
+.webmz-pro-teacher-video-modal__close {
+    position: absolute;
+    top: 14px;
+    inset-inline-end: 14px;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(15, 23, 42, .06);
+    color: var(--webmz-color-text-dark, #111827);
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 2;
+    transition: background-color .2s ease, color .2s ease;
+}
+
+.webmz-pro-teacher-video-modal__close:hover,
+.webmz-pro-teacher-video-modal__close:focus-visible {
+    background: var(--webmz-color-primary, #0878f9);
+    color: #fff;
+}
+
+.webmz-pro-teacher-video-modal__title {
+    margin: 0 0 14px;
+    margin-inline-end: 48px;
+    color: var(--webmz-color-text-navy, #102d50);
+    font-size: 1.05rem;
+    font-weight: 800;
+    line-height: 1.5;
+}
+
+.webmz-pro-teacher-video-modal__player {
+    border-radius: 16px;
+    overflow: hidden;
+    background: #0f172a;
+}
+
+.webmz-pro-teacher-video-modal__player .plyr__video-embed {
+    aspect-ratio: 16 / 9;
+}
+
+.webmz-pro-teacher-video-modal__player .plyr__video-embed iframe {
+    width: 100%;
+    height: 100%;
+}
+
+html.webmz-pro-teacher-video-open {
+    overflow: hidden;
+}
+
+@media (max-width: 767px) {
+    .webmz-pro-teacher-video-modal {
+        padding: 12px;
+    }
+
+    .webmz-pro-teacher-video-modal__dialog {
+        padding: 16px 14px 14px;
+        border-radius: 16px;
+    }
+
+    .webmz-pro-teacher-video-modal__title {
+        margin-inline-end: 40px;
+        font-size: .95rem;
+    }
+}

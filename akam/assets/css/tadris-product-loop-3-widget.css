@@ -1,0 +1,419 @@
+.elementor-widget-webmz-tadris-product-loop-3 {
+    --tpl3-primary: #e53935;
+    --tpl3-discount: #22c55e;
+    --tpl3-gap: 20px;
+    max-width: 100%;
+}
+
+.tadris-products-loop-3-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--webmz-grid-columns, 4), minmax(0, 1fr));
+    gap: var(--tpl3-gap, 20px);
+    width: 100%;
+}
+
+@media (max-width: 1024px) {
+    .tadris-products-loop-3-grid {
+        grid-template-columns: repeat(var(--webmz-grid-tablet-columns, 2), minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 767px) {
+    .tadris-products-loop-3-grid {
+        grid-template-columns: repeat(var(--webmz-grid-mobile-columns, 1), minmax(0, 1fr));
+    }
+}
+
+.tadris-products-loop-3-swiper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.tadris-products-loop-3-swiper .swiper-slide {
+    height: auto;
+}
+
+.tadris-products-loop-3-swiper .swiper-wrapper {
+    align-items: stretch;
+}
+
+.tadris-products-loop-3-swiper .tadris-product-type-3 {
+    height: 100%;
+}
+
+.tadris-products-loop-3-swiper-pagination {
+    position: relative;
+    margin-top: 20px;
+}
+
+.tadris-products-loop-3-swiper-pagination .swiper-pagination-bullet-active {
+    background: var(--tpl3-primary, #e53935);
+}
+
+.tadris-products-loop-3-swiper-button {
+    color: var(--tpl3-primary, #e53935);
+}
+
+.tadris-products-loop-3-swiper-button::after {
+    font-size: 22px;
+    font-weight: 900;
+}
+
+.tadris-product-type-3 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    background: #fff;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.tadris-product-type-3:hover,
+.tadris-product-type-3:focus-within {
+    transform: translateY(-4px);
+}
+
+.tadris-product-type-3 .product-type-3-figure {
+    position: relative;
+    margin: 0;
+    padding: 12px 12px 0;
+}
+
+.tadris-product-type-3 .product-type-3-figure > a {
+    display: block;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.tadris-product-type-3 .product-type-3-figure img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.tadris-product-type-3 .product-type-3-flag {
+    position: absolute;
+    top: 22px;
+    inset-inline-start: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
+    overflow: hidden;
+    z-index: 2;
+}
+
+.tadris-product-type-3 .product-type-3-flag img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tadris-product-type-3 .product-type-3-level-badge {
+    position: absolute;
+    top: 22px;
+    inset-inline-end: 22px;
+    padding: 5px 12px;
+    border-radius: 8px;
+    background: rgba(15, 23, 42, 0.72);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.4;
+    z-index: 2;
+}
+
+.tadris-product-type-3 .product-type-3-image-badge {
+    position: absolute;
+    bottom: 8px;
+    inset-inline-end: 22px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: var(--tpl3-primary, #e53935);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.3;
+    z-index: 2;
+}
+
+.tadris-product-type-3 .product-type-3-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px 16px 12px;
+    flex: 1 1 auto;
+}
+
+.tadris-product-type-3 .product-type-3-header {
+    margin: 0;
+}
+
+.tadris-product-type-3 .product-type-3-header-tag {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.5;
+}
+
+.tadris-product-type-3 .product-type-3-header-tag a {
+    color: #111827;
+    text-decoration: none;
+    transition: color 0.25s ease;
+}
+
+.tadris-product-type-3:hover .product-type-3-header-tag a,
+.tadris-product-type-3:focus-within .product-type-3-header-tag a {
+    color: var(--tpl3-primary, #e53935);
+}
+
+.tadris-product-type-3 .product-type-3-subtitle {
+    margin: 0;
+    color: #9ca3af;
+    font-size: 12px;
+    line-height: 1.7;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.tadris-product-type-3 .product-type-3-instructor {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 2px;
+}
+
+.tadris-product-type-3 .product-type-3-instructor-avatar,
+.tadris-product-type-3 .product-type-3-instructor img {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.tadris-product-type-3 .product-type-3-instructor-name {
+    color: #9ca3af;
+    font-size: 12px;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tadris-product-type-3 .product-type-3-stats-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+.tadris-product-type-3 .product-type-3-rating,
+.tadris-product-type-3 .product-type-3-students,
+.tadris-product-type-3 .product-type-3-reviews {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #9ca3af;
+    font-size: 12px;
+    line-height: 1.3;
+}
+
+.tadris-product-type-3 .product-type-3-rating-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fbbf24;
+    font-size: 13px;
+    line-height: 1;
+}
+
+.tadris-product-type-3 .product-type-3-rating-icon svg {
+    width: 13px;
+    height: 13px;
+}
+
+.tadris-product-type-3 .product-type-3-rating-value {
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.tadris-product-type-3 .product-type-3-students-icon,
+.tadris-product-type-3 .product-type-3-reviews-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #d1d5db;
+    font-size: 12px;
+}
+
+.tadris-product-type-3 .product-type-3-students-icon svg,
+.tadris-product-type-3 .product-type-3-reviews-icon svg {
+    width: 13px;
+    height: 13px;
+}
+
+.tadris-product-type-3 .product-type-3-meta-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 4px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.tadris-product-type-3 .product-type-3-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #6b7280;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.tadris-product-type-3 .product-type-3-meta-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    font-size: 12px;
+}
+
+.tadris-product-type-3 .product-type-3-meta-icon svg {
+    width: 13px;
+    height: 13px;
+}
+
+.tadris-product-type-3 .product-type-3-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: auto;
+    padding: 0 16px 16px;
+}
+
+.tadris-product-type-3 .product-type-3-price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.tadris-product-type-3 .product-type-3-discount-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--tpl3-discount, #22c55e) 18%, #fff);
+    color: var(--tpl3-discount, #22c55e);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.tadris-product-type-3 .product-type-3-discount-badge.is-empty {
+    visibility: hidden;
+}
+
+.tadris-product-type-3 .product-type-3-price {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+.tadris-product-type-3 .product-type-3-price-regular {
+    color: #9ca3af;
+    font-size: 12px;
+    line-height: 1.3;
+    text-decoration: line-through;
+}
+
+.tadris-product-type-3 .product-type-3-price-regular .product-type-3-price-currency {
+    color: #9ca3af;
+    font-size: 11px;
+    font-weight: 400;
+}
+
+.tadris-product-type-3 .product-type-3-price-current {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.tadris-product-type-3 .product-type-3-price-amount,
+.tadris-product-type-3 .product-type-3-price-free {
+    color: var(--tpl3-primary, #e53935);
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.tadris-product-type-3 .product-type-3-price-currency {
+    color: var(--tpl3-primary, #e53935);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.tadris-product-type-3 .product-type-3-price-unavailable {
+    color: #9ca3af;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.tadris-product-type-3 .product-type-3-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 42px;
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--tpl3-primary, #e53935);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.tadris-product-type-3 .product-type-3-btn:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+    color: #fff;
+}
+
+@media (max-width: 767px) {
+    .tadris-product-type-3 .product-type-3-stats-row {
+        gap: 8px;
+    }
+
+    .tadris-product-type-3 .product-type-3-meta-row {
+        gap: 10px;
+    }
+}

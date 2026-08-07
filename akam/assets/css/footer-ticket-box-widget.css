@@ -1,0 +1,180 @@
+/* Footer ticket CTA box — Zhaket style */
+
+.elementor-widget-webmz-footer-ticket-box {
+	max-width: 100%;
+}
+
+.webmz-footer-ticket-box {
+	--webmz-ftb-avatar-size: 44px;
+	--webmz-ftb-avatar-overlap: 14px;
+	--webmz-ftb-avatar-back-offset: 8px;
+	--webmz-ftb-btn-bg: color-mix(in srgb, var(--webmz-color-primary, #0878f9) 12%, #ffffff);
+	--webmz-ftb-btn-color: var(--webmz-color-primary, #0878f9);
+	--webmz-ftb-title-color: var(--webmz-color-text-dark, #111827);
+	--webmz-ftb-subtitle-color: var(--webmz-color-text-gray, #6b7280);
+
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+	width: 100%;
+	padding: clamp(16px, 2vw, 24px) clamp(18px, 2.5vw, 28px);
+	border-radius: 12px;
+	background: var(--webmz-bg, #f8f9fb);
+	direction: rtl;
+	font-family: var(--webmz-font-family, Tahoma, Arial, sans-serif);
+	box-sizing: border-box;
+}
+
+.webmz-footer-ticket-box__main {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex: 1 1 auto;
+	min-width: 0;
+	gap: 16px;
+}
+
+.webmz-footer-ticket-box__avatars {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-end;
+	flex-shrink: 0;
+	direction: ltr;
+	min-width: calc(var(--webmz-ftb-avatar-size) * 2 - var(--webmz-ftb-avatar-overlap));
+	height: calc(var(--webmz-ftb-avatar-size) + var(--webmz-ftb-avatar-back-offset));
+}
+
+.webmz-footer-ticket-box__avatar {
+	display: block;
+	width: var(--webmz-ftb-avatar-size);
+	height: var(--webmz-ftb-avatar-size);
+	border-radius: 50%;
+	border: 2px solid #fff;
+	object-fit: cover;
+	flex-shrink: 0;
+	box-sizing: border-box;
+}
+
+.webmz-footer-ticket-box__avatar--back {
+	position: relative;
+	z-index: 1;
+	margin-bottom: var(--webmz-ftb-avatar-back-offset);
+}
+
+.webmz-footer-ticket-box__avatar--front {
+	position: relative;
+	z-index: 2;
+	margin-inline-start: calc(-1 * var(--webmz-ftb-avatar-overlap));
+}
+
+.webmz-footer-ticket-box__content {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+	gap: 4px;
+	min-width: 0;
+	text-align: right;
+}
+
+.webmz-footer-ticket-box__title {
+	margin: 0;
+	font-size: clamp(15px, 1.6vw, 18px);
+	font-weight: 700;
+	line-height: 1.6;
+	color: var(--webmz-ftb-title-color);
+}
+
+.webmz-footer-ticket-box__subtitle {
+	margin: 0;
+	font-size: clamp(12px, 1.3vw, 14px);
+	font-weight: 400;
+	line-height: 1.7;
+	color: var(--webmz-ftb-subtitle-color);
+}
+
+.webmz-footer-ticket-box__action {
+	flex-shrink: 0;
+}
+
+.webmz-footer-ticket-box__button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 40px;
+	padding: 10px 22px;
+	border: none;
+	border-radius: 12px;
+	background-color: var(--webmz-ftb-btn-bg);
+	color: var(--webmz-ftb-btn-color);
+	font: inherit;
+	font-size: clamp(13px, 1.3vw, 14px);
+	font-weight: 600;
+	line-height: 1.4;
+	text-decoration: none;
+	white-space: nowrap;
+	cursor: pointer;
+	transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.webmz-footer-ticket-box__button:hover {
+	text-decoration: none;
+	transform: translateY(-1px);
+	box-shadow: 0 6px 18px color-mix(in srgb, var(--webmz-ftb-btn-color) 18%, transparent);
+}
+
+.webmz-footer-ticket-box__button:focus-visible {
+	outline: 2px solid var(--webmz-ftb-btn-color);
+	outline-offset: 2px;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+	.webmz-footer-ticket-box {
+		gap: 20px;
+	}
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+	.webmz-footer-ticket-box {
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+	}
+
+	.webmz-footer-ticket-box__main {
+		flex-direction: column;
+		align-items: center;
+		width: 100%;
+	}
+
+	.webmz-footer-ticket-box__content {
+		align-items: center;
+		text-align: center;
+	}
+
+	.webmz-footer-ticket-box__action {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+	}
+
+	.webmz-footer-ticket-box__button {
+		width: 100%;
+		max-width: 280px;
+	}
+}
+
+@media (max-width: 480px) {
+	.webmz-footer-ticket-box__button {
+		max-width: 100%;
+		white-space: normal;
+		text-align: center;
+	}
+}

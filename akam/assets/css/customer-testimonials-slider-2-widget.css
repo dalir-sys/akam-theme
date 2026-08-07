@@ -1,0 +1,243 @@
+.elementor-widget-webmz-customer-testimonials-slider-2 {
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+.webmz-cts2 {
+    width: 100%;
+    padding: 8px 0 4px;
+    background-color: transparent;
+    font-family: var(--webmz-font-family, Tahoma, Arial, sans-serif);
+}
+
+.webmz-cts2__shell {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.webmz-cts2__main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.webmz-cts2__slider {
+    width: 100%;
+    overflow: hidden;
+}
+
+.webmz-cts2__slider .swiper-slide {
+    height: auto;
+    box-sizing: border-box;
+}
+
+.webmz-cts2__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 220px;
+    padding: 28px 24px 22px;
+    border-radius: 16px;
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: none;
+    direction: rtl;
+    text-align: right;
+}
+
+.webmz-cts2__quote {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-bottom: 12px;
+    color: #e53935;
+    font-size: 28px;
+    line-height: 1;
+}
+
+.webmz-cts2__quote svg,
+.webmz-cts2__quote i {
+    display: block;
+    width: 28px;
+    height: 28px;
+}
+
+.webmz-cts2__text {
+    flex: 1;
+    margin: 0 0 20px;
+    color: #4b5563;
+    font-size: 14px;
+    line-height: 2;
+    text-align: right;
+}
+
+.webmz-cts2__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: auto;
+}
+
+.webmz-cts2__meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    min-width: 0;
+    flex: 1;
+}
+
+.webmz-cts2__stars {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 2px;
+    line-height: 1;
+}
+
+.webmz-cts2__star {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #e2e8f0;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.webmz-cts2__star.is-filled {
+    color: #f5b301;
+}
+
+.webmz-cts2__star svg,
+.webmz-cts2__star i {
+    display: block;
+    width: 14px;
+    height: 14px;
+}
+
+.webmz-cts2__name {
+    color: #1f2937;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.webmz-cts2__job {
+    color: #9ca3af;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.webmz-cts2__avatar {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #f3f4f6;
+}
+
+.webmz-cts2__avatar-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50% !important;
+}
+
+.webmz-cts2__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #94a3b8;
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.webmz-cts2__arrow:hover:not(.swiper-button-disabled) {
+    background-color: var(--webmz-color-primary, #0878f9);
+    color: #ffffff;
+}
+
+.webmz-cts2__arrow svg {
+    display: block;
+    width: 14px;
+    height: 14px;
+}
+
+.webmz-cts2__arrow.swiper-button-disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.webmz-cts2__pagination {
+    position: static;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: auto !important;
+}
+
+.webmz-cts2__pagination .swiper-pagination-bullet {
+    width: 24px;
+    height: 4px;
+    margin: 0 !important;
+    border-radius: 999px;
+    background: #d1d5db;
+    opacity: 1;
+    transition: width 0.2s ease, background-color 0.2s ease;
+}
+
+.webmz-cts2__pagination .swiper-pagination-bullet-active {
+    width: 32px;
+    background: #e53935;
+}
+
+@media (max-width: 991px) {
+    .webmz-cts2__card {
+        min-height: 200px;
+        padding: 24px 20px 20px;
+    }
+}
+
+@media (max-width: 767px) {
+    .webmz-cts2__shell {
+        gap: 10px;
+    }
+
+    .webmz-cts2__card {
+        padding: 22px 18px 18px;
+    }
+
+    .webmz-cts2__arrow {
+        width: 38px;
+        height: 38px;
+    }
+
+    .webmz-cts2__avatar {
+        width: 46px;
+        height: 46px;
+    }
+
+    .webmz-cts2__text {
+        font-size: 13px;
+        line-height: 1.9;
+    }
+}

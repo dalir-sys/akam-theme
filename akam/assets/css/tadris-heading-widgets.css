@@ -1,0 +1,245 @@
+/* هدینگ آکام ۲ — centered subtitle, title, description */
+.tadris-heading-2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    max-width: 680px;
+    margin-inline: auto;
+}
+
+.tadris-heading-2__subtitle {
+    display: block;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--webmz-color-primary, #0878f9);
+}
+
+.tadris-heading-2__title {
+    margin: 0;
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 800;
+    line-height: 1.4;
+    color: var(--text-navy, #023047);
+}
+
+.tadris-heading-2__description {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text-gray, #585858);
+}
+
+/* هدینگ آکام ۳ — horizontal title block + view-all button */
+.tadris-heading-3 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.tadris-heading-3__text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    text-align: start;
+}
+
+.tadris-heading-3__title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1.5;
+    color: var(--text-navy, #023047);
+}
+
+.tadris-heading-3__subtitle {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-gray, #585858);
+}
+
+.tadris-heading-3__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 10px 24px;
+    border-radius: 999px;
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    background-color: #fff;
+    color: var(--text-gray, #585858);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    text-decoration: none;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.tadris-heading-3__button:hover {
+    color: var(--webmz-color-primary, #0878f9);
+    border-color: var(--webmz-color-primary, #0878f9);
+}
+
+@media (max-width: 767px) {
+    .tadris-heading-3 {
+        align-items: flex-start;
+    }
+}
+
+/* هدینگ آکام ۴ — icon box + title/description + view-all button */
+.tadris-heading-4 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.tadris-heading-4__lead {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.tadris-heading-4__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    border: 1px solid rgba(242, 30, 63, 0.18);
+    background-color: #fff;
+    color: var(--webmz-red, #f21e3f);
+    font-size: 22px;
+    line-height: 1;
+}
+
+.tadris-heading-4__icon svg,
+.tadris-heading-4__icon i {
+    width: 1em;
+    height: 1em;
+}
+
+.tadris-heading-4__text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    text-align: start;
+}
+
+.tadris-heading-4__title {
+    margin: 0;
+    font-size: clamp(20px, 2.4vw, 28px);
+    font-weight: 800;
+    line-height: 1.45;
+    color: var(--text-navy, #023047);
+}
+
+.tadris-heading-4__description {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-gray, #585858);
+}
+
+.tadris-heading-4__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-shrink: 0;
+    padding: 10px 20px;
+    border-radius: 999px;
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    background-color: #fff;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
+    color: var(--text-gray, #585858);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    text-decoration: none;
+    transition: color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tadris-heading-4__button:hover {
+    color: var(--webmz-red, #f21e3f);
+    border-color: rgba(242, 30, 63, 0.35);
+    box-shadow: 0 6px 22px rgba(242, 30, 63, 0.1);
+}
+
+.tadris-heading-4__button-text {
+    display: inline-block;
+}
+
+.tadris-heading-4__button-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--webmz-red, #f21e3f);
+    font-size: 12px;
+    line-height: 1;
+}
+
+.tadris-heading-4__button-icon svg,
+.tadris-heading-4__button-icon i {
+    width: 1em;
+    height: 1em;
+}
+
+@media (max-width: 767px) {
+    .tadris-heading-4 {
+        align-items: flex-start;
+    }
+
+    .tadris-heading-4__button {
+        width: 100%;
+    }
+}
+
+/* هدینگ آکام ۵ — red subtitle + bold title + accent line */
+.tadris-heading-5 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: start;
+    gap: 8px;
+}
+
+.tadris-heading-5__subtitle {
+    display: block;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.6;
+    color: var(--webmz-red, #f21e3f);
+}
+
+.tadris-heading-5__title {
+    margin: 0;
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 800;
+    line-height: 1.4;
+    color: var(--text-navy, #023047);
+}
+
+.tadris-heading-5__accent {
+    display: block;
+    width: 48px;
+    height: 4px;
+    margin-top: 4px;
+    border-radius: 2px;
+    background-color: var(--webmz-red, #f21e3f);
+}

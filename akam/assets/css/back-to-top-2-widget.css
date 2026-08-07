@@ -1,0 +1,107 @@
+/* Back to top v2 widget */
+.elementor-widget-webmz-back-to-top-2 .webmz-back-to-top-2-wrap {
+    background: transparent !important;
+}
+
+.webmz-back-to-top-2-wrap {
+    display: flex;
+    width: 100%;
+    background: transparent !important;
+}
+
+.webmz-back-to-top-2 {
+    --webmz-btt2-y: 0px;
+    position: relative;
+    display: block;
+    width: 489px;
+    max-width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent !important;
+    cursor: pointer;
+    appearance: none;
+    line-height: 0;
+    transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease;
+}
+
+.webmz-back-to-top-2__shape {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.webmz-back-to-top-2__shape-inner {
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.webmz-back-to-top-2__shape-bg {
+    fill: #f6f5f8;
+    transition: fill 0.25s ease;
+}
+
+.webmz-back-to-top-2__shape-arrows {
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 0.25s ease;
+}
+
+.webmz-back-to-top-2__shape-arrow {
+    fill: none;
+    stroke: #6b7280;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke 0.25s ease;
+}
+
+.webmz-back-to-top-2:hover .webmz-back-to-top-2__shape-bg,
+.webmz-back-to-top-2:focus-visible .webmz-back-to-top-2__shape-bg {
+    fill: #eceaef;
+}
+
+.webmz-back-to-top-2:hover .webmz-back-to-top-2__shape-arrow,
+.webmz-back-to-top-2:focus-visible .webmz-back-to-top-2__shape-arrow {
+    stroke: #374151;
+}
+
+.webmz-back-to-top-2:hover .webmz-back-to-top-2__shape-arrows,
+.webmz-back-to-top-2:focus-visible .webmz-back-to-top-2__shape-arrows {
+    transform: translateY(-2px);
+}
+
+.webmz-back-to-top-2:focus-visible {
+    outline: none;
+}
+
+.webmz-back-to-top-2:focus-visible .webmz-back-to-top-2__shape-bg {
+    filter: drop-shadow(0 0 0 2px rgba(8, 120, 249, 0.35));
+}
+
+.webmz-back-to-top-2--fixed {
+    position: fixed;
+    bottom: calc(var(--webmz-btt2-y) + env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    z-index: 999;
+    transform: translateX(-50%);
+}
+
+.webmz-back-to-top-2--fixed.webmz-back-to-top-2--reveal {
+    transform: translateX(-50%) translateY(14px);
+}
+
+.webmz-back-to-top-2--fixed.webmz-back-to-top-2--reveal.is-visible {
+    transform: translateX(-50%) translateY(0);
+}
+
+.webmz-back-to-top-2--reveal {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.webmz-back-to-top-2--reveal.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}

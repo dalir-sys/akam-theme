@@ -1,0 +1,206 @@
+.webmz-view-history-endpoint__head {
+    margin-bottom: 24px;
+}
+
+.webmz-view-history-endpoint__head h2 {
+    margin: 0 0 8px;
+    color: var(--webmz-color-text-dark, #111827);
+    font-size: 28px;
+    font-weight: 900;
+}
+
+.webmz-view-history-endpoint__head p {
+    margin: 0;
+    color: var(--webmz-color-text-gray, #64748b);
+    line-height: 1.9;
+}
+
+.webmz-view-history-loop {
+    --webmz-grid-columns: 3;
+    --webmz-grid-tablet-columns: 2;
+    --webmz-grid-mobile-columns: 1;
+    --webmz-grid-gap: 24px;
+}
+
+.webmz-view-history-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.webmz-view-history-card__figure {
+    position: relative;
+}
+
+.webmz-view-history-card__no-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 220px;
+    border-radius: inherit;
+    background: var(--webmz-color-primary-light, #eef6ff);
+    color: var(--webmz-color-primary, #0878f9);
+    font-size: 48px;
+    font-weight: 900;
+}
+
+.webmz-view-history-card__type {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    margin-bottom: 10px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--webmz-account-accent-light, #fff4e7);
+    color: var(--webmz-color-primary, #0878f9);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.webmz-view-history-progress {
+    display: grid;
+    gap: 8px;
+    margin: 14px 0;
+}
+
+.webmz-view-history-progress__bar {
+    position: relative;
+    overflow: hidden;
+    height: 9px;
+    border-radius: 999px;
+    background: rgba(8, 120, 249, 0.12);
+}
+
+.webmz-view-history-progress__bar span {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    display: block;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--webmz-color-primary, #0878f9), var(--webmz-color-primary-hover, #0662cc));
+}
+
+.webmz-view-history-progress__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--webmz-color-text-gray, #64748b);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+
+.webmz-view-history-card__footer {
+    margin-top: auto;
+}
+
+.webmz-view-history-card__continue {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 8px 14px;
+    border-radius: 12px;
+    background: var(--webmz-color-primary, #0878f9);
+    color: #fff !important;
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: all .22s ease;
+}
+
+.webmz-view-history-card__continue:hover {
+    background: var(--webmz-color-primary-hover, #0662cc);
+    color: #fff !important;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 575px) {
+    .webmz-view-history-endpoint__head h2 {
+        font-size: 23px;
+    }
+
+    .webmz-view-history-progress__meta {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 2px;
+    }
+}
+
+/* Force WooCommerce account view history into a real responsive grid.
+   This must override account-panel.css where .tadris-loop-type-1 is flex. */
+.webmz-account-content .webmz-view-history-loop,
+.webmz-view-history-endpoint .webmz-view-history-loop {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 24px !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+.webmz-account-content .webmz-view-history-loop > *,
+.webmz-view-history-endpoint .webmz-view-history-loop > * {
+    min-width: 0 !important;
+    width: 100% !important;
+}
+
+.webmz-account-content .webmz-view-history-loop .webmz-view-history-card,
+.webmz-view-history-endpoint .webmz-view-history-loop .webmz-view-history-card {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    height: 100% !important;
+    gap: 14px !important;
+}
+
+.webmz-account-content .webmz-view-history-loop .webmz-view-history-card__figure,
+.webmz-view-history-endpoint .webmz-view-history-loop .webmz-view-history-card__figure {
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+.webmz-account-content .webmz-view-history-loop .webmz-view-history-card__figure a,
+.webmz-view-history-endpoint .webmz-view-history-loop .webmz-view-history-card__figure a {
+    display: block !important;
+    width: 100% !important;
+}
+
+.webmz-account-content .webmz-view-history-loop .webmz-view-history-card__figure img,
+.webmz-view-history-endpoint .webmz-view-history-loop .webmz-view-history-card__figure img {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+}
+
+.webmz-account-content .webmz-view-history-loop .webmz-view-history-card__content,
+.webmz-view-history-endpoint .webmz-view-history-loop .webmz-view-history-card__content {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+.webmz-account-content .webmz-view-history-loop .webmz-view-history-card__footer,
+.webmz-view-history-endpoint .webmz-view-history-loop .webmz-view-history-card__footer {
+    margin-top: auto !important;
+}
+
+@media (max-width: 1024px) {
+    .webmz-account-content .webmz-view-history-loop,
+    .webmz-view-history-endpoint .webmz-view-history-loop {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .webmz-account-content .webmz-view-history-loop,
+    .webmz-view-history-endpoint .webmz-view-history-loop {
+        grid-template-columns: 1fr !important;
+    }
+}

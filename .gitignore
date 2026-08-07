@@ -1,0 +1,17 @@
+# OS / edito
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
+
+# Dependencies / build
+node_modules/
+*.map
+*.zip
+
+# Secrets
+.env
+.env.*
+
+# Note: do NOT ignore encoded/ — archived encoded releases are tracked

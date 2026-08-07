@@ -1,0 +1,626 @@
+.webmz-account-panel {
+    --wa-primary: var(--webmz-color-primary, #ff7a00);
+    --wa-primary-hover: var(--webmz-color-primary-hover, #e96f00);
+    --wa-secondary: var(--webmz-color-secondary, #102d50);
+    --wa-muted: var(--webmz-color-text-gray, #64748b);
+    --wa-dark: var(--webmz-color-text-dark, #111827);
+    --wa-bg: var(--webmz-bg, #f3f8fc);
+    --wa-accent-light: var(--webmz-account-accent-light, #fff4e7);
+    display: grid;
+    grid-template-columns: 290px minmax(0, 1fr);
+    gap: 24px;
+    max-width: var(--webmz-container, 1240px);
+    margin: 32px auto;
+    padding: 0 18px;
+    box-sizing: border-box;
+    font-family: var(--webmz-font-family, inherit)
+}
+
+.webmz-account-sidebar,
+.webmz-account-main {
+    min-width: 0
+}
+
+.webmz-account-sidebar {
+    position: sticky;
+    top: 24px;
+    align-self: start
+}
+
+.webmz-account-profile {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px;
+    border-radius: 26px;
+    background: linear-gradient(135deg, #fff, var(--wa-bg));
+    border: 1px solid rgba(148, 163, 184, .22);
+    box-shadow: 0 18px 45px rgba(15, 23, 42, .08);
+    margin-bottom: 16px
+}
+
+.webmz-account-profile__avatar {
+    position: relative;
+    flex: 0 0 auto
+}
+
+.webmz-account-profile__image {
+    display: block;
+    width: 64px;
+    height: 64px;
+    border-radius: 21px;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, .12)
+}
+
+.webmz-account-profile__body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0
+}
+
+.webmz-account-profile__body strong {
+    font-size: 16px;
+    color: var(--wa-dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.webmz-account-profile__body span {
+    font-size: 12px;
+    color: var(--wa-muted);
+    direction: ltr;
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.webmz-account-nav {
+    padding: 14px;
+    border-radius: 28px;
+    background: #fff;
+    border: 1px solid rgba(148, 163, 184, .22);
+    box-shadow: 0 18px 45px rgba(15, 23, 42, .08)
+}
+
+.webmz-account-nav__list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0;
+    margin: 0;
+    list-style: none
+}
+
+.webmz-account-nav__link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 13px;
+    border-radius: 18px;
+    text-decoration: none !important;
+    color: var(--wa-dark);
+    font-weight: 700;
+    line-height: 1.7;
+    transition: all .22s ease;
+    position: relative
+}
+
+.webmz-account-nav__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 15px;
+    background: var(--wa-accent-light);
+    color: var(--wa-primary);
+    flex: 0 0 auto;
+    transition: all .22s ease
+}
+
+.webmz-account-nav__icon svg {
+    width: 21px;
+    height: 21px;
+    display: block
+}
+
+.webmz-account-nav__icon-image {
+    display: block;
+    width: 22px;
+    height: 22px;
+    object-fit: contain
+}
+
+.webmz-account-nav__text {
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.webmz-account-nav__link:hover,
+.webmz-account-nav__item.is-active .webmz-account-nav__link {
+    background: var(--wa-primary);
+    color: #fff;
+}
+
+.webmz-account-nav__link:hover .webmz-account-nav__icon,
+.webmz-account-nav__item.is-active .webmz-account-nav__icon {
+    background: #fff;
+    color: var(--wa-primary)
+}
+
+.webmz-account-nav__item.is-logout .webmz-account-nav__link {
+    color: #ef4444
+}
+
+.webmz-account-nav__item.is-logout .webmz-account-nav__icon {
+    background: #fee2e2;
+    color: #ef4444
+}
+
+.webmz-account-nav__item.is-logout .webmz-account-nav__link:hover {
+    background: #ef4444;
+    color: #fff
+}
+
+.webmz-account-main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px
+}
+
+.webmz-account-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    min-height: 160px;
+    padding: 28px;
+    border-radius: 34px;
+    background: linear-gradient(135deg, #fff, #f8fbff);
+    border: 1px solid rgba(148, 163, 184, .22);
+    box-shadow: 0 22px 55px rgba(15, 23, 42, .08);
+    overflow: hidden;
+    position: relative
+}
+
+.webmz-account-hero div{
+    z-index: 99;
+}
+
+.webmz-account-hero:before {
+    content: "";
+    position: absolute;
+    inset: auto -70px -120px auto;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--wa-accent-light), transparent 68%);
+    pointer-events: none
+}
+
+.webmz-account-hero__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: var(--wa-accent-light);
+    color: var(--wa-primary);
+    font-size: 12px;
+    font-weight: 800
+}
+
+.webmz-account-hero h1 {
+    margin: 0 0 10px;
+    font-size: 34px;
+    line-height: 1.5;
+    color: var(--wa-dark);
+    font-weight: 900
+}
+
+.webmz-account-hero p {
+    margin: 0;
+    color: var(--wa-muted);
+    font-size: 15px;
+    line-height: 1.9
+}
+
+.webmz-account-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(110px, 1fr));
+    gap: 12px;
+    position: relative;
+    z-index: 1
+}
+
+.webmz-account-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 105px;
+    padding: 14px;
+    border-radius: 22px;
+    background: #fff;
+    border: 1px solid rgba(148, 163, 184, .20);
+    box-shadow: 0 10px 28px rgba(15, 23, 42, .06)
+}
+
+.webmz-account-stat__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 15px;
+    background: var(--wa-accent-light);
+    color: var(--wa-primary)
+}
+
+.webmz-account-stat__icon svg {
+    width: 20px;
+    height: 20px
+}
+
+.webmz-account-stat__icon img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain
+}
+
+.webmz-account-stat__value {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--wa-dark)
+}
+
+.webmz-account-stat__label {
+    font-size: 12px;
+    color: var(--wa-muted);
+    white-space: nowrap
+}
+
+.webmz-account-content-wrap {
+    position: relative;
+    border-radius: 34px;
+    background: #fff;
+    border: 1px solid rgba(148, 163, 184, .22);
+    box-shadow: 0 22px 55px rgba(15, 23, 42, .08);
+    min-height: 420px;
+    overflow: hidden
+}
+
+.webmz-account-content {
+    float: none !important;
+    width: 100% !important;
+    min-height: 420px;
+    padding: 28px;
+    box-sizing: border-box;
+    color: var(--wa-dark)
+}
+
+.webmz-account-content:before,
+.webmz-account-content:after {
+    content: none !important
+}
+
+.webmz-account-content h2,
+.webmz-account-content h3 {
+    color: var(--wa-secondary);
+    font-weight: 900
+}
+
+.webmz-account-content a {
+    color: var(--wa-primary)
+}
+
+.webmz-account-content .woocommerce-Button,
+.webmz-account-content .button,
+.webmz-account-content button.button {
+    border: 0 !important;
+    border-radius: 14px !important;
+    background: var(--wa-primary) !important;
+    color: #fff !important;
+    padding: 11px 18px !important;
+    font-weight: 800 !important;
+    text-decoration: none !important;
+    transition: all .2s ease
+}
+
+.webmz-account-content .woocommerce-Button:hover,
+.webmz-account-content .button:hover,
+.webmz-account-content button.button:hover {
+    background: var(--wa-primary-hover) !important;
+    color: #fff !important;
+    transform: translateY(-1px)
+}
+
+.webmz-account-content table.shop_table,
+.webmz-account-content table.woocommerce-orders-table {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 18px !important;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: none !important
+}
+
+.webmz-account-content table.shop_table th,
+.webmz-account-content table.shop_table td {
+    padding: 14px 16px !important;
+    border-color: #eef2f7 !important
+}
+
+.webmz-account-content input.input-text,
+.webmz-account-content textarea,
+.webmz-account-content select {
+    border: 1px solid #dbe4ef !important;
+    border-radius: 14px !important;
+    min-height: 44px;
+    padding: 10px 13px !important;
+    background: #fff !important;
+    box-sizing: border-box
+}
+
+.webmz-account-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, .72);
+    backdrop-filter: blur(8px);
+    z-index: 8;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .2s ease;
+    color: var(--wa-secondary);
+    font-weight: 800
+}
+
+.webmz-account-loading span {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 3px solid var(--wa-accent-light);
+    border-top-color: var(--wa-primary);
+    animation: webmzAccountSpin .8s linear infinite
+}
+
+.webmz-account-panel.is-loading .webmz-account-loading {
+    opacity: 1;
+    visibility: visible
+}
+
+.webmz-account-empty {
+    padding: 18px;
+    border-radius: 18px;
+    background: #f8fafc;
+    color: var(--wa-muted)
+}
+
+.webmz-account-custom-endpoint h2 {
+    margin-top: 0
+}
+
+.webmz-account-custom-endpoint__content {
+    line-height: 2;
+    color: var(--wa-dark)
+}
+
+@keyframes webmzAccountSpin {
+    to {
+        transform: rotate(360deg)
+    }
+}
+
+@media (max-width:1024px) {
+    .webmz-account-panel {
+        grid-template-columns: 1fr
+    }
+
+    .webmz-account-sidebar {
+        position: relative;
+        top: auto
+    }
+
+    .webmz-account-nav__list {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr))
+    }
+
+    .webmz-account-hero {
+        align-items: flex-start;
+        flex-direction: column
+    }
+
+    .webmz-account-hero > div:first-child {
+        order: 1
+    }
+
+    .webmz-account-hero > div:last-child {
+        order: 2;
+        margin-top: auto;
+        width: 100%
+    }
+
+    .webmz-account-stats {
+        width: 100%
+    }
+}
+
+@media (max-width:767px) {
+    .webmz-account-panel {
+        margin: 18px auto;
+        padding: 0 12px;
+        gap: 16px
+    }
+
+    .webmz-account-profile,
+    .webmz-account-nav,
+    .webmz-account-hero,
+    .webmz-account-content-wrap {
+        border-radius: 22px
+    }
+
+    .webmz-account-nav {
+        overflow-x: auto;
+        padding: 10px
+    }
+
+    .webmz-account-nav__list {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        min-width: max-content
+    }
+
+    .webmz-account-nav__link {
+        padding: 10px 11px
+    }
+
+    .webmz-account-nav__icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 13px
+    }
+
+    .webmz-account-hero {
+        padding: 20px;
+        order: 99;
+    }
+
+    .webmz-account-hero h1 {
+        font-size: 26px
+    }
+
+    .webmz-account-stats {
+        grid-template-columns: 1fr
+    }
+
+    .webmz-account-content {
+        padding: 18px;
+        min-height: 320px
+    }
+
+    .webmz-account-content table.shop_table,
+    .webmz-account-content table.woocommerce-orders-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap
+    }
+}
+
+
+/* Saved videos endpoint: match the video loop card layout inside WooCommerce account panel. */
+.webmz-account-content .tadris-loop-type-1 {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 0
+}
+
+.webmz-account-content .tadris-loop-type-1.mt {
+    margin-top: 0
+}
+
+.webmz-account-content .tadris-content-type-1 {
+    background: #fff;
+    border: 1px solid rgba(148, 163, 184, .18);
+    border-radius: 18px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, .06)
+}
+
+.webmz-account-content .tadris-content-type-1 .type-1-figure {
+    margin: 0;
+    flex: 0 0 auto
+}
+
+.webmz-account-content .tadris-content-type-1 .type-1-figure img {
+    display: block;
+    width: 200px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 12px
+}
+
+.webmz-account-content .tadris-content-type-1 .type-1-content {
+    min-width: 0;
+    flex: 1
+}
+
+.webmz-account-content .tadris-content-type-1 .type-1-header-tag {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.8;
+    font-weight: 800
+}
+
+.webmz-account-content .tadris-content-type-1 .type-1-header-tag a {
+    color: var(--wa-dark);
+    text-decoration: none
+}
+
+.webmz-account-content .tadris-content-type-1 .type-1-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 10px
+}
+
+.webmz-account-content .tadris-content-type-1 .type-1-footer-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px
+}
+
+.webmz-account-content .tadris-content-type-1 .type-1-footer-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 13px;
+    background: var(--wa-accent-light);
+    color: var(--wa-primary)
+}
+
+.webmz-account-content .tadris-saved-empty {
+    padding: 18px;
+    border-radius: 18px;
+    background: #f8fafc;
+    color: var(--wa-muted);
+    font-weight: 700;
+    text-align: center
+}
+
+@media (max-width:767px) {
+    .webmz-account-content .tadris-content-type-1 {
+        flex-direction: column;
+        align-items: stretch
+    }
+
+    .webmz-account-content .tadris-content-type-1 .type-1-figure img {
+        width: 100%;
+        max-width: 100%
+    }
+
+    .webmz-account-content .tadris-content-type-1 .type-1-footer {
+        flex-direction: column;
+        align-items: flex-start
+    }
+}
