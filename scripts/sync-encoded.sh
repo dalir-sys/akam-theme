@@ -64,4 +64,7 @@ if [[ "$missing" -ne 0 ]]; then
 fi
 
 echo "Done. Archive at encoded/$VERSION/"
-echo "Next: git add encoded/$VERSION && git commit --trailer "Co-authored-by: Cursor <cursoragent@cursor.com>" -m \"Archive encoded $VERSION\""
+echo "Next:"
+echo "  git add encoded/$VERSION"
+echo "  git commit -m \"Archive encoded files for v${VERSION}\""
+echo "  git push"
