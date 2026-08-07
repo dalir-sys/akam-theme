@@ -20,7 +20,7 @@ if ( ! defined( 'WEBMZ_URI' ) ) {
 /**
  * Hosts that may use the theme without an RTL license (local + demo).
  *
- * Exact hosts only. Use webmz_is_license_whitelisted_host() for *.webmz.ir.
+ * Exact hosts only. Use webmz_is_license_whitelisted_host() for *.webmz.ir / *.local.
  *
  * @return array<int,string>
  */
@@ -29,12 +29,13 @@ function webmz_get_license_whitelist_hosts() {
 		'localhost',
 		'127.0.0.1',
 		'::1',
+		'akam.local',
 	);
 }
 
 /**
  * Whether the current request host is license-whitelisted.
- * Allows localhost hosts and any webmz.ir / *.webmz.ir domain.
+ * Allows localhost hosts, any webmz.ir / *.webmz.ir, and any *.local domain.
  *
  * @return bool
  */
@@ -59,6 +60,11 @@ function webmz_is_license_whitelisted_host() {
 
 	// Wildcard: webmz.ir and any subdomain (e.g. tadris.webmz.ir).
 	if ( 'webmz.ir' === $host || substr( $host, -9 ) === '.webmz.ir' ) {
+		return true;
+	}
+
+	// Wildcard: any .local host (e.g. akam.local, site.local).
+	if ( substr( $host, -6 ) === '.local' ) {
 		return true;
 	}
 
