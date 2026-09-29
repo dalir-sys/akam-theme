@@ -231,6 +231,7 @@ $webmz_pro_includes = array(
 	'inc/nav-menu-icons.php',
 	'inc/mega-menu.php',
 	'inc/floating-contact.php',
+	'inc/ai-chat.php',
 	'inc/setup.php',
 	'inc/enqueue.php',
 	'inc/layout-post-type.php',

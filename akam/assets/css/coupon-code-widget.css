@@ -63,10 +63,13 @@
 
 .webmz-coupon__copy:hover,
 .webmz-coupon__copy:focus-visible {
+	background: var(--webmz-color-primary, #0878f9);
+	color: #fff;
 	filter: brightness(1.08);
 }
 
-.webmz-coupon__copy.is-copied {
+.webmz-coupon__copy.is-copied,
+.webmz-coupon__copy.is-copied:hover {
 	background: #16a34a;
 }
 

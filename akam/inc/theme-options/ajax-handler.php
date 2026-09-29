@@ -460,6 +460,12 @@ function webmz_ajax_save_options() {
 		update_option( 'webmz_ticket_settings', $ticket_clean );
 	}
 
+	// Stored separately and never echoed back, so the API key does not travel to the browser.
+	if ( function_exists( 'webmz_ai_chat_sanitize_settings' ) && isset( $_POST['ai_chat'] ) ) {
+		$ai_chat_input = wp_unslash( $_POST['ai_chat'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		update_option( 'webmz_ai_chat_settings', webmz_ai_chat_sanitize_settings( $ai_chat_input ), false );
+	}
+
 	wp_send_json_success( array(
 		'message' => esc_html__( 'تنظیمات با موفقیت ذخیره شد.', 'tadris' ),
 		'options' => $clean,

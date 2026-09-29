@@ -152,6 +152,7 @@ function webmz_admin_tab_icon( $icon ) {
 		'checkout'         => 'credit-card',
 		'otp'              => 'shield-check',
 		'tickets'          => 'ticket',
+		'ai-chat'          => 'bot',
 	);
 
 	$name = isset( $icons[ sanitize_key( $icon ) ] ) ? $icons[ sanitize_key( $icon ) ] : 'settings';
@@ -336,6 +337,7 @@ function webmz_render_options_page() {
 				<button type="button" class="webmz-tab" data-panel="checkout"><span class="webmz-tab__icon"><?php echo webmz_admin_tab_icon( 'checkout' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><span class="webmz-tab__label"><?php esc_html_e( 'تنظیمات پرداخت', 'webmz' ); ?></span></button>
 				<button type="button" class="webmz-tab" data-panel="otp"><span class="webmz-tab__icon"><?php echo webmz_admin_tab_icon( 'otp' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><span class="webmz-tab__label"><?php esc_html_e( 'ورود پیامکی OTP', 'webmz' ); ?></span></button>
 				<button type="button" class="webmz-tab" data-panel="tickets"><span class="webmz-tab__icon"><?php echo webmz_admin_tab_icon( 'tickets' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><span class="webmz-tab__label"><?php esc_html_e( 'تیکت پشتیبانی', 'webmz' ); ?></span></button>
+				<button type="button" class="webmz-tab" data-panel="ai-chat"><span class="webmz-tab__icon"><?php echo webmz_admin_tab_icon( 'ai-chat' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><span class="webmz-tab__label"><?php esc_html_e( 'دستیار هوشمند', 'webmz' ); ?></span></button>
 				</nav>
 			</aside>
 
@@ -835,6 +837,188 @@ function webmz_render_options_page() {
 			</section>
 
 			<?php if ( function_exists( 'webmz_otp_render_settings_panel' ) ) { webmz_otp_render_settings_panel(); } ?>
+
+			<section class="webmz-panel" data-panel="ai-chat">
+				<?php
+				$ai_chat           = function_exists( 'webmz_ai_chat_get_settings' ) ? webmz_ai_chat_get_settings() : array();
+				$ai_chat_providers = function_exists( 'webmz_ai_chat_providers' ) ? webmz_ai_chat_providers() : array();
+				$ai_chat_has_key   = ! empty( $ai_chat['api_key'] );
+				?>
+				<div class="webmz-card webmz-notice">
+					<h2><?php esc_html_e( 'دستیار هوشمند پشتیبانی (چت با هوش مصنوعی)', 'webmz' ); ?></h2>
+					<p><?php esc_html_e( 'یک پنجره چت شناور که به سوالات کاربران درباره سایت، دوره‌ها و خرید با کمک هوش مصنوعی AvalAI یا GapGPT پاسخ می‌دهد. کلید API فقط روی سرور استفاده می‌شود و در مرورگر کاربران نمایش داده نمی‌شود.', 'webmz' ); ?></p>
+				</div>
+
+				<div class="webmz-card">
+					<h2><?php esc_html_e( 'اتصال به سرویس هوش مصنوعی', 'webmz' ); ?></h2>
+					<div class="webmz-grid webmz-grid--3">
+						<label class="webmz-field webmz-field--checkbox">
+							<input type="checkbox" name="ai_chat[enabled]" value="yes" <?php checked( $ai_chat['enabled'] ?? 'no', 'yes' ); ?>>
+							<span><?php esc_html_e( 'دستیار هوشمند فعال باشد', 'webmz' ); ?></span>
+						</label>
+						<label class="webmz-field webmz-field--select">
+							<span><?php esc_html_e( 'سرویس', 'webmz' ); ?></span>
+							<select name="ai_chat[provider]">
+								<?php foreach ( $ai_chat_providers as $provider_key => $provider ) : ?>
+									<option value="<?php echo esc_attr( $provider_key ); ?>" <?php selected( $ai_chat['provider'] ?? 'avalai', $provider_key ); ?>><?php echo esc_html( $provider['label'] ); ?></option>
+								<?php endforeach; ?>
+							</select>
+						</label>
+						<label class="webmz-field">
+							<span><?php esc_html_e( 'مدل', 'webmz' ); ?></span>
+							<input type="text" name="ai_chat[model]" value="<?php echo esc_attr( $ai_chat['model'] ?? 'gpt-4o-mini' ); ?>" dir="ltr" placeholder="gpt-4o-mini">
+						</label>
+					</div>
+					<div class="webmz-grid webmz-grid--2" style="margin-top:18px">
+						<label class="webmz-field webmz-field--wide">
+							<span><?php esc_html_e( 'کلید API', 'webmz' ); ?></span>
+							<input type="password" name="ai_chat[api_key]" value="" dir="ltr" autocomplete="new-password" placeholder="<?php echo esc_attr( $ai_chat_has_key ? __( '•••••••• (ذخیره شده؛ برای تغییر، کلید جدید را وارد کنید)', 'webmz' ) : 'sk-...' ); ?>">
+							<?php if ( $ai_chat_has_key ) : ?>
+								<small><label><input type="checkbox" name="ai_chat[api_key_clear]" value="1"> <?php esc_html_e( 'حذف کلید ذخیره‌شده', 'webmz' ); ?></label></small>
+							<?php endif; ?>
+						</label>
+						<label class="webmz-field webmz-field--wide">
+							<span><?php esc_html_e( 'آدرس API (اختیاری)', 'webmz' ); ?></span>
+							<input type="url" name="ai_chat[base_url]" value="<?php echo esc_attr( $ai_chat['base_url'] ?? '' ); ?>" dir="ltr" placeholder="https://api.avalai.ir/v1">
+							<small><?php esc_html_e( 'خالی = آدرس پیش‌فرض سرویس انتخاب‌شده. اگر سرویس آدرس جدیدی اعلام کرد یا از سرویس سازگار دیگری استفاده می‌کنید، اینجا وارد کنید.', 'webmz' ); ?></small>
+						</label>
+					</div>
+					<p style="margin-top:14px">
+						<button type="button" class="button button-secondary" id="webmz-ai-chat-test"><?php esc_html_e( 'تست اتصال', 'webmz' ); ?></button>
+						<span id="webmz-ai-chat-test-result" class="description" style="margin-inline-start:10px"></span>
+					</p>
+				</div>
+
+				<div class="webmz-card">
+					<h2><?php esc_html_e( 'دانش و رفتار دستیار', 'webmz' ); ?></h2>
+					<label class="webmz-field webmz-field--wide">
+						<span><?php esc_html_e( 'دستورالعمل دستیار', 'webmz' ); ?></span>
+						<textarea name="ai_chat[system_prompt]" rows="4"><?php echo esc_textarea( $ai_chat['system_prompt'] ?? '' ); ?></textarea>
+					</label>
+					<label class="webmz-field webmz-field--wide" style="margin-top:14px">
+						<span><?php esc_html_e( 'اطلاعات و پاسخ‌های پشتیبانی', 'webmz' ); ?></span>
+						<textarea name="ai_chat[knowledge]" rows="10" placeholder="<?php esc_attr_e( "مثال:\nساعت پاسخ‌گویی پشتیبانی: شنبه تا چهارشنبه ۹ تا ۱۷\nبعد از خرید، دوره‌ها در حساب کاربری > دانلودها قرار می‌گیرند.\nامکان پرداخت اقساطی نداریم.", 'webmz' ); ?>"><?php echo esc_textarea( $ai_chat['knowledge'] ?? '' ); ?></textarea>
+						<small><?php esc_html_e( 'هر چیزی که دستیار باید درباره سایت بداند: سوالات متداول، قوانین، روش خرید و دسترسی، راه‌های تماس. نام و آدرس سایت به‌صورت خودکار اضافه می‌شود.', 'webmz' ); ?></small>
+					</label>
+					<div class="webmz-grid webmz-grid--2" style="margin-top:14px">
+						<label class="webmz-field webmz-field--checkbox">
+							<input type="checkbox" name="ai_chat[include_products]" value="yes" <?php checked( $ai_chat['include_products'] ?? 'yes', 'yes' ); ?>>
+							<span><?php esc_html_e( 'لیست محصولات/دوره‌ها (نام، قیمت، لینک) به دانش دستیار اضافه شود', 'webmz' ); ?></span>
+						</label>
+						<label class="webmz-field webmz-field--select">
+							<span><?php esc_html_e( 'نمایش برای', 'webmz' ); ?></span>
+							<select name="ai_chat[visibility]">
+								<option value="all" <?php selected( $ai_chat['visibility'] ?? 'all', 'all' ); ?>><?php esc_html_e( 'همه بازدیدکنندگان', 'webmz' ); ?></option>
+								<option value="logged_in" <?php selected( $ai_chat['visibility'] ?? 'all', 'logged_in' ); ?>><?php esc_html_e( 'فقط کاربران واردشده', 'webmz' ); ?></option>
+							</select>
+						</label>
+					</div>
+				</div>
+
+				<div class="webmz-card">
+					<h2><?php esc_html_e( 'ظاهر و متن‌ها', 'webmz' ); ?></h2>
+					<div class="webmz-grid webmz-grid--3">
+						<label class="webmz-field">
+							<span><?php esc_html_e( 'نام دستیار', 'webmz' ); ?></span>
+							<input type="text" name="ai_chat[bot_name]" value="<?php echo esc_attr( $ai_chat['bot_name'] ?? '' ); ?>">
+						</label>
+						<label class="webmz-field webmz-field--select">
+							<span><?php esc_html_e( 'جایگاه دکمه', 'webmz' ); ?></span>
+							<select name="ai_chat[position]">
+								<option value="right" <?php selected( $ai_chat['position'] ?? 'right', 'right' ); ?>><?php esc_html_e( 'پایین راست', 'webmz' ); ?></option>
+								<option value="left" <?php selected( $ai_chat['position'] ?? 'right', 'left' ); ?>><?php esc_html_e( 'پایین چپ', 'webmz' ); ?></option>
+							</select>
+						</label>
+						<?php webmz_render_color_field( 'ai_chat[color]', $ai_chat['color'] ?? '#0878f9', esc_html__( 'رنگ اصلی', 'webmz' ) ); ?>
+					</div>
+					<p class="description"><?php esc_html_e( 'اگر دکمه تماس شناور هم فعال است، این دو را در دو سمت مختلف قرار دهید یا فاصله از پایین را تغییر دهید.', 'webmz' ); ?></p>
+					<div class="webmz-grid webmz-grid--3" style="margin-top:14px">
+						<label class="webmz-field">
+							<span><?php esc_html_e( 'فاصله از کنار (پیکسل)', 'webmz' ); ?></span>
+							<input type="number" name="ai_chat[offset_x]" value="<?php echo esc_attr( (string) ( $ai_chat['offset_x'] ?? 24 ) ); ?>" min="0" max="200">
+						</label>
+						<label class="webmz-field">
+							<span><?php esc_html_e( 'فاصله از پایین (پیکسل)', 'webmz' ); ?></span>
+							<input type="number" name="ai_chat[offset_bottom]" value="<?php echo esc_attr( (string) ( $ai_chat['offset_bottom'] ?? 24 ) ); ?>" min="0" max="300">
+						</label>
+						<label class="webmz-field">
+							<span><?php esc_html_e( 'متن کادر پیام', 'webmz' ); ?></span>
+							<input type="text" name="ai_chat[placeholder]" value="<?php echo esc_attr( $ai_chat['placeholder'] ?? '' ); ?>">
+						</label>
+					</div>
+					<label class="webmz-field webmz-field--wide" style="margin-top:14px">
+						<span><?php esc_html_e( 'پیام خوش‌آمد', 'webmz' ); ?></span>
+						<textarea name="ai_chat[welcome]" rows="2"><?php echo esc_textarea( $ai_chat['welcome'] ?? '' ); ?></textarea>
+					</label>
+					<label class="webmz-field webmz-field--wide" style="margin-top:14px">
+						<span><?php esc_html_e( 'سوالات پیشنهادی (هر خط یک سوال، حداکثر ۶)', 'webmz' ); ?></span>
+						<textarea name="ai_chat[suggestions]" rows="4"><?php echo esc_textarea( $ai_chat['suggestions'] ?? '' ); ?></textarea>
+					</label>
+					<div class="webmz-grid webmz-grid--2" style="margin-top:14px">
+						<label class="webmz-field">
+							<span><?php esc_html_e( 'متن لینک پشتیبانی انسانی', 'webmz' ); ?></span>
+							<input type="text" name="ai_chat[fallback_text]" value="<?php echo esc_attr( $ai_chat['fallback_text'] ?? '' ); ?>">
+						</label>
+						<label class="webmz-field">
+							<span><?php esc_html_e( 'لینک پشتیبانی انسانی (تیکت، تماس، تلگرام...)', 'webmz' ); ?></span>
+							<input type="url" name="ai_chat[fallback_url]" value="<?php echo esc_attr( $ai_chat['fallback_url'] ?? '' ); ?>" dir="ltr" placeholder="https://">
+						</label>
+					</div>
+				</div>
+
+				<div class="webmz-card">
+					<h2><?php esc_html_e( 'محدودیت‌ها و هزینه', 'webmz' ); ?></h2>
+					<div class="webmz-grid webmz-grid--3">
+						<label class="webmz-field">
+							<span><?php esc_html_e( 'حداکثر پیام هر کاربر در ساعت', 'webmz' ); ?></span>
+							<input type="number" name="ai_chat[rate_limit_per_hour]" value="<?php echo esc_attr( (string) ( $ai_chat['rate_limit_per_hour'] ?? 20 ) ); ?>" min="1" max="500">
+						</label>
+						<label class="webmz-field">
+							<span><?php esc_html_e( 'حداکثر طول پیام کاربر (کاراکتر)', 'webmz' ); ?></span>
+							<input type="number" name="ai_chat[max_input_chars]" value="<?php echo esc_attr( (string) ( $ai_chat['max_input_chars'] ?? 600 ) ); ?>" min="100" max="4000">
+						</label>
+						<label class="webmz-field">
+							<span><?php esc_html_e( 'تعداد پیام‌های قبلی ارسالی به هوش مصنوعی', 'webmz' ); ?></span>
+							<input type="number" name="ai_chat[history_limit]" value="<?php echo esc_attr( (string) ( $ai_chat['history_limit'] ?? 10 ) ); ?>" min="2" max="30">
+						</label>
+					</div>
+					<div class="webmz-grid webmz-grid--2" style="margin-top:14px">
+						<label class="webmz-field">
+							<span><?php esc_html_e( 'حداکثر طول پاسخ (توکن)', 'webmz' ); ?></span>
+							<input type="number" name="ai_chat[max_tokens]" value="<?php echo esc_attr( (string) ( $ai_chat['max_tokens'] ?? 700 ) ); ?>" min="100" max="4000">
+						</label>
+						<label class="webmz-field">
+							<span><?php esc_html_e( 'خلاقیت پاسخ (temperature، ۰ تا ۱.۵)', 'webmz' ); ?></span>
+							<input type="number" name="ai_chat[temperature]" value="<?php echo esc_attr( (string) ( $ai_chat['temperature'] ?? 0.4 ) ); ?>" min="0" max="1.5" step="0.1">
+						</label>
+					</div>
+					<p class="description"><?php esc_html_e( 'هر پیام کاربر یک درخواست به سرویس هوش مصنوعی است و از اعتبار حساب شما کم می‌کند. این محدودیت‌ها از سوءاستفاده و هزینه ناخواسته جلوگیری می‌کنند.', 'webmz' ); ?></p>
+				</div>
+
+				<script>
+				(function ($) {
+					$('#webmz-ai-chat-test').on('click', function () {
+						var $btn = $(this);
+						var $out = $('#webmz-ai-chat-test-result');
+						var data = $('#webmz-options-form').serializeArray().filter(function (field) {
+							return field.name.indexOf('ai_chat[') === 0;
+						});
+						data.push({ name: 'action', value: 'webmz_ai_chat_test' });
+						data.push({ name: 'nonce', value: window.webmzAdmin ? window.webmzAdmin.nonce : '' });
+						$btn.prop('disabled', true);
+						$out.css('color', '').text('<?php echo esc_js( __( 'در حال ارسال پیام آزمایشی...', 'webmz' ) ); ?>');
+						$.post(window.ajaxurl, data).done(function (res) {
+							var msg = res && res.data && res.data.message ? res.data.message : '';
+							$out.css('color', res && res.success ? '#15803d' : '#b91c1c').text(msg);
+						}).fail(function () {
+							$out.css('color', '#b91c1c').text('<?php echo esc_js( __( 'خطا در ارتباط با سرور سایت.', 'webmz' ) ); ?>');
+						}).always(function () {
+							$btn.prop('disabled', false);
+						});
+					});
+				}(jQuery));
+				</script>
+			</section>
 
 			<section class="webmz-panel" data-panel="tickets">
 				<div class="webmz-card webmz-notice">
