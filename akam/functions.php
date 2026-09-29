@@ -8,7 +8,7 @@
 defined( 'ABSPATH' ) || exit;
 
 if ( ! defined( 'WEBMZ_VERSION' ) ) {
-	define( 'WEBMZ_VERSION', '1.0.0' );
+	define( 'WEBMZ_VERSION', '1.5.0' );
 }
 if ( ! defined( 'WEBMZ_DIR' ) ) {
 	define( 'WEBMZ_DIR', trailingslashit( get_template_directory() ) );
