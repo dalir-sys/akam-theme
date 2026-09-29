@@ -228,6 +228,8 @@ function webmz_enqueue_assets() {
 			'loadingText' => esc_html__( 'در حال بارگذاری پادکست...', 'tadris' ),
 		)
 	);
+	wp_register_style( 'webmz-coupon-code', WEBMZ_URI . 'assets/css/coupon-code-widget.css', array(), WEBMZ_VERSION );
+	wp_register_script( 'webmz-coupon-code', WEBMZ_URI . 'assets/js/coupon-code-widget.js', array(), WEBMZ_VERSION, true );
 	wp_register_style( 'webmz-youtube-playlist', WEBMZ_URI . 'assets/css/youtube-playlist-widget.css', array( 'webmz-main', 'webmz-plyr-widgets' ), WEBMZ_VERSION );
 	wp_register_script( 'webmz-youtube-playlist', WEBMZ_URI . 'assets/js/youtube-playlist-widget.js', array( 'jquery', 'webmz-plyr', 'webmz-tadris-widgets' ), WEBMZ_VERSION, true );
 	wp_localize_script(

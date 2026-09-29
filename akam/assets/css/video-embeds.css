@@ -1,0 +1,127 @@
+/* Shared Aparat / YouTube embeds and the popup video player. */
+
+.webmz-video-embed {
+	position: relative;
+	width: 100%;
+	max-width: 100%;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+	background: #0f172a;
+}
+
+.webmz-video-embed iframe {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+/* Plyr takes over YouTube embeds; keep its box filling the 16:9 frame. */
+.webmz-video-embed--youtube .plyr {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.webmz-video-embed--youtube .plyr__video-embed,
+.webmz-video-embed--youtube .plyr__video-wrapper {
+	height: 100%;
+	padding-bottom: 0 !important;
+	aspect-ratio: auto;
+}
+
+/* Popup player (course lessons, download box). */
+.webmz-video-modal {
+	position: fixed;
+	inset: 0;
+	z-index: 100000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 24px;
+	background: rgba(15, 23, 42, .78);
+	opacity: 0;
+	transition: opacity .2s ease;
+}
+
+.webmz-video-modal.is-open {
+	opacity: 1;
+}
+
+.webmz-video-modal[hidden] {
+	display: none;
+}
+
+.webmz-video-modal__dialog {
+	position: relative;
+	width: min(960px, 100%);
+	border-radius: 16px;
+	overflow: hidden;
+	background: #0f172a;
+	box-shadow: 0 24px 64px rgba(0, 0, 0, .45);
+}
+
+.webmz-video-modal__title {
+	margin: 0;
+	padding: 14px 56px 14px 18px;
+	color: #fff;
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 1.7;
+}
+
+.webmz-video-modal__title:empty {
+	display: none;
+}
+
+.webmz-video-modal__close {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	z-index: 2;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 38px;
+	height: 38px;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, .14);
+	color: #fff;
+	font-size: 22px;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.webmz-video-modal__close:hover,
+.webmz-video-modal__close:focus-visible {
+	background: rgba(255, 255, 255, .28);
+}
+
+.webmz-video-modal__player video {
+	display: block;
+	width: 100%;
+	max-height: 80vh;
+	background: #0f172a;
+}
+
+.webmz-video-modal__player .plyr--video {
+	aspect-ratio: 16 / 9;
+}
+
+body.webmz-video-modal-open {
+	overflow: hidden;
+}
+
+@media (max-width: 767px) {
+	.webmz-video-modal {
+		padding: 12px;
+	}
+
+	.webmz-video-modal__dialog {
+		border-radius: 12px;
+	}
+}

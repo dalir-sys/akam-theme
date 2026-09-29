@@ -259,12 +259,22 @@ trait Single_Product_Webmasters_Trait {
 	}
 
 	/**
-	 * Resolve add-to-cart button label from widget settings.
+	 * Resolve add-to-cart button label: product override, then widget setting.
 	 *
 	 * @param array<string,mixed> $s Widget settings.
 	 * @return string
 	 */
 	protected function spw_get_button_text( $s ) {
+		$product = $this->spw_product();
+
+		if ( $this->spw_is_valid_product( $product ) && function_exists( 'webmz_spw_get_add_to_cart_text' ) ) {
+			$custom = webmz_spw_get_add_to_cart_text( $product->get_id() );
+
+			if ( '' !== $custom ) {
+				return $custom;
+			}
+		}
+
 		$text = isset( $s['button_text'] ) ? trim( (string) $s['button_text'] ) : '';
 
 		if ( '' === $text ) {
@@ -308,6 +318,7 @@ trait Single_Product_Webmasters_Trait {
 				'type'        => Controls_Manager::TEXT,
 				'default'     => esc_html__( 'ثبت‌نام در دوره', 'tadris' ),
 				'label_block' => true,
+				'description' => esc_html__( 'اگر در ویرایش محصول «متن دکمه افزودن به سبد خرید» پر شده باشد، همان متن نمایش داده می‌شود.', 'tadris' ),
 				'dynamic'     => array(
 					'active' => true,
 				),
@@ -715,7 +726,11 @@ trait Single_Product_Webmasters_Trait {
 											</div>
 											<div class="webmz-spw-curriculum__lesson-action">
 												<?php if ( $can_watch ) : ?>
-													<a class="webmz-spw-curriculum__btn webmz-spw-curriculum__btn--watch" href="<?php echo esc_url( $lesson['video_url'] ); ?>"<?php echo $is_demo ? '' : ' target="_blank" rel="noopener noreferrer"'; ?>>
+													<?php
+													// Video links (MP4/Aparat/YouTube) play in the popup player; other links (e.g. SpotPlayer) open in a new tab.
+													$watch_popup = ! $is_demo && function_exists( 'webmz_video_is_playable_url' ) && webmz_video_is_playable_url( $lesson['video_url'] );
+													?>
+													<a class="webmz-spw-curriculum__btn webmz-spw-curriculum__btn--watch" href="<?php echo esc_url( $lesson['video_url'] ); ?>"<?php echo $is_demo ? '' : ' target="_blank" rel="noopener noreferrer"'; ?><?php echo $watch_popup ? ' data-webmz-video-modal data-webmz-video-title="' . esc_attr( $lesson['title'] ) . '"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 														<?php if ( $watch_icon ) : ?>
 															<span class="webmz-spw-curriculum__btn-icon"><?php echo $watch_icon; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 														<?php endif; ?>

@@ -17,6 +17,20 @@
     border-radius: 0;
 }
 
+/* Aparat / YouTube lessons: hide the MP4 player and show the embed slot. */
+.webmz-ytp__embed {
+    display: none;
+}
+
+.webmz-ytp__player-wrap.is-embed .webmz-ytp__embed {
+    display: block;
+}
+
+.webmz-ytp__player-wrap.is-embed > .plyr,
+.webmz-ytp__player-wrap.is-embed > video {
+    display: none;
+}
+
 .webmz-ytp__content {
     padding: 16px;
 }

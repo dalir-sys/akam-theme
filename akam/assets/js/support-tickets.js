@@ -261,7 +261,8 @@
         if (container && container.matches && container.matches('[data-webmz-ticket-messages]')) {
             lists = [container];
         } else {
-            lists = (container || document).querySelectorAll('[data-webmz-ticket-messages]');
+            // requestAnimationFrame passes a timestamp, so anything that is not a DOM node falls back to document.
+            lists = (container && container.querySelectorAll ? container : document).querySelectorAll('[data-webmz-ticket-messages]');
         }
 
         lists.forEach(function (list) {

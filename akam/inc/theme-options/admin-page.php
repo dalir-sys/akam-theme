@@ -753,6 +753,7 @@ function webmz_render_options_page() {
 									<label class="webmz-field webmz-field--select">
 										<span><?php esc_html_e( 'اسلاگ انگلیسی', 'webmz' ); ?></span>
 										<input type="text" name="options[account_custom_endpoints][<?php echo esc_attr( $index ); ?>][slug]" value="<?php echo esc_attr( $endpoint['slug'] ); ?>" placeholder="my-consultations" dir="ltr">
+										<small><?php esc_html_e( 'فقط حروف انگلیسی، عدد و خط تیره. آدرس: ', 'webmz' ); ?><code dir="ltr"><?php echo esc_html( function_exists( 'wc_get_account_endpoint_url' ) ? wc_get_account_endpoint_url( $endpoint['slug'] ) : $endpoint['slug'] ); ?></code></small>
 									</label>
 									<label class="webmz-field webmz-field--checkbox">
 										<input type="checkbox" name="options[account_custom_endpoints][<?php echo esc_attr( $index ); ?>][enabled]" value="yes" <?php checked( $endpoint['enabled'], 'yes' ); ?>>

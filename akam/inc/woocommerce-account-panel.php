@@ -46,6 +46,8 @@ function webmz_account_default_endpoint_labels() {
  * @return string
  */
 function webmz_account_sanitize_endpoint_slug( $slug ) {
+	// Non-Latin letters would become percent-encoded junk in the URL; keep only the Latin part.
+	$slug = preg_replace( '/[^\x20-\x7E]/u', '', (string) $slug );
 	$slug = sanitize_title( (string) $slug );
 	$slug = str_replace( '_', '-', $slug );
 	$slug = preg_replace( '/[^a-z0-9\-]/', '', $slug );
@@ -103,8 +105,16 @@ function webmz_account_sanitize_custom_endpoints( $raw ) {
 		$icon_id = isset( $row['icon_id'] ) ? absint( $row['icon_id'] ) : 0;
 		$enabled = isset( $row['enabled'] ) && 'yes' === $row['enabled'] ? 'yes' : 'no';
 
-		if ( '' === $title || '' === $slug ) {
+		if ( '' === $title ) {
 			continue;
+		}
+
+		// A Persian-only slug sanitizes to nothing; give the page a working Latin slug instead of dropping it.
+		if ( '' === $slug ) {
+			$number = count( $clean ) + 1;
+			do {
+				$slug = 'account-page-' . $number++;
+			} while ( in_array( $slug, $used, true ) );
 		}
 
 		if ( in_array( $slug, $reserved, true ) || in_array( $slug, $used, true ) ) {
@@ -270,9 +280,12 @@ function webmz_account_filter_visible_menu_items( $items ) {
 		return $items;
 	}
 
+	// Custom endpoints have their own on/off switch and are not in the visibility checklist.
+	$custom = wp_list_pluck( webmz_account_get_custom_endpoints(), 'slug' );
+
 	foreach ( array_keys( $items ) as $endpoint ) {
 		$endpoint_key = sanitize_key( $endpoint );
-		if ( ! in_array( $endpoint_key, $visible, true ) ) {
+		if ( ! in_array( $endpoint_key, $visible, true ) && ! in_array( $endpoint_key, $custom, true ) ) {
 			unset( $items[ $endpoint ] );
 		}
 	}
@@ -306,7 +319,8 @@ function webmz_account_register_custom_endpoint_content() {
 
 				echo '<div class="webmz-account-custom-endpoint">';
 				echo '<h2>' . esc_html( $endpoint['title'] ) . '</h2>';
-				echo '<div class="webmz-account-custom-endpoint__content">' . wp_kses_post( wpautop( $endpoint['content'] ) ) . '</div>';
+				// Shortcodes run after kses/autop so their own markup is not filtered or wrapped in <p>.
+				echo '<div class="webmz-account-custom-endpoint__content">' . do_shortcode( shortcode_unautop( wpautop( wp_kses_post( $endpoint['content'] ) ) ) ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo '</div>';
 			}
 		);

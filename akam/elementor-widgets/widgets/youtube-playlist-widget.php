@@ -428,7 +428,9 @@ class Youtube_Playlist_Widget extends Widget_Base {
 			data-require-login-download="<?php echo $guard_links ? 'yes' : 'no'; ?>"
 		>
 			<div class="webmz-ytp__main" data-webmz-ytp-main>
-				<div class="webmz-ytp__player-wrap webmz-plyr-widget">
+				<?php $active_is_embed = \webmz_video_is_embed_url( $active['video_url'] ); ?>
+				<div class="webmz-ytp__player-wrap webmz-plyr-widget<?php echo $active_is_embed ? ' is-embed' : ''; ?>">
+					<?php // The <video> stays mounted for MP4 lessons and progress tracking; Aparat/YouTube lessons play in the embed slot. ?>
 					<video
 						class="webmz-ytp__video"
 						playsinline
@@ -436,11 +438,20 @@ class Youtube_Playlist_Widget extends Widget_Base {
 						preload="metadata"
 						data-webmz-history-player="1"
 						data-webmz-history-type="video"
-						data-webmz-history-post-id="<?php echo esc_attr( $active['id'] ); ?>"
+						<?php echo $active_is_embed ? '' : 'data-webmz-history-post-id="' . esc_attr( $active['id'] ) . '"'; ?>
 						<?php echo ! empty( $active['image_url'] ) ? 'poster="' . esc_url( $active['image_url'] ) . '"' : ''; ?>
 					>
-						<source src="<?php echo esc_url( $active['video_url'] ); ?>" type="video/mp4">
+						<?php if ( ! $active_is_embed ) : ?>
+							<source src="<?php echo esc_url( $active['video_url'] ); ?>" type="<?php echo esc_attr( \webmz_video_file_mime( $active['video_url'] ) ); ?>">
+						<?php endif; ?>
 					</video>
+					<div class="webmz-ytp__embed" data-webmz-ytp-embed>
+						<?php
+						if ( $active_is_embed ) {
+							\webmz_render_video_player( $active['video_url'], array( 'title' => $active['title'] ) );
+						}
+						?>
+					</div>
 				</div>
 
 				<div class="webmz-ytp__content">

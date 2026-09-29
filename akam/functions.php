@@ -217,6 +217,7 @@ function webmz_rtl_license_inactive_admin_notice() {
 
 $webmz_pro_includes = array(
 	'inc/helpers.php',
+	'inc/video-embeds.php',
 	'inc/ajax-search.php',
 	'inc/contact-form.php',
 	'inc/newsletter.php',

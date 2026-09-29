@@ -54,8 +54,9 @@ function webmz_tadris_render_video_meta_box( $post ) {
 	$training_level  = isset( $training_levels[ $training_level ] ) ? $training_level : '';
 	?>
 	<p>
-		<label for="webmz_video_url"><strong><?php esc_html_e( 'لینک فایل ویدیو', 'tadris' ); ?></strong></label><br>
-		<input class="widefat" type="url" id="webmz_video_url" name="webmz_video_url" value="<?php echo esc_attr( $video_url ); ?>" placeholder="https://example.com/video.mp4">
+		<label for="webmz_video_url"><strong><?php esc_html_e( 'لینک ویدیو', 'tadris' ); ?></strong></label><br>
+		<input class="widefat" type="url" dir="ltr" id="webmz_video_url" name="webmz_video_url" value="<?php echo esc_attr( $video_url ); ?>" placeholder="<?php echo esc_attr( webmz_video_field_placeholder() ); ?>">
+		<span class="description"><?php echo esc_html( webmz_video_field_help() ); ?></span>
 	</p>
 
 	<p>

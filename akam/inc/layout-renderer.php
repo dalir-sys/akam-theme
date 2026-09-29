@@ -495,7 +495,13 @@ function webmz_render_elementor_layout( $layout_id ) {
 
 	$GLOBALS['webmz_render_context_post_id'] = $context_id;
 
+	// Lets widgets look up their own position in the layout (e.g. section headings).
+	$previous_layout                      = isset( $GLOBALS['webmz_rendering_layout_id'] ) ? $GLOBALS['webmz_rendering_layout_id'] : null;
+	$GLOBALS['webmz_rendering_layout_id'] = $layout_id;
+
 	$content = \Elementor\Plugin::$instance->frontend->get_builder_content_for_display( $layout_id, true );
+
+	$GLOBALS['webmz_rendering_layout_id'] = $previous_layout;
 
 	if ( null === $previous ) {
 		unset( $GLOBALS['webmz_render_context_post_id'] );

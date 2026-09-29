@@ -1,0 +1,123 @@
+.webmz-coupon {
+	padding: 24px;
+	border: 1px dashed color-mix(in srgb, var(--webmz-color-primary, #0878f9) 45%, #e5e7eb);
+	border-radius: 16px;
+	background: #fff;
+	text-align: center;
+}
+
+.webmz-coupon__title {
+	margin: 0 0 8px;
+	color: var(--webmz-color-text-dark, #111827);
+	font-size: 20px;
+	font-weight: 800;
+	line-height: 1.6;
+}
+
+.webmz-coupon__description {
+	margin: 0 0 16px;
+	color: var(--webmz-color-text-gray, #6b7280);
+	font-size: 14px;
+	line-height: 1.9;
+}
+
+.webmz-coupon__code-box {
+	display: inline-flex;
+	align-items: stretch;
+	max-width: 100%;
+	overflow: hidden;
+	border: 1px solid #e5e7eb;
+	border-radius: 12px;
+	background: #f8fafc;
+}
+
+.webmz-coupon__code {
+	display: flex;
+	align-items: center;
+	padding: 10px 18px;
+	background: transparent;
+	color: var(--webmz-color-text-dark, #111827);
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 18px;
+	font-weight: 700;
+	letter-spacing: .08em;
+	word-break: break-all;
+	user-select: all;
+}
+
+.webmz-coupon__copy {
+	display: inline-flex;
+	flex: 0 0 auto;
+	align-items: center;
+	gap: 6px;
+	padding: 10px 16px;
+	border: 0;
+	background: var(--webmz-color-primary, #0878f9);
+	color: #fff;
+	font: inherit;
+	font-size: 14px;
+	font-weight: 700;
+	cursor: pointer;
+	transition: filter .18s ease, background-color .18s ease;
+}
+
+.webmz-coupon__copy:hover,
+.webmz-coupon__copy:focus-visible {
+	filter: brightness(1.08);
+}
+
+.webmz-coupon__copy.is-copied {
+	background: #16a34a;
+}
+
+.webmz-coupon__copy-icon svg,
+.webmz-coupon__copy-icon i {
+	width: 15px;
+	height: 15px;
+	font-size: 15px;
+	fill: currentColor;
+}
+
+.webmz-coupon__note {
+	margin: 12px 0 0;
+	color: var(--webmz-color-text-gray, #6b7280);
+	font-size: 12px;
+}
+
+.webmz-coupon__cta {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 16px;
+	padding: 10px 22px;
+	border-radius: 10px;
+	background: var(--webmz-color-text-dark, #111827);
+	color: #fff;
+	font-size: 14px;
+	font-weight: 700;
+	text-decoration: none !important;
+}
+
+.webmz-coupon__cta:hover {
+	color: #fff;
+	filter: brightness(1.15);
+}
+
+@media (max-width: 480px) {
+	.webmz-coupon {
+		padding: 18px;
+	}
+
+	.webmz-coupon__code-box {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.webmz-coupon__code {
+		justify-content: center;
+	}
+
+	.webmz-coupon__copy {
+		justify-content: center;
+	}
+}

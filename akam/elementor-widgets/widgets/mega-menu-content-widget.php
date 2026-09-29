@@ -315,7 +315,7 @@ class Mega_Menu_Content_Widget extends Widget_Base {
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '#111827',
 				'selectors' => array(
-					'{{WRAPPER}} .webmz-mega-content__item:focus-within .webmz-mega-content__main-link, {{WRAPPER}} .webmz-mega-content__item.is-active .webmz-mega-content__main-link' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .webmz-mega-content__item.is-active .webmz-mega-content__main-link' => 'color: {{VALUE}};',
 				),
 			)
 		);
@@ -326,7 +326,7 @@ class Mega_Menu_Content_Widget extends Widget_Base {
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '#fff4e6',
 				'selectors' => array(
-					'{{WRAPPER}} .webmz-mega-content__item:focus-within .webmz-mega-content__main-link, {{WRAPPER}} .webmz-mega-content__item.is-active .webmz-mega-content__main-link' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .webmz-mega-content__item.is-active .webmz-mega-content__main-link' => 'background-color: {{VALUE}};',
 				),
 			)
 		);
