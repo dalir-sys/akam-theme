@@ -1,0 +1,63 @@
+/* Akam 3D background widget. */
+
+.webmz-3d {
+	position: relative;
+	width: 100%;
+	height: 420px;
+	overflow: hidden;
+	/* Shown until WebGL draws, and as the fallback when WebGL is unavailable. */
+	background: radial-gradient(60% 80% at 30% 40%, color-mix(in srgb, var(--webmz-color-primary, #0878f9) 14%, transparent), transparent 70%),
+		radial-gradient(50% 70% at 75% 60%, rgba(139, 92, 246, .12), transparent 70%);
+	transition: background-color .4s ease;
+}
+
+.webmz-3d.is-ready {
+	background: none;
+}
+
+.webmz-3d__canvas {
+	position: absolute;
+	inset: 0;
+	display: block;
+	width: 100% !important;
+	height: 100% !important;
+}
+
+/* "Fill section" mode: the widget covers its container, behind the other elements. */
+.elementor-widget.webmz-3d-fill-yes {
+	position: absolute !important;
+	inset: 0;
+	z-index: 0;
+	width: 100% !important;
+	max-width: none !important;
+	height: 100%;
+	margin: 0 !important;
+	pointer-events: none;
+}
+
+.elementor-widget.webmz-3d-fill-yes > .elementor-widget-container,
+.elementor-widget.webmz-3d-fill-yes .webmz-3d {
+	height: 100%;
+}
+
+/* Lift the other elements above the canvas. The boxed .e-con-inner itself is left
+   unpositioned so the canvas still covers the full section width, and elements the
+   user positioned absolute/fixed in Elementor keep their positioning. */
+.webmz-3d-host > .elementor-container,
+.webmz-3d-host > .elementor-element:not(.webmz-3d-fill-yes):not(.elementor-absolute):not(.elementor-fixed),
+.webmz-3d-host > .e-con-inner > .elementor-element:not(.webmz-3d-fill-yes):not(.elementor-absolute):not(.elementor-fixed) {
+	position: relative;
+	z-index: 1;
+}
+
+.webmz-3d-host > .elementor-element.elementor-absolute,
+.webmz-3d-host > .e-con-inner > .elementor-element.elementor-absolute,
+.webmz-3d-host > .elementor-element.elementor-fixed,
+.webmz-3d-host > .e-con-inner > .elementor-element.elementor-fixed {
+	z-index: 1;
+}
+
+/* Inside the Elementor editor keep the widget selectable. */
+.elementor-editor-active .elementor-widget.webmz-3d-fill-yes {
+	pointer-events: auto;
+}

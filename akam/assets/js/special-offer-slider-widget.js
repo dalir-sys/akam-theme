@@ -197,9 +197,18 @@
         return match ? match[1] : '';
     }
 
+    function parseAparatId(url) {
+        var match = url.match(/aparat\.com\/(?:v\/|video\/video\/embed\/videohash\/|embed\/)([A-Za-z0-9]+)/i);
+        return match ? match[1] : '';
+    }
+
     function getVideoType(url) {
         if (!url) {
             return 'html5';
+        }
+
+        if (parseAparatId(url)) {
+            return 'aparat';
         }
 
         if (parseYoutubeId(url)) {
@@ -225,6 +234,13 @@
         var origin = window.location.origin || '';
         var safeUrl = escapeAttr(url);
         var safePoster = escapeAttr(poster);
+
+        if (type === 'aparat') {
+            // Aparat has no player API, so it stays a plain iframe (Plyr skips it).
+            return '<div class="webmz-video-embed webmz-video-embed--aparat" style="position:relative;width:100%;aspect-ratio:16/9;background:#0f172a;">' +
+                '<iframe src="https://www.aparat.com/video/video/embed/videohash/' + encodeURIComponent(parseAparatId(url)) + '/vt/frame" style="position:absolute;inset:0;width:100%;height:100%;border:0;" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" allow="autoplay; fullscreen; picture-in-picture"></iframe>' +
+                '</div>';
+        }
 
         if (type === 'youtube') {
             var youtubeId = parseYoutubeId(url);

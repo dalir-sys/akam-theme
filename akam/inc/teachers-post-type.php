@@ -433,8 +433,8 @@ function webmz_teacher_render_details_meta_box( $post ) {
 			<tr>
 				<th scope="row"><label for="webmz_teacher_intro_video_url"><?php esc_html_e( 'ویدیو معرفی', 'tadris' ); ?></label></th>
 				<td>
-					<input type="url" class="large-text" id="webmz_teacher_intro_video_url" name="webmz_teacher_intro_video_url" value="<?php echo esc_attr( $intro_video_url ); ?>" placeholder="<?php esc_attr_e( 'https://example.com/video.mp4', 'tadris' ); ?>">
-					<p class="description"><?php esc_html_e( 'لینک ویدیو معرفی مدرس. در صورت پر شدن، آیکون ویدیو روی کارت نمایش داده می‌شود.', 'tadris' ); ?></p>
+					<input type="url" class="large-text" id="webmz_teacher_intro_video_url" name="webmz_teacher_intro_video_url" value="<?php echo esc_attr( $intro_video_url ); ?>" dir="ltr" placeholder="<?php echo esc_attr( webmz_video_field_placeholder() ); ?>">
+					<p class="description"><?php esc_html_e( 'لینک ویدیو معرفی مدرس (MP4، آپارات یا یوتیوب). در صورت پر شدن، آیکون ویدیو روی کارت نمایش داده می‌شود.', 'tadris' ); ?></p>
 				</td>
 			</tr>
 			<tr>
@@ -1015,4 +1015,227 @@ function webmz_render_teacher_single_comments( $post_id, $args = array() ) {
 	}
 
 	return '<div class="webmz-teacher-single__block webmz-teacher-single__comments">' . $html . '</div>';
+}
+
+/**
+ * Teacher assigned to a course product.
+ *
+ * The product's own "مدرس دوره" field wins; otherwise the first teacher whose
+ * "دوره‌های مرتبط" list contains the product is used.
+ *
+ * @param int $product_id Product ID.
+ * @return int Teacher post ID or 0.
+ */
+function webmz_get_product_teacher_id( $product_id ) {
+	$product_id = absint( $product_id );
+
+	if ( ! $product_id ) {
+		return 0;
+	}
+
+	$teacher_id = absint( get_post_meta( $product_id, '_webmz_course_teacher', true ) );
+
+	if ( $teacher_id && WEBMZ_TEACHER_POST_TYPE === get_post_type( $teacher_id ) && 'publish' === get_post_status( $teacher_id ) ) {
+		return $teacher_id;
+	}
+
+	$teachers = get_posts(
+		array(
+			'post_type'      => WEBMZ_TEACHER_POST_TYPE,
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'orderby'        => 'menu_order title',
+			'order'          => 'ASC',
+			'meta_key'       => '_webmz_teacher_courses', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+			'no_found_rows'  => true,
+		)
+	);
+
+	foreach ( $teachers as $candidate ) {
+		if ( in_array( $product_id, webmz_get_teacher_courses( $candidate ), true ) ) {
+			return (int) $candidate;
+		}
+	}
+
+	return 0;
+}
+
+/**
+ * Register the course teacher selector on products.
+ *
+ * @return void
+ */
+function webmz_teacher_register_product_meta_box() {
+	if ( ! post_type_exists( 'product' ) ) {
+		return;
+	}
+
+	add_meta_box(
+		'webmz_course_teacher',
+		esc_html__( 'مدرس دوره', 'tadris' ),
+		'webmz_teacher_render_product_meta_box',
+		'product',
+		'side',
+		'default'
+	);
+}
+add_action( 'add_meta_boxes', 'webmz_teacher_register_product_meta_box' );
+
+/**
+ * Render the course teacher selector.
+ *
+ * @param WP_Post $post Product post.
+ * @return void
+ */
+function webmz_teacher_render_product_meta_box( $post ) {
+	wp_nonce_field( 'webmz_save_course_teacher', 'webmz_course_teacher_nonce' );
+
+	$current  = webmz_get_product_teacher_id( $post->ID );
+	$teachers = get_posts(
+		array(
+			'post_type'      => WEBMZ_TEACHER_POST_TYPE,
+			'post_status'    => array( 'publish', 'draft', 'pending', 'private' ),
+			'posts_per_page' => -1,
+			'orderby'        => 'title',
+			'order'          => 'ASC',
+			'no_found_rows'  => true,
+		)
+	);
+	?>
+	<p>
+		<select class="widefat" name="webmz_course_teacher" id="webmz_course_teacher_select">
+			<option value="0"><?php esc_html_e( '— نویسنده محصول (پیش‌فرض) —', 'tadris' ); ?></option>
+			<?php foreach ( $teachers as $teacher ) : ?>
+				<option value="<?php echo esc_attr( (string) $teacher->ID ); ?>" <?php selected( $current, $teacher->ID ); ?>><?php echo esc_html( get_the_title( $teacher ) ); ?></option>
+			<?php endforeach; ?>
+		</select>
+	</p>
+	<p class="description">
+		<?php esc_html_e( 'نام، تصویر و بیوگرافی این مدرس در ویجت «باکس استاد دوره» نمایش داده می‌شود و این دوره در صفحه مدرس هم نمایش داده می‌شود.', 'tadris' ); ?>
+		<?php if ( empty( $teachers ) ) : ?>
+			<br><a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=' . WEBMZ_TEACHER_POST_TYPE ) ); ?>"><?php esc_html_e( 'افزودن مدرس', 'tadris' ); ?></a>
+		<?php endif; ?>
+	</p>
+	<?php
+}
+
+/**
+ * Save the course teacher and keep teachers' "دوره‌های مرتبط" lists in sync.
+ *
+ * @param int     $post_id Product ID.
+ * @param WP_Post $post    Product post.
+ * @return void
+ */
+function webmz_teacher_save_product_teacher( $post_id, $post ) {
+	if ( ! isset( $_POST['webmz_course_teacher_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['webmz_course_teacher_nonce'] ) ), 'webmz_save_course_teacher' ) ) {
+		return;
+	}
+
+	if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || wp_is_post_revision( $post_id ) || 'product' !== $post->post_type || ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	$teacher_id = isset( $_POST['webmz_course_teacher'] ) ? absint( wp_unslash( $_POST['webmz_course_teacher'] ) ) : 0;
+
+	if ( $teacher_id && WEBMZ_TEACHER_POST_TYPE !== get_post_type( $teacher_id ) ) {
+		$teacher_id = 0;
+	}
+
+	update_post_meta( $post_id, '_webmz_course_teacher', $teacher_id );
+
+	if ( ! $teacher_id ) {
+		return;
+	}
+
+	// One teacher per course: move the course out of other teachers' lists.
+	$others = get_posts(
+		array(
+			'post_type'      => WEBMZ_TEACHER_POST_TYPE,
+			'post_status'    => 'any',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+		)
+	);
+
+	foreach ( $others as $other_id ) {
+		$courses = webmz_get_teacher_courses( $other_id );
+		$has     = in_array( (int) $post_id, $courses, true );
+
+		if ( (int) $other_id === $teacher_id && ! $has ) {
+			$courses[] = (int) $post_id;
+			update_post_meta( $other_id, '_webmz_teacher_courses', $courses );
+		} elseif ( (int) $other_id !== $teacher_id && $has ) {
+			update_post_meta( $other_id, '_webmz_teacher_courses', array_values( array_diff( $courses, array( (int) $post_id ) ) ) );
+		}
+	}
+}
+add_action( 'save_post', 'webmz_teacher_save_product_teacher', 10, 2 );
+
+/**
+ * When a teacher drops a course from its list, clear that course's explicit teacher.
+ *
+ * @param int $post_id Teacher post ID.
+ * @return void
+ */
+function webmz_teacher_release_removed_courses( $post_id ) {
+	if ( ! isset( $_POST['webmz_teacher_meta_nonce'] ) || WEBMZ_TEACHER_POST_TYPE !== get_post_type( $post_id ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified in webmz_teacher_save_meta_fields().
+		return;
+	}
+
+	$courses = webmz_get_teacher_courses( $post_id );
+	$linked  = get_posts(
+		array(
+			'post_type'      => 'product',
+			'post_status'    => 'any',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+			'meta_key'       => '_webmz_course_teacher', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+			'meta_value'     => (string) $post_id, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+		)
+	);
+
+	foreach ( $linked as $product_id ) {
+		if ( ! in_array( (int) $product_id, $courses, true ) ) {
+			delete_post_meta( $product_id, '_webmz_course_teacher' );
+		}
+	}
+}
+// After webmz_teacher_save_meta_fields() (priority 10) has stored the new list.
+add_action( 'save_post', 'webmz_teacher_release_removed_courses', 20 );
+
+/**
+ * Display data for a teacher in course widgets.
+ *
+ * @param int $teacher_id Teacher post ID.
+ * @return array{name:string,role:string,bio:string,url:string,avatar_html:string}
+ */
+function webmz_get_teacher_display_data( $teacher_id ) {
+	$teacher_id = absint( $teacher_id );
+	$bio        = webmz_get_teacher_short_bio( $teacher_id );
+
+	if ( '' === trim( (string) $bio ) ) {
+		$bio = wp_trim_words( wp_strip_all_tags( (string) get_post_field( 'post_content', $teacher_id ) ), 40 );
+	}
+
+	$avatar_html = has_post_thumbnail( $teacher_id )
+		? get_the_post_thumbnail( $teacher_id, 'thumbnail', array( 'alt' => get_the_title( $teacher_id ) ) )
+		: '';
+
+	if ( '' === $avatar_html ) {
+		$photo = webmz_get_teacher_expertise_photo_url( $teacher_id, 'thumbnail' );
+		if ( $photo ) {
+			$avatar_html = '<img src="' . esc_url( $photo ) . '" alt="' . esc_attr( get_the_title( $teacher_id ) ) . '" loading="lazy">';
+		}
+	}
+
+	return array(
+		'name'        => get_the_title( $teacher_id ),
+		'role'        => (string) webmz_get_teacher_job_title( $teacher_id ),
+		'bio'         => (string) $bio,
+		'url'         => (string) get_permalink( $teacher_id ),
+		'avatar_html' => (string) $avatar_html,
+	);
 }

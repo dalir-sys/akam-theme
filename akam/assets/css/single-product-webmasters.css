@@ -858,6 +858,45 @@
     width: 100%;
 }
 
+/* Optional second button (free version / demo / file) under the buy button. */
+.webmz-spw-purchase-box__extra-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    margin-top: 10px;
+    padding: 11px 20px;
+    border: 1px solid var(--webmz-color-primary, #0878f9);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--webmz-color-primary, #0878f9);
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none !important;
+    transition: background-color .18s ease, color .18s ease;
+}
+
+.webmz-spw-purchase-box__extra-btn:hover,
+.webmz-spw-purchase-box__extra-btn:focus-visible {
+    background: var(--webmz-color-primary, #0878f9);
+    color: #fff;
+}
+
+.webmz-spw-purchase-box__extra-btn svg,
+.webmz-spw-purchase-box__extra-btn i {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+}
+
+/* Font Awesome icons chosen per product (inline-SVG mode) follow the widget's icon colour. */
+.webmz-spw-features__icon .e-font-icon-svg,
+.webmz-spw-purchase-box__bottom-item .e-font-icon-svg,
+.webmz-spw-purchase-box__extra-btn .e-font-icon-svg {
+    fill: currentColor;
+}
+
 .webmz-spw-purchase-box__bottom {
     list-style: none;
     margin: 18px 0 0;

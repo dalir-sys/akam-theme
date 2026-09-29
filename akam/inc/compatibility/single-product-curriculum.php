@@ -271,7 +271,8 @@ function webmz_spw_render_curriculum_lesson_row( $section_index, $lesson_index, 
 		</p>
 		<p>
 			<label><strong><?php esc_html_e( 'لینک مشاهده جلسه', 'tadris' ); ?></strong></label><br>
-			<input class="widefat" type="url" name="<?php echo esc_attr( $name_prefix ); ?>[video_url]" value="<?php echo esc_attr( $video_url ); ?>" placeholder="https://example.com/video.mp4">
+			<input class="widefat" type="url" dir="ltr" name="<?php echo esc_attr( $name_prefix ); ?>[video_url]" value="<?php echo esc_attr( $video_url ); ?>" placeholder="<?php echo esc_attr( webmz_video_field_placeholder() ); ?>">
+			<span class="description"><?php echo esc_html( webmz_video_field_help() ); ?> <?php esc_html_e( 'لینک‌های ویدیویی در پلیر همین صفحه پخش می‌شوند و سایر لینک‌ها در تب جدید باز می‌شوند.', 'tadris' ); ?></span>
 		</p>
 	</div>
 	<?php

@@ -532,10 +532,71 @@
         return video.plyr;
     }
 
+    function clearEmbed(root) {
+        var slot = root.querySelector('[data-webmz-ytp-embed]');
+        var wrap = root.querySelector('.webmz-ytp__player-wrap');
+
+        if (slot && slot.webmzEmbedPlayer && typeof slot.webmzEmbedPlayer.destroy === 'function') {
+            try {
+                slot.webmzEmbedPlayer.destroy();
+            } catch (error) {
+                // Ignore destroy errors when the embed is already gone.
+            }
+        }
+
+        if (slot) {
+            slot.webmzEmbedPlayer = null;
+            slot.innerHTML = '';
+        }
+
+        if (wrap) {
+            wrap.classList.remove('is-embed');
+        }
+    }
+
+    /**
+     * Play an Aparat/YouTube lesson in the embed slot. The MP4 player is paused and
+     * detached from history so no progress is recorded against the embed lesson.
+     */
+    function showEmbed(root, video, data, shouldPlay) {
+        var slot = root.querySelector('[data-webmz-ytp-embed]');
+        var wrap = root.querySelector('.webmz-ytp__player-wrap');
+        var player = getPlyrInstance(video);
+
+        if (!slot || !wrap || !window.webmzVideo) {
+            return;
+        }
+
+        if (player && typeof player.pause === 'function') {
+            player.pause();
+        } else if (video && typeof video.pause === 'function') {
+            video.pause();
+        }
+
+        video.removeAttribute('data-webmz-history-post-id');
+        clearEmbed(root);
+        wrap.classList.add('is-embed');
+        slot.webmzEmbedPlayer = window.webmzVideo.mount(slot, data.video_url, { title: data.title || '' });
+
+        if (shouldPlay && slot.webmzEmbedPlayer && typeof slot.webmzEmbedPlayer.play === 'function') {
+            var play = slot.webmzEmbedPlayer.play();
+            if (play && typeof play.catch === 'function') {
+                play.catch(function () {});
+            }
+        }
+    }
+
     function updatePlayerSource(root, video, data, shouldPlay) {
         if (!video || !data || !data.video_url) {
             return null;
         }
+
+        if (window.webmzVideo && window.webmzVideo.isEmbed(data.video_url)) {
+            showEmbed(root, video, data, shouldPlay);
+            return null;
+        }
+
+        clearEmbed(root);
 
         var url = data.video_url;
         var player = getPlyrInstance(video);
@@ -562,6 +623,15 @@
             media.setAttribute('poster', data.image_url);
         } else {
             media.removeAttribute('poster');
+        }
+
+        // Plyr draws its own poster layer; the attribute alone leaves the previous lesson's image.
+        if (player) {
+            try {
+                player.poster = data.image_url || '';
+            } catch (error) {
+                // Older Plyr builds without a poster setter keep the attribute value.
+            }
         }
 
         setVideoSource(media, url);
@@ -773,6 +843,13 @@
         updateProgressUI(root);
         initPlyr(root.querySelector('.webmz-ytp__video'));
         setupProgressTracking(root);
+
+        // First lesson rendered server-side as a YouTube embed still needs Plyr.
+        var embedSlot = root.querySelector('[data-webmz-ytp-embed]');
+        var embedTarget = embedSlot ? embedSlot.querySelector('.plyr__video-embed') : null;
+        if (embedTarget && typeof window.Plyr !== 'undefined') {
+            embedSlot.webmzEmbedPlayer = new window.Plyr(embedTarget, getPlyrOptions());
+        }
 
         root.addEventListener('click', function (event) {
             var trigger = event.target.closest('.webmz-ytp__item-trigger');

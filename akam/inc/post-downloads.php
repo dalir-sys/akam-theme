@@ -174,6 +174,7 @@ function webmz_render_post_downloads_meta_box( $post ) {
 	<div class="webmz-download-metabox" data-webmz-download-metabox>
 		<p class="description">
 			<?php esc_html_e( 'فایل‌های قابل دانلود این نوشته را اضافه کنید. اگر حداقل یک مورد معتبر (نام + لینک) ذخیره شود، ویجت «باکس دانلود» در قالب‌ساز نمایش داده می‌شود.', 'tadris' ); ?>
+			<?php esc_html_e( 'اگر لینک یک ردیف، لینک ویدیو در آپارات یا یوتیوب باشد، دکمه آن ردیف به «مشاهده آنلاین» تبدیل می‌شود و ویدیو در همان صفحه پخش می‌شود.', 'tadris' ); ?>
 		</p>
 
 		<div class="webmz-download-rows" data-webmz-download-rows>

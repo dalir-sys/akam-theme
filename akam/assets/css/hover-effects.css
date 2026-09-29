@@ -1,0 +1,174 @@
+/*
+ * Akam hover effects (theme option: تنظیمات آکام › ظاهر قالب › افکت‌های هاور).
+ *
+ * Every selector is wrapped in :where() so it has zero specificity: a card's own
+ * hover styles always win and these only fill in what the card does not set.
+ * Motion uses the individual `translate` / `scale` properties, which stack with
+ * any `transform` a card or image already uses instead of replacing it.
+ */
+
+.webmz-fx {
+	--webmz-fx-lift: -4px;
+	--webmz-fx-zoom: 1.05;
+	--webmz-fx-shadow: 0 14px 30px -12px rgba(15, 23, 42, .22);
+	--webmz-fx-btn-shadow: 0 8px 18px -8px color-mix(in srgb, var(--webmz-color-primary, #0878f9) 70%, transparent);
+	--webmz-fx-ease: cubic-bezier(.22, .61, .36, 1);
+}
+
+.webmz-fx--vivid {
+	--webmz-fx-lift: -8px;
+	--webmz-fx-zoom: 1.08;
+	--webmz-fx-shadow: 0 22px 44px -16px color-mix(in srgb, var(--webmz-color-primary, #0878f9) 40%, rgba(15, 23, 42, .35));
+}
+
+/* ---- Cards: lift + shadow ---- */
+:where(.webmz-fx) :where(
+	.tadris-product-type-1,
+	.tadris-product-type-2,
+	.tadris-product-type-3,
+	.tadris-blog-tile-card,
+	.webmz-blog-archive-card,
+	.webmz-post-card,
+	.webmz-teacher-card,
+	.webmz-pro-teacher-card,
+	.webmz-cc__card,
+	.webmz-cts2__card,
+	.webmz-idb__item,
+	.webmz-service-box,
+	.webmz-zpl__card,
+	.webmz-zbl__card,
+	.webmz-zpt__card,
+	.tadris-icon-box-1,
+	[data-webmz-fx-card]
+) {
+	transition: translate .35s var(--webmz-fx-ease), box-shadow .35s var(--webmz-fx-ease), background-color .35s ease;
+}
+
+:where(.webmz-fx) :where(
+	.tadris-product-type-1,
+	.tadris-product-type-2,
+	.tadris-product-type-3,
+	.tadris-blog-tile-card,
+	.webmz-blog-archive-card,
+	.webmz-post-card,
+	.webmz-teacher-card,
+	.webmz-pro-teacher-card,
+	.webmz-cc__card,
+	.webmz-cts2__card,
+	.webmz-idb__item,
+	.webmz-service-box,
+	.webmz-zpl__card,
+	.webmz-zbl__card,
+	.webmz-zpt__card,
+	.tadris-icon-box-1,
+	[data-webmz-fx-card]
+):hover {
+	box-shadow: var(--webmz-fx-shadow);
+}
+
+/* ---- Card images: zoom (only where the script found a clipping wrapper) ---- */
+:where(.webmz-fx) :where(img[data-webmz-fx-zoom]) {
+	transition: scale .6s var(--webmz-fx-ease);
+}
+
+
+/* ---- Spotlight: soft glow following the cursor (vivid only, overlay added by the script) ---- */
+.webmz-fx-spot {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	border-radius: inherit;
+	background: radial-gradient(
+		360px circle at var(--webmz-fx-x, 50%) var(--webmz-fx-y, 50%),
+		color-mix(in srgb, var(--webmz-color-primary, #0878f9) 14%, transparent),
+		transparent 65%
+	);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity .3s ease;
+}
+
+[data-webmz-fx-spotlight]:hover > .webmz-fx-spot {
+	opacity: 1;
+}
+
+/* ---- Buttons: lift, glow and press ---- */
+:where(.webmz-fx) :where(
+	.webmz-button,
+	.elementor-button,
+	.webmz-spw-add-to-cart-btn,
+	.webmz-spw-purchase-box__extra-btn,
+	.single_add_to_cart_button,
+	.checkout-button,
+	.webmz-teacher-card__button,
+	.webmz-service-box__link
+) {
+	transition: translate .25s var(--webmz-fx-ease), box-shadow .25s var(--webmz-fx-ease), scale .12s ease, background-color .2s ease, color .2s ease;
+}
+
+:where(.webmz-fx) :where(
+	.webmz-button,
+	.elementor-button,
+	.webmz-spw-add-to-cart-btn,
+	.webmz-spw-purchase-box__extra-btn,
+	.single_add_to_cart_button,
+	.checkout-button,
+	.webmz-teacher-card__button,
+	.webmz-service-box__link
+):where(:hover:not(:disabled):not(.is-disabled)) {
+	box-shadow: var(--webmz-fx-btn-shadow);
+}
+
+/* Movement only for visitors who have not asked their system for reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+	:where(.webmz-fx) :where(
+		.tadris-product-type-1,
+		.tadris-product-type-2,
+		.tadris-product-type-3,
+		.tadris-blog-tile-card,
+		.webmz-blog-archive-card,
+		.webmz-post-card,
+		.webmz-teacher-card,
+		.webmz-pro-teacher-card,
+		.webmz-cc__card,
+		.webmz-cts2__card,
+		.webmz-idb__item,
+		.webmz-service-box,
+		.webmz-zpl__card,
+		.webmz-zbl__card,
+		.webmz-zpt__card,
+		.tadris-icon-box-1,
+		[data-webmz-fx-card]
+	):hover {
+		translate: 0 var(--webmz-fx-lift);
+	}
+
+	:where(.webmz-fx) :where([data-webmz-fx-card-root]:hover img[data-webmz-fx-zoom]) {
+		scale: var(--webmz-fx-zoom);
+	}
+
+	:where(.webmz-fx) :where(
+		.webmz-button,
+		.elementor-button,
+		.webmz-spw-add-to-cart-btn,
+		.webmz-spw-purchase-box__extra-btn,
+		.single_add_to_cart_button,
+		.checkout-button,
+		.webmz-teacher-card__button,
+		.webmz-service-box__link
+	):where(:hover:not(:disabled):not(.is-disabled)) {
+		translate: 0 -2px;
+	}
+
+	:where(.webmz-fx) :where(
+		.webmz-button,
+		.elementor-button,
+		.webmz-spw-add-to-cart-btn,
+		.webmz-spw-purchase-box__extra-btn,
+		.single_add_to_cart_button,
+		.checkout-button
+	):where(:active:not(:disabled)) {
+		translate: 0 0;
+		scale: .97;
+	}
+}

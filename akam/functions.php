@@ -8,7 +8,7 @@
 defined( 'ABSPATH' ) || exit;
 
 if ( ! defined( 'WEBMZ_VERSION' ) ) {
-	define( 'WEBMZ_VERSION', '1.0.0' );
+	define( 'WEBMZ_VERSION', '1.5.0' );
 }
 if ( ! defined( 'WEBMZ_DIR' ) ) {
 	define( 'WEBMZ_DIR', trailingslashit( get_template_directory() ) );
@@ -217,6 +217,7 @@ function webmz_rtl_license_inactive_admin_notice() {
 
 $webmz_pro_includes = array(
 	'inc/helpers.php',
+	'inc/video-embeds.php',
 	'inc/ajax-search.php',
 	'inc/contact-form.php',
 	'inc/newsletter.php',
@@ -230,6 +231,8 @@ $webmz_pro_includes = array(
 	'inc/nav-menu-icons.php',
 	'inc/mega-menu.php',
 	'inc/floating-contact.php',
+	'inc/ai-chat.php',
+	'inc/visual-effects.php',
 	'inc/setup.php',
 	'inc/enqueue.php',
 	'inc/layout-post-type.php',

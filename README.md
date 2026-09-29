@@ -30,3 +30,23 @@ GitHub tag (مثلاً `v1.0.1`) باید با Version در `style.css` یکی �
 ./scripts/bump-version.sh 1.0.1
 ./scripts/sync-encoded.sh 1.0.1 /path/to/encoded-output
 ```
+
+## محیط توسعه محلی (دمو ۳)
+
+بسته Duplicator دمو ۳ در ریلیز [`akam-installer-demo3`](https://github.com/dalir-sys/akam-theme/releases/tag/akam-installer-demo3) قرار دارد. اسکریپت زیر آن را دانلود و روی MariaDB بازگردانی می‌کند و به‌جای نسخه اینکدشده داخل بسته، پوشه‌های raw `akam/` و `akam-child/` همین مخزن را symlink می‌کند:
+
+```bash
+./scripts/setup-demo.sh            # پیش‌فرض: ../akam-demo
+php -d memory_limit=512M -S 127.0.0.1:8080 -t ../akam-demo/site ../akam-demo/router.php
+```
+
+آدرس: `http://localhost:8080` — مدیریت: `/wp-admin` با `localadmin` / `localadmin`
+
+## افکت سه‌بعدی (Three.js)
+
+فایل `akam/assets/js/three-background.min.js` خروجی بیلدشده است. بعد از ویرایش `akam/assets/js/src/three-background.js` دوباره بسازید (نیاز به Node.js):
+
+```bash
+./scripts/build-three.sh
+```
+

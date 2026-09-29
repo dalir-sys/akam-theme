@@ -215,9 +215,15 @@ class SPW_Product_Media_Widget extends Widget_Base {
 				$src    = ! empty( $item['src'] ) ? (string) $item['src'] : '';
 				?>
 				<div class="webmz-plyr-widget webmz-plyr-widget--video webmz-spw-media__video">
-					<video class="tadris-player-tag webmz-standalone-plyr webmz-standalone-plyr--video" playsinline controls preload="metadata"<?php echo $poster ? ' poster="' . esc_url( $poster ) . '" data-poster="' . esc_url( $poster ) . '"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-						<source src="<?php echo esc_url( $src ); ?>" type="video/mp4">
-					</video>
+					<?php
+					\webmz_render_video_player(
+						$src,
+						array(
+							'poster'      => $poster,
+							'video_class' => 'tadris-player-tag webmz-standalone-plyr webmz-standalone-plyr--video',
+						)
+					);
+					?>
 				</div>
 			<?php else : ?>
 				<figure class="webmz-spw-media__image">
@@ -731,6 +737,16 @@ class SPW_Course_Features_Widget extends Widget_Base {
 			),
 			'title_field' => '{{{ title }}}',
 		) );
+		$this->add_control( 'source', array(
+			'label'       => esc_html__( 'منبع ویژگی‌ها', 'tadris' ),
+			'type'        => Controls_Manager::SELECT,
+			'default'     => 'product',
+			'options'     => array(
+				'product' => esc_html__( 'ویژگی‌های محصول (در صورت خالی بودن: لیست بالا)', 'tadris' ),
+				'widget'  => esc_html__( 'فقط لیست بالا', 'tadris' ),
+			),
+			'description' => esc_html__( 'ویژگی‌های هر محصول در ویرایش محصول، باکس «کادر خرید و ویژگی‌های صفحه محصول» تنظیم می‌شود.', 'tadris' ),
+		) );
 		$this->end_controls_section();
 		$this->webmz_register_box_style_controls( 'wrapper', esc_html__( 'باکس', 'tadris' ), '.webmz-spw-features', array( 'bordered' => true ) );
 		$this->webmz_register_box_style_controls( 'icon_box', esc_html__( 'باکس آیکون', 'tadris' ), '.webmz-spw-features__icon' );
@@ -739,9 +755,45 @@ class SPW_Course_Features_Widget extends Widget_Base {
 		$this->webmz_register_text_style_controls( 'subtitle', esc_html__( 'زیرعنوان', 'tadris' ), '.webmz-spw-features__subtitle' );
 	}
 
+	/**
+	 * Product features win; widget repeater is the fallback.
+	 *
+	 * @param array<string,mixed> $s Widget settings.
+	 * @return array<int,array<string,mixed>>
+	 */
+	protected function spw_get_feature_items( $s ) {
+		$widget_items = ! empty( $s['features'] ) && is_array( $s['features'] ) ? array_values( $s['features'] ) : array();
+		$product      = $this->spw_product();
+
+		if ( 'widget' === ( $s['source'] ?? 'product' ) || ! $this->spw_is_valid_product( $product ) || ! function_exists( 'webmz_spw_get_single_feature_items' ) ) {
+			return $widget_items;
+		}
+
+		$product_items = webmz_spw_get_single_feature_items( $product->get_id() );
+
+		if ( empty( $product_items ) ) {
+			return $widget_items;
+		}
+
+		$default_icon = ! empty( $widget_items[0]['icon'] ) ? $widget_items[0]['icon'] : array( 'value' => 'fas fa-check', 'library' => 'fa-solid' );
+		$items        = array();
+
+		foreach ( $product_items as $index => $item ) {
+			// Empty icon reuses the widget row's icon at the same position, keeping the template's look.
+			$fallback = ! empty( $widget_items[ $index ]['icon']['value'] ) ? $widget_items[ $index ]['icon'] : $default_icon;
+			$items[]  = array(
+				'icon'     => webmz_spw_icon_setting( $item['icon'], $fallback ),
+				'title'    => $item['title'],
+				'subtitle' => $item['subtitle'],
+			);
+		}
+
+		return $items;
+	}
+
 	protected function render() {
-		$s = $this->get_settings_for_display();
-		$items = $s['features'] ?? array();
+		$s     = $this->get_settings_for_display();
+		$items = $this->spw_get_feature_items( $s );
 
 		if ( empty( $items ) && $this->spw_is_editor_demo() ) {
 			$items = array(
@@ -787,8 +839,8 @@ class SPW_Purchase_Box_Widget extends Widget_Base {
 	public function get_title() { return esc_html__( 'کادر خرید دوره', 'tadris' ); }
 	public function get_icon() { return 'eicon-cart'; }
 	public function get_categories() { return array( $this->spw_category() ); }
-	public function get_script_depends() { return array( 'webmz-tadris-widgets', 'webmz-single-product-webmasters', 'webmz-header-commerce', 'webmz-mobile-offcanvas' ); }
-	public function get_style_depends() { return array( 'webmz-single-product-webmasters' ); }
+	public function get_script_depends() { return array( 'webmz-plyr', 'webmz-tadris-widgets', 'webmz-single-product-webmasters', 'webmz-header-commerce', 'webmz-mobile-offcanvas' ); }
+	public function get_style_depends() { return array( 'webmz-plyr', 'webmz-single-product-webmasters' ); }
 
 	protected function register_controls() {
 		$this->start_controls_section( 'content', array( 'label' => esc_html__( 'محتوا', 'tadris' ) ) );
@@ -830,6 +882,39 @@ class SPW_Purchase_Box_Widget extends Widget_Base {
 				array( 'text' => esc_html__( 'گواهینامه آکام', 'tadris' ) ),
 			),
 			'title_field' => '{{{ text }}}',
+			'description' => esc_html__( 'اگر برای محصول «موارد زیر دکمه» تعریف شده باشد، به‌جای این لیست نمایش داده می‌شود.', 'tadris' ),
+		) );
+		$this->end_controls_section();
+
+		$this->start_controls_section( 'extra_button_section', array( 'label' => esc_html__( 'دکمه دوم (نسخه رایگان / دمو / فایل)', 'tadris' ) ) );
+		$this->add_control( 'extra_button_mode', array(
+			'label'       => esc_html__( 'نمایش', 'tadris' ),
+			'type'        => Controls_Manager::SELECT,
+			'default'     => 'product',
+			'options'     => array(
+				'product' => esc_html__( 'فقط وقتی برای محصول لینک تعریف شده', 'tadris' ),
+				'always'  => esc_html__( 'همیشه (لینک پیش‌فرض پایین برای محصولات بدون لینک)', 'tadris' ),
+				'none'    => esc_html__( 'نمایش داده نشود', 'tadris' ),
+			),
+			'description' => esc_html__( 'متن و لینک هر محصول در ویرایش محصول، باکس «کادر خرید و ویژگی‌های صفحه محصول» تنظیم می‌شود.', 'tadris' ),
+		) );
+		$this->add_control( 'extra_button_text', array(
+			'label'     => esc_html__( 'متن پیش‌فرض', 'tadris' ),
+			'type'      => Controls_Manager::TEXT,
+			'default'   => esc_html__( 'دریافت نسخه رایگان', 'tadris' ),
+			'condition' => array( 'extra_button_mode!' => 'none' ),
+		) );
+		$this->add_control( 'extra_button_link', array(
+			'label'     => esc_html__( 'لینک پیش‌فرض', 'tadris' ),
+			'type'      => Controls_Manager::URL,
+			'dynamic'   => array( 'active' => true ),
+			'condition' => array( 'extra_button_mode' => 'always' ),
+		) );
+		$this->add_control( 'extra_button_icon', array(
+			'label'     => esc_html__( 'آیکون', 'tadris' ),
+			'type'      => Controls_Manager::ICONS,
+			'default'   => array( 'value' => 'fas fa-gift', 'library' => 'fa-solid' ),
+			'condition' => array( 'extra_button_mode!' => 'none' ),
 		) );
 		$this->end_controls_section();
 
@@ -839,6 +924,69 @@ class SPW_Purchase_Box_Widget extends Widget_Base {
 		$this->webmz_register_box_style_controls( 'total_row', esc_html__( 'ردیف قیمت کل', 'tadris' ), '.webmz-spw-purchase-box__total' );
 		$this->webmz_register_box_style_controls( 'button', esc_html__( 'دکمه', 'tadris' ), '.webmz-spw-purchase-box__btn' );
 		$this->webmz_register_text_style_controls( 'bottom_text', esc_html__( 'متن پایین', 'tadris' ), '.webmz-spw-purchase-box__bottom-item span' );
+		$this->webmz_register_box_style_controls( 'extra_button', esc_html__( 'دکمه دوم', 'tadris' ), '.webmz-spw-purchase-box__extra-btn' );
+		$this->webmz_register_text_style_controls( 'extra_button_text_style', esc_html__( 'تایپوگرافی دکمه دوم', 'tadris' ), '.webmz-spw-purchase-box__extra-btn' );
+	}
+
+	/**
+	 * Purchase box lines: product data first, widget repeater as fallback.
+	 *
+	 * @param \WC_Product          $product Product.
+	 * @param array<string,mixed> $s       Widget settings.
+	 * @return array<int,array<string,mixed>>
+	 */
+	protected function spw_get_bottom_items( $product, $s ) {
+		$widget_items  = ! empty( $s['bottom_items'] ) && is_array( $s['bottom_items'] ) ? array_values( $s['bottom_items'] ) : array();
+		$product_items = function_exists( 'webmz_spw_get_purchase_box_items' ) ? webmz_spw_get_purchase_box_items( $product->get_id() ) : array();
+
+		if ( empty( $product_items ) ) {
+			return $widget_items;
+		}
+
+		$default_icon = ! empty( $widget_items[0]['icon'] ) ? $widget_items[0]['icon'] : array( 'value' => 'fas fa-check', 'library' => 'fa-solid' );
+		$items        = array();
+
+		foreach ( $product_items as $index => $item ) {
+			$fallback = ! empty( $widget_items[ $index ]['icon']['value'] ) ? $widget_items[ $index ]['icon'] : $default_icon;
+			$items[]  = array(
+				'icon' => webmz_spw_icon_setting( $item['icon'], $fallback ),
+				'text' => $item['text'],
+			);
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Secondary button data for this product, honouring the widget mode.
+	 *
+	 * @param \WC_Product          $product Product.
+	 * @param array<string,mixed> $s       Widget settings.
+	 * @return array{text:string,url:string,new_tab:bool}|null
+	 */
+	protected function spw_get_extra_button( $product, $s ) {
+		$mode = $s['extra_button_mode'] ?? 'product';
+
+		if ( 'none' === $mode ) {
+			return null;
+		}
+
+		$button = function_exists( 'webmz_spw_get_extra_button' ) ? webmz_spw_get_extra_button( $product->get_id() ) : array( 'text' => '', 'url' => '', 'new_tab' => false );
+
+		if ( '' === $button['url'] && 'always' === $mode && ! empty( $s['extra_button_link']['url'] ) ) {
+			$button['url']     = esc_url_raw( $s['extra_button_link']['url'] );
+			$button['new_tab'] = ! empty( $s['extra_button_link']['is_external'] );
+		}
+
+		if ( '' === $button['url'] ) {
+			return null;
+		}
+
+		if ( '' === trim( $button['text'] ) ) {
+			$button['text'] = ! empty( $s['extra_button_text'] ) ? $s['extra_button_text'] : esc_html__( 'دریافت نسخه رایگان', 'tadris' );
+		}
+
+		return $button;
 	}
 
 	protected function render() {
@@ -854,7 +1002,9 @@ class SPW_Purchase_Box_Widget extends Widget_Base {
 			return;
 		}
 
-		$price = $this->spw_get_price_data( $product );
+		$price        = $this->spw_get_price_data( $product );
+		$bottom_items = $this->spw_get_bottom_items( $product, $s );
+		$extra        = $this->spw_get_extra_button( $product, $s );
 		?>
 		<div class="webmz-spw-purchase-box webmz-spw" data-product-id="<?php echo esc_attr( $product->get_id() ); ?>" data-webmz-spw-sync="1"<?php echo $this->spw_cart_scroll_id_attr(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 			<div class="webmz-spw-purchase-box__payment">
@@ -881,9 +1031,27 @@ class SPW_Purchase_Box_Widget extends Widget_Base {
 				<?php $this->spw_render_add_to_cart_button( $product, $s, 'webmz-spw-purchase-box__btn webmz-spw-add-to-cart-btn' ); ?>
 			</div>
 
-			<?php if ( ! empty( $s['bottom_items'] ) ) : ?>
+			<?php if ( $extra ) : ?>
+				<?php
+				$extra_is_video = function_exists( 'webmz_video_is_playable_url' ) && webmz_video_is_playable_url( $extra['url'] );
+				$extra_icon     = ! empty( $s['extra_button_icon']['value'] ) ? Icons_Manager::try_get_icon_html( $s['extra_button_icon'], array( 'aria-hidden' => 'true' ) ) : '';
+				?>
+				<a
+					class="webmz-spw-purchase-box__extra-btn"
+					href="<?php echo esc_url( $extra['url'] ); ?>"
+					<?php echo $extra['new_tab'] ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>
+					<?php echo $extra_is_video ? 'data-webmz-video-modal data-webmz-video-title="' . esc_attr( $extra['text'] ) . '"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				>
+					<?php if ( $extra_icon ) : ?>
+						<span class="webmz-spw-btn-icon"><?php echo $extra_icon; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+					<?php endif; ?>
+					<span><?php echo esc_html( $extra['text'] ); ?></span>
+				</a>
+			<?php endif; ?>
+
+			<?php if ( ! empty( $bottom_items ) ) : ?>
 				<ul class="webmz-spw-purchase-box__bottom">
-					<?php foreach ( $s['bottom_items'] as $item ) : ?>
+					<?php foreach ( $bottom_items as $item ) : ?>
 						<li class="webmz-spw-purchase-box__bottom-item">
 							<?php Icons_Manager::render_icon( $item['icon'] ?? array(), array( 'aria-hidden' => 'true' ) ); ?>
 							<span><?php echo esc_html( $item['text'] ?? '' ); ?></span>
@@ -912,7 +1080,7 @@ class SPW_Instructor_Box_Widget extends Widget_Base {
 			'label'       => esc_html__( 'عنوان شغلی (پیش‌فرض)', 'tadris' ),
 			'type'        => Controls_Manager::TEXT,
 			'default'     => esc_html__( 'مدرس دوره', 'tadris' ),
-			'description' => esc_html__( 'اگر در پروفایل کاربر فیلد «اطلاعات بیوگرافیک» پر باشد، نام نمایشی و بیو از پروفایل خوانده می‌شود.', 'tadris' ),
+			'description' => esc_html__( 'اگر در ویرایش محصول «مدرس دوره» انتخاب شده باشد، نام، تصویر، عنوان شغلی و بیوگرافی از صفحه همان مدرس خوانده می‌شود؛ در غیر این صورت از پروفایل نویسنده محصول.', 'tadris' ),
 		) );
 		$this->add_control( 'profile_button', array(
 			'label'   => esc_html__( 'متن دکمه پروفایل', 'tadris' ),
@@ -948,10 +1116,24 @@ class SPW_Instructor_Box_Widget extends Widget_Base {
 			return;
 		}
 
-		$author_id   = (int) get_post_field( 'post_author', $product->get_id() );
-		$author_name = get_the_author_meta( 'display_name', $author_id );
-		$author_bio  = get_the_author_meta( 'description', $author_id );
-		$author_url  = get_author_posts_url( $author_id );
+		// Teacher chosen on the product (or linked from the teacher's courses) wins over the post author.
+		$teacher_id = function_exists( 'webmz_get_product_teacher_id' ) ? webmz_get_product_teacher_id( $product->get_id() ) : 0;
+
+		if ( $teacher_id ) {
+			$teacher     = webmz_get_teacher_display_data( $teacher_id );
+			$author_name = $teacher['name'];
+			$author_bio  = $teacher['bio'];
+			$author_url  = $teacher['url'];
+			$author_role = '' !== $teacher['role'] ? $teacher['role'] : $s['job_title'];
+			$avatar_html = '' !== $teacher['avatar_html'] ? $teacher['avatar_html'] : get_avatar( 0, 192 );
+		} else {
+			$author_id   = (int) get_post_field( 'post_author', $product->get_id() );
+			$author_name = get_the_author_meta( 'display_name', $author_id );
+			$author_bio  = get_the_author_meta( 'description', $author_id );
+			$author_url  = get_author_posts_url( $author_id );
+			$author_role = $s['job_title'];
+			$avatar_html = get_avatar( $author_id, 192 );
+		}
 
 		if ( ! $author_name && $this->spw_is_editor_demo() ) {
 			$this->spw_render_demo_instructor( $s );
@@ -959,9 +1141,9 @@ class SPW_Instructor_Box_Widget extends Widget_Base {
 		}
 		?>
 		<div class="webmz-spw-instructor">
-			<div class="webmz-spw-instructor__avatar"><?php echo get_avatar( $author_id, 192 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
+			<div class="webmz-spw-instructor__avatar"><?php echo $avatar_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
 			<strong class="webmz-spw-instructor__name"><?php echo esc_html( $author_name ); ?></strong>
-			<span class="webmz-spw-instructor__role"><?php echo esc_html( $s['job_title'] ); ?></span>
+			<span class="webmz-spw-instructor__role"><?php echo esc_html( $author_role ); ?></span>
 			<?php if ( $author_bio ) : ?>
 				<p class="webmz-spw-instructor__bio"><?php echo esc_html( $author_bio ); ?></p>
 			<?php endif; ?>
@@ -1135,8 +1317,8 @@ class SPW_Course_Curriculum_Widget extends Widget_Base {
 	public function get_title() { return esc_html__( 'سرفصل‌های دوره', 'tadris' ); }
 	public function get_icon() { return 'eicon-post-list'; }
 	public function get_categories() { return array( $this->spw_category() ); }
-	public function get_script_depends() { return array( 'webmz-single-product-webmasters' ); }
-	public function get_style_depends() { return array( 'webmz-single-product-webmasters' ); }
+	public function get_script_depends() { return array( 'webmz-plyr', 'webmz-single-product-webmasters' ); }
+	public function get_style_depends() { return array( 'webmz-plyr', 'webmz-single-product-webmasters' ); }
 
 	protected function register_controls() {
 		$this->start_controls_section( 'content', array( 'label' => esc_html__( 'محتوا', 'tadris' ) ) );
@@ -1272,6 +1454,19 @@ class SPW_Section_Heading_Widget extends Widget_Base {
 			'default' => esc_html__( 'سوالات متداول', 'tadris' ),
 		) );
 		$this->webmz_register_title_tag_control( 'title_tag' );
+		$this->add_control( 'hide_when_empty', array(
+			'label'       => esc_html__( 'پنهان شدن وقتی بخش خالی است', 'tadris' ),
+			'type'        => Controls_Manager::SELECT,
+			'default'     => 'auto',
+			'options'     => array(
+				'auto'       => esc_html__( 'خودکار (بر اساس ویجت بعدی)', 'tadris' ),
+				'curriculum' => esc_html__( 'وقتی سرفصل ندارد', 'tadris' ),
+				'faq'        => esc_html__( 'وقتی سوال متداول ندارد', 'tadris' ),
+				'content'    => esc_html__( 'وقتی توضیحات ندارد', 'tadris' ),
+				'never'      => esc_html__( 'همیشه نمایش داده شود', 'tadris' ),
+			),
+			'description' => esc_html__( 'در حالت خودکار، اگر ویجت بعد از این هدینگ (سرفصل‌ها، سوالات متداول یا محتوای محصول) برای این محصول خالی باشد، هدینگ هم نمایش داده نمی‌شود.', 'tadris' ),
+		) );
 		$this->end_controls_section();
 		$this->webmz_register_text_style_controls( 'title_style', esc_html__( 'عنوان', 'tadris' ), '.webmz-spw-section-heading__title' );
 		$this->start_controls_section( 'bar_style', array( 'label' => esc_html__( 'نوار', 'tadris' ), 'tab' => Controls_Manager::TAB_STYLE ) );
@@ -1300,8 +1495,36 @@ class SPW_Section_Heading_Widget extends Widget_Base {
 		$this->end_controls_section();
 	}
 
+	/**
+	 * Whether the section this heading introduces is empty for the current product.
+	 *
+	 * @param array<string,mixed> $s Widget settings.
+	 * @return bool
+	 */
+	protected function spw_section_is_empty( $s ) {
+		$mode    = $s['hide_when_empty'] ?? 'auto';
+		$product = $this->spw_product();
+
+		if ( 'never' === $mode || $this->spw_is_editor_demo() || ! $this->spw_is_valid_product( $product ) || ! function_exists( 'webmz_spw_product_section_has_content' ) ) {
+			return false;
+		}
+
+		$section = 'auto' === $mode ? webmz_spw_section_heading_next_widget( $this->get_id() ) : $mode;
+
+		if ( '' === $section ) {
+			return false;
+		}
+
+		return ! webmz_spw_product_section_has_content( $section, $product->get_id() );
+	}
+
 	protected function render() {
-		$s         = $this->get_settings_for_display();
+		$s = $this->get_settings_for_display();
+
+		if ( $this->spw_section_is_empty( $s ) ) {
+			return;
+		}
+
 		$title_tag = $this->webmz_get_title_tag( $s, 'title_tag' );
 		?>
 		<div class="webmz-spw-section-heading">

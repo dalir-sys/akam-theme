@@ -218,11 +218,21 @@ class Tadris_Large_Video_Widget extends Widget_Base {
 		?>
 		<article class="tadris-lg-video" data-tadris-post-id="<?php echo esc_attr( $post->ID ); ?>">
 			<div class="tadris-lg-video-player">
-				<video class="tadris-player-tag" playsinline controls data-webmz-history-player="1" data-webmz-history-post-id="<?php echo esc_attr( $post->ID ); ?>" data-webmz-history-type="video"<?php echo $poster ? ' data-poster="' . esc_url( $poster ) . '" poster="' . esc_url( $poster ) . '"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-					<?php if ( $video_url ) : ?>
-						<source src="<?php echo esc_url( $video_url ); ?>" type="video/mp4">
-					<?php endif; ?>
-				</video>
+				<?php
+				\webmz_render_video_player(
+					$video_url,
+					array(
+						'poster'      => $poster ? $poster : '',
+						'title'       => get_the_title( $post ),
+						'video_attrs' => array(
+							'preload'                    => false,
+							'data-webmz-history-player'  => '1',
+							'data-webmz-history-post-id' => $post->ID,
+							'data-webmz-history-type'    => 'video',
+						),
+					)
+				);
+				?>
 			</div>
 
 			<div class="tadris-lg-video-inner">

@@ -56,11 +56,16 @@ class Post_Download_Box_Widget extends Widget_Base {
 	}
 
 	public function get_script_depends() {
+		// Aparat/YouTube rows open in the shared popup player.
 		if ( ! $this->requires_login_for_download() ) {
-			return array();
+			return array( 'webmz-plyr', 'webmz-video-embeds' );
 		}
 
-		return array( 'webmz-tadris-widgets' );
+		return array( 'webmz-plyr', 'webmz-video-embeds', 'webmz-tadris-widgets' );
+	}
+
+	public function get_style_depends() {
+		return array( 'webmz-plyr', 'webmz-video-embeds' );
 	}
 
 	protected function register_controls() {
@@ -135,6 +140,17 @@ class Post_Download_Box_Widget extends Widget_Base {
 				'type'        => Controls_Manager::TEXT,
 				'default'     => esc_html__( 'دانلود به صورت مستقیم', 'tadris' ),
 				'label_block' => true,
+			)
+		);
+
+		$this->add_control(
+			'watch_button_text',
+			array(
+				'label'       => esc_html__( 'متن دکمه مشاهده (آپارات / یوتیوب)', 'tadris' ),
+				'type'        => Controls_Manager::TEXT,
+				'default'     => esc_html__( 'مشاهده آنلاین', 'tadris' ),
+				'label_block' => true,
+				'description' => esc_html__( 'اگر لینک یک ردیف، لینک ویدیو در آپارات یا یوتیوب باشد، به‌جای دانلود، ویدیو در پلیر همین صفحه پخش می‌شود.', 'tadris' ),
 			)
 		);
 
@@ -875,6 +891,7 @@ class Post_Download_Box_Widget extends Widget_Base {
 
 		$settings    = $this->get_settings_for_display();
 		$button_text = ! empty( $settings['download_button_text'] ) ? $settings['download_button_text'] : esc_html__( 'دانلود به صورت مستقیم', 'tadris' );
+		$watch_text  = ! empty( $settings['watch_button_text'] ) ? $settings['watch_button_text'] : esc_html__( 'مشاهده آنلاین', 'tadris' );
 		$guard_links = $this->requires_login_for_download();
 		?>
 		<div class="webmz-download-box">
@@ -885,10 +902,16 @@ class Post_Download_Box_Widget extends Widget_Base {
 					<?php
 					$meta_parts = $this->get_item_meta_parts( $item, $settings );
 					$link_key   = 'download_link_' . $index;
-					$link_url   = $guard_links ? '#' : $item['link'];
+					$is_watch   = \webmz_video_is_embed_url( $item['link'] );
+					$link_url   = $guard_links && ! $is_watch ? '#' : $item['link'];
 					$this->add_link_attributes( $link_key, array( 'url' => $link_url ) );
 					$this->add_render_attribute( $link_key, 'class', 'webmz-download-box__item-btn' );
-					if ( $guard_links ) {
+					if ( $is_watch ) {
+						// Streaming links are public on Aparat/YouTube, so the download login guard does not apply.
+						$this->add_render_attribute( $link_key, 'class', 'webmz-download-box__item-btn--watch' );
+						$this->add_render_attribute( $link_key, 'data-webmz-video-modal', '' );
+						$this->add_render_attribute( $link_key, 'data-webmz-video-title', $item['name'] );
+					} elseif ( $guard_links ) {
 						$this->add_render_attribute( $link_key, 'data-webmz-download-guard', 'yes' );
 					}
 					?>
@@ -905,7 +928,7 @@ class Post_Download_Box_Widget extends Widget_Base {
 							</span>
 						<?php endif; ?>
 						<a <?php echo $this->get_render_attribute_string( $link_key ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-							<?php echo esc_html( $button_text ); ?>
+							<?php echo esc_html( $is_watch ? $watch_text : $button_text ); ?>
 						</a>
 					</div>
 				<?php endforeach; ?>

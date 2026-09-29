@@ -335,9 +335,22 @@ class Tadris_Video_Plyr_Widget extends Widget_Base {
 		$start = $post_id ? $this->get_history_start_time( $post_id ) : 0;
 		?>
 		<div class="webmz-plyr-widget webmz-plyr-widget--video"<?php echo $post_id ? ' data-tadris-post-id="' . esc_attr( $post_id ) . '"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-			<video class="tadris-player-tag webmz-standalone-plyr webmz-standalone-plyr--video" playsinline controls preload="metadata" data-webmz-history-player="1" data-webmz-history-type="video"<?php echo $post_id ? ' data-webmz-history-post-id="' . esc_attr( $post_id ) . '"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php echo $start > 0 ? ' data-webmz-history-start="' . esc_attr( $start ) . '"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php echo $poster ? ' poster="' . esc_url( $poster ) . '" data-poster="' . esc_url( $poster ) . '"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-				<source src="<?php echo esc_url( $url ); ?>" type="video/mp4">
-			</video>
+			<?php
+			\webmz_render_video_player(
+				$url,
+				array(
+					'poster'      => $poster ? $poster : '',
+					'title'       => $post_id ? get_the_title( $post_id ) : '',
+					'video_class' => 'tadris-player-tag webmz-standalone-plyr webmz-standalone-plyr--video',
+					'video_attrs' => array(
+						'data-webmz-history-player'  => '1',
+						'data-webmz-history-type'    => 'video',
+						'data-webmz-history-post-id' => $post_id ? $post_id : '',
+						'data-webmz-history-start'   => $start > 0 ? $start : '',
+					),
+				)
+			);
+			?>
 		</div>
 		<?php
 	}
