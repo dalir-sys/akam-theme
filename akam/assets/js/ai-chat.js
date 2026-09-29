@@ -56,28 +56,38 @@
 
 		var lines = html.split(/\n/);
 		var out = [];
-		var inList = false;
+		var list = '';
+
+		function closeList() {
+			if (list) {
+				out.push('</' + list + '>');
+				list = '';
+			}
+		}
 
 		lines.forEach(function (line) {
-			var item = line.match(/^\s*(?:[-*•]|\d+[.)])\s+(.*)$/);
-			if (item) {
-				if (!inList) {
-					out.push('<ul>');
-					inList = true;
+			var bullet = line.match(/^\s*[-*•]\s+(.*)$/);
+			var numbered = line.match(/^\s*[0-9۰-۹]+[.)]\s+(.*)$/);
+			var type = bullet ? 'ul' : (numbered ? 'ol' : '');
+
+			if (type) {
+				if (list !== type) {
+					closeList();
+					out.push('<' + type + '>');
+					list = type;
 				}
-				out.push('<li>' + item[1] + '</li>');
+				out.push('<li>' + (bullet || numbered)[1] + '</li>');
 				return;
 			}
-			if (inList) {
-				out.push('</ul>');
-				inList = false;
+
+			closeList();
+			// Blank lines only separate blocks; spacing comes from CSS.
+			if (line.trim() !== '') {
+				out.push('<p>' + line + '</p>');
 			}
-			out.push(line === '' ? '<br>' : '<p>' + line + '</p>');
 		});
 
-		if (inList) {
-			out.push('</ul>');
-		}
+		closeList();
 
 		return out.join('');
 	}

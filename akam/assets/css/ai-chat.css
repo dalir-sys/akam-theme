@@ -161,10 +161,15 @@
 	margin: 0;
 }
 
-.webmz-ai-chat__msg ul {
-	margin: 4px 0;
-	padding-right: 18px;
+.webmz-ai-chat__msg ul,
+.webmz-ai-chat__msg ol {
+	margin: 0;
+	padding-right: 20px;
 	padding-left: 0;
+}
+
+.webmz-ai-chat__msg > * + * {
+	margin-top: 8px;
 }
 
 .webmz-ai-chat__msg a {
