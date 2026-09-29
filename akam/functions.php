@@ -282,7 +282,7 @@ if ( webmz_is_license_whitelisted_host() ) {
 	$rtlLicenseFilePath  = __DIR__ . DIRECTORY_SEPARATOR . $rtlLicenseClassName . '.php';
 	$rtlLicenseFileHash  = @sha1_file( $rtlLicenseFilePath );
 
-	if ( $rtlLicenseFileHash === '769a0be25c5d4a5d8ce0eaa46664fef59d815fc4' && file_exists( $rtlLicenseFilePath ) ) {
+	if ( $rtlLicenseFileHash === 'd90f210856f9027fd2d1708e064243a9317110e6' && file_exists( $rtlLicenseFilePath ) ) {
 		require_once $rtlLicenseFilePath;
 
 		if ( class_exists( $rtlLicenseClassName ) && method_exists( $rtlLicenseClassName, 'isActive' ) ) {
