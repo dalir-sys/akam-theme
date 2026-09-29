@@ -246,6 +246,7 @@ function webmz_sanitize_options( $raw ) {
 	$clean['local_gravatar_enable'] = isset( $raw['local_gravatar_enable'] ) && 'yes' === $raw['local_gravatar_enable'] ? 'yes' : 'no';
 	$clean['local_gravatar_url']    = isset( $raw['local_gravatar_url'] ) ? esc_url_raw( $raw['local_gravatar_url'] ) : '';
 	$clean['related_use_theme_colors'] = isset( $raw['related_use_theme_colors'] ) && 'yes' === $raw['related_use_theme_colors'] ? 'yes' : 'no';
+	$clean['hover_effects']            = isset( $raw['hover_effects'] ) && in_array( $raw['hover_effects'], array( 'off', 'subtle', 'vivid' ), true ) ? $raw['hover_effects'] : 'subtle';
 	$clean['floating_contact_enabled'] = isset( $raw['floating_contact_enabled'] ) && 'yes' === $raw['floating_contact_enabled'] ? 'yes' : 'no';
 	$clean['sticky_add_to_cart_enabled'] = isset( $raw['sticky_add_to_cart_enabled'] ) && 'yes' === $raw['sticky_add_to_cart_enabled'] ? 'yes' : 'no';
 	$clean['floating_contact_position'] = isset( $raw['floating_contact_position'] ) && 'right' === sanitize_key( $raw['floating_contact_position'] ) ? 'right' : 'left';

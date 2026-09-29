@@ -41,3 +41,12 @@ php -d memory_limit=512M -S 127.0.0.1:8080 -t ../akam-demo/site ../akam-demo/rou
 ```
 
 آدرس: `http://localhost:8080` — مدیریت: `/wp-admin` با `localadmin` / `localadmin`
+
+## افکت سه‌بعدی (Three.js)
+
+فایل `akam/assets/js/three-background.min.js` خروجی بیلدشده است. بعد از ویرایش `akam/assets/js/src/three-background.js` دوباره بسازید (نیاز به Node.js):
+
+```bash
+./scripts/build-three.sh
+```
+

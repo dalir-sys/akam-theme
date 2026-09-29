@@ -428,6 +428,21 @@ function webmz_render_options_page() {
 					<p class="description"><?php esc_html_e( 'برای افزودن فونت محلی، فایل font.css را داخل مسیر assets/fonts/{font-slug}/ قرار دهید. گزینه فونت ادمین فقط روی پیشخوان وردپرس اعمال می‌شود.', 'webmz' ); ?></p>
 				</div>
 				<div class="webmz-card">
+					<h2><?php esc_html_e( 'افکت‌های هاور', 'webmz' ); ?></h2>
+					<div class="webmz-grid webmz-grid--2">
+						<label class="webmz-field webmz-field--select">
+							<span><?php esc_html_e( 'افکت هاور کارت‌ها و دکمه‌ها', 'webmz' ); ?></span>
+							<?php $hover_effects = function_exists( 'webmz_get_hover_effects_level' ) ? webmz_get_hover_effects_level() : 'subtle'; ?>
+							<select name="options[hover_effects]">
+								<option value="subtle" <?php selected( $hover_effects, 'subtle' ); ?>><?php esc_html_e( 'ملایم (پیشنهادی)', 'webmz' ); ?></option>
+								<option value="vivid" <?php selected( $hover_effects, 'vivid' ); ?>><?php esc_html_e( 'پررنگ (همراه با نور دنبال‌کننده ماوس)', 'webmz' ); ?></option>
+								<option value="off" <?php selected( $hover_effects, 'off' ); ?>><?php esc_html_e( 'خاموش', 'webmz' ); ?></option>
+							</select>
+						</label>
+					</div>
+					<p class="description"><?php esc_html_e( 'بالا آمدن و سایه کارت‌های دوره، مقاله و مدرس، زوم تصویر و افکت دکمه‌ها هنگام هاور. تنظیمات هاور اختصاصی هر ویجت همیشه اولویت دارد. برای کاربرانی که «کاهش حرکت» را در سیستم فعال کرده‌اند حرکتی نمایش داده نمی‌شود. برای افکت‌های سه‌بعدی از ویجت «پس‌زمینه سه‌بعدی (Three.js)» در المنتور استفاده کنید.', 'webmz' ); ?></p>
+				</div>
+				<div class="webmz-card">
 					<h2><?php esc_html_e( 'آواتار لوکال کاربران', 'webmz' ); ?></h2>
 					<div class="webmz-grid webmz-grid--tickets">
 						<label class="webmz-field webmz-field--checkbox">

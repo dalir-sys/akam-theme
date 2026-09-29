@@ -102,6 +102,7 @@ function webmz_register_elementor_widgets( $widgets_manager ) {
 	require_once WEBMZ_DIR . 'elementor-widgets/widgets/related-posts-grid-widget.php';
 	require_once WEBMZ_DIR . 'elementor-widgets/widgets/post-download-box-widget.php';
 	require_once WEBMZ_DIR . 'elementor-widgets/widgets/coupon-code-widget.php';
+	require_once WEBMZ_DIR . 'elementor-widgets/widgets/three-background-widget.php';
 	require_once WEBMZ_DIR . 'elementor-widgets/widgets/header-contact-box-widget.php';
 	require_once WEBMZ_DIR . 'elementor-widgets/widgets/tadris-basic-widgets.php';
 	require_once WEBMZ_DIR . 'elementor-widgets/widgets/tadris-heading-animation-widget.php';
@@ -160,6 +161,7 @@ function webmz_register_elementor_widgets( $widgets_manager ) {
 	$widgets_manager->register( new \WebMZ\Elementor\Podcast_Player_Widget() );
 	$widgets_manager->register( new \WebMZ\Elementor\Youtube_Playlist_Widget() );
 	$widgets_manager->register( new \WebMZ\Elementor\Coupon_Code_Widget() );
+	$widgets_manager->register( new \WebMZ\Elementor\Three_Background_Widget() );
 	$widgets_manager->register( new \WebMZ\Elementor\Contact_Us_Banner_Widget() );
 	$widgets_manager->register( new \WebMZ\Elementor\Footer_Contact_Widget() );
 	$widgets_manager->register( new \WebMZ\Elementor\Footer_Links_Widget() );
