@@ -4,7 +4,7 @@
 # Usage:
 #   ./scripts/sync-encoded.sh 1.0.1 /path/to/rightchin-output
 #
-# After encoding the 17 PHP files on RightChin (راست‌چین):
+# After encoding the 20 PHP files on RightChin (راست‌چین):
 #   1. Point SRC at the folder that contains the encoded copies
 #      (same relative paths as akam/: functions.php, inc/..., etc.)
 #   2. Run this script with VERSION matching style.css / git tag
@@ -42,6 +42,9 @@ FILES=(
   inc/setup.php
   inc/helpers.php
   inc/layout-post-type.php
+  inc/video-embeds.php
+  inc/ai-chat.php
+  inc/visual-effects.php
 )
 
 mkdir -p "$DEST"
