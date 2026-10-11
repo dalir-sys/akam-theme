@@ -15,3 +15,4 @@ node_modules/
 .env.*
 
 # Note: do NOT ignore encoded/ — archived encoded releases are tracked
+dist/

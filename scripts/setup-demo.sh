@@ -1,22 +1,45 @@
 #!/usr/bin/env bash
-# راه‌اندازی دموی محلی آکام (دمو ۳) برای توسعه
-# Local dev environment: restores the Duplicator demo package from the GitHub release,
+# راه‌اندازی دموهای محلی آکام (دمو ۱، ۲ و ۳) برای توسعه
+# Local dev environment: restores a Duplicator demo package from its GitHub release,
 # imports it into MariaDB, and symlinks this repo's raw akam/ and akam-child/ into it.
 #
-# Usage: ./scripts/setup-demo.sh [target-dir]      (default: ../akam-demo)
-# Then:  php -S 127.0.0.1:8080 -t <target-dir>/site <target-dir>/router.php
+# Usage: ./scripts/setup-demo.sh [demo-number] [target-dir]
+#   demo-number  1, 2 or 3 (default 3)
+#   target-dir   default: ../akam-demo-<n>
+# Each demo gets its own database (akam_demo<n>) and port (8081, 8082, 8080).
+# Then:  php -S 127.0.0.1:<port> -t <target-dir>/site <target-dir>/router.php
 set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-DEMO_DIR="$(realpath -m "${1:-$REPO_DIR/../akam-demo}")"
+DEMO="${1:-3}"
+
+case "$DEMO" in
+	1)
+		ASSET_URL="https://github.com/dalir-sys/akam-theme/releases/download/akam-installer/demo_1_9686c7ded46b2b036706_20260805083539_archive.zip"
+		ASSET_SHA256="9828cba4c3ebcd8f5c14ab80efbda58d53707fcfd3bb98bb43e148b9b89a2af1"
+		PORT=8081
+		;;
+	2)
+		ASSET_URL="https://github.com/dalir-sys/akam-theme/releases/download/akam-installer/demo_2_4765e2a7d54c430b7385_20260805083541_archive.zip"
+		ASSET_SHA256="dffbf940fd097b9e037c373bbcad174fdc5edf4c46d62c8966a4de80b8204f71"
+		PORT=8082
+		;;
+	3)
+		ASSET_URL="https://github.com/dalir-sys/akam-theme/releases/download/akam-installer-demo3/demo_3_aeaa929e0c52f0a71435_20260805083542_archive.zip"
+		ASSET_SHA256="161bf043dcb0e3db5478aba063ae2916455e854a6e7c32df4a8251aa955538bb"
+		PORT=8080
+		;;
+	*)
+		echo "Usage: $0 [1|2|3] [target-dir]" >&2
+		exit 1
+		;;
+esac
+
+DEMO_DIR="$(realpath -m "${2:-$REPO_DIR/../akam-demo-$DEMO}")"
 SITE_DIR="$DEMO_DIR/site"
-ASSET_URL="https://github.com/dalir-sys/akam-theme/releases/download/akam-installer-demo3/demo_3_aeaa929e0c52f0a71435_20260805083542_archive.zip"
-ASSET_SHA256="161bf043dcb0e3db5478aba063ae2916455e854a6e7c32df4a8251aa955538bb"
 WP_CLI_URL="https://github.com/wp-cli/wp-cli/releases/download/v2.12.0/wp-cli-2.12.0.phar"
-OLD_URL="https://tadris.webmz.ir/demo-03"
-OLD_PATH="/home/webmzir/tadris.webmz.ir/demo-03"
-NEW_URL="${AKAM_DEMO_URL:-http://localhost:8080}"
-DB_NAME=akam_demo DB_USER=akam DB_PASS=akam
+NEW_URL="${AKAM_DEMO_URL:-http://localhost:$PORT}"
+DB_NAME="akam_demo$DEMO" DB_USER=akam DB_PASS=akam
 
 mkdir -p "$DEMO_DIR/bin"
 cd "$DEMO_DIR"
@@ -36,10 +59,10 @@ GRANT ALL ON $DB_NAME.* TO '$DB_USER'@'localhost'; GRANT ALL ON $DB_NAME.* TO '$
 # 2) Package (outer zip = installer.php + Duplicator archive)
 if [ ! -f pkg/archive.zip ]; then
 	mkdir -p pkg
-	curl -fSL --retry 4 -o pkg/outer.zip "$ASSET_URL"
+	[ -f pkg/outer.zip ] || curl -fSL --retry 4 -o pkg/outer.zip "$ASSET_URL"
 	echo "$ASSET_SHA256  pkg/outer.zip" | sha256sum -c -
 	unzip -q -o pkg/outer.zip -d pkg && rm pkg/outer.zip
-	mv pkg/demo_3_*_archive.zip pkg/archive.zip
+	mv pkg/demo_"$DEMO"_*_archive.zip pkg/archive.zip
 fi
 
 # 3) Files
@@ -47,23 +70,29 @@ rm -rf "$SITE_DIR" && mkdir -p "$SITE_DIR"
 unzip -q pkg/archive.zip -d "$SITE_DIR"
 SQL_FILE="$(ls "$SITE_DIR"/dup-installer/dup_descriptors_*/db_dumps/*.sql)"
 ORIG_CONFIG="$(ls "$SITE_DIR"/dup-installer/dup_descriptors_*/orig_files/source_site_wpconfig)"
+# Original site path, read from the Duplicator package descriptor.
+OLD_PATH="$(php -r '$d = json_decode(file_get_contents($argv[1]), true); echo rtrim($d["wpInfo"]["targetRoot"], "/");' "$(ls "$SITE_DIR"/dup-installer/dup_descriptors_*/archive.txt)")"
 
 # 4) Database (utf8mb4 client charset is required, otherwise Persian text is double-encoded)
 mysql --default-character-set=utf8mb4 "$DB_NAME" < "$SQL_FILE"
+# Original site URL, as stored in the imported database.
+OLD_URL="$(mysql -N --default-character-set=utf8mb4 "$DB_NAME" -e "SELECT option_value FROM wp_options WHERE option_name='siteurl'")"
+OLD_URL="${OLD_URL%/}"
+echo "Original site: $OLD_URL ($OLD_PATH)"
 
 # 5) wp-config.php
 php -r '
-	[$_, $src, $dst, $url] = $argv;
+	[$_, $src, $dst, $url, $db] = $argv;
 	$c = file_get_contents($src);
 	$c = strtr($c, [
-		"define( '\''DB_NAME'\'', '\'''\'' );"     => "define( '\''DB_NAME'\'', '\''akam_demo'\'' );",
+		"define( '\''DB_NAME'\'', '\'''\'' );"     => "define( '\''DB_NAME'\'', '\''$db'\'' );",
 		"define( '\''DB_USER'\'', '\'''\'' );"     => "define( '\''DB_USER'\'', '\''akam'\'' );",
 		"define( '\''DB_PASSWORD'\'', '\'''\'' );" => "define( '\''DB_PASSWORD'\'', '\''akam'\'' );",
 		"define( '\''DB_HOST'\'', '\'''\'' );"     => "define( '\''DB_HOST'\'', '\''127.0.0.1'\'' );",
 		"define( '\''WP_DEBUG'\'', false );"       => "define( '\''WP_DEBUG'\'', true );\ndefine( '\''WP_DEBUG_LOG'\'', true );\ndefine( '\''WP_DEBUG_DISPLAY'\'', false );\ndefine( '\''WP_ENVIRONMENT_TYPE'\'', '\''local'\'' );\ndefine( '\''WP_HOME'\'', '\''$url'\'' );\ndefine( '\''WP_SITEURL'\'', '\''$url'\'' );\ndefine( '\''DISALLOW_FILE_MODS'\'', true );\ndefine( '\''WP_HTTP_BLOCK_EXTERNAL'\'', true );",
 	]);
 	file_put_contents($dst, $c);
-' "$ORIG_CONFIG" "$SITE_DIR/wp-config.php" "$NEW_URL"
+' "$ORIG_CONFIG" "$SITE_DIR/wp-config.php" "$NEW_URL" "$DB_NAME"
 rm -rf "$SITE_DIR"/dup-installer "$SITE_DIR"/*_installer-backup.php
 
 # 6) Use this repo's raw themes instead of the encoded build shipped in the package
@@ -107,5 +136,5 @@ PHP
 
 echo
 echo "Done. Start the server with:"
-echo "  php -d memory_limit=512M -S 127.0.0.1:8080 -t $SITE_DIR $DEMO_DIR/router.php"
+echo "  php -d memory_limit=512M -S 127.0.0.1:$PORT -t $SITE_DIR $DEMO_DIR/router.php"
 echo "Site:  $NEW_URL   Admin: $NEW_URL/wp-admin  (localadmin / localadmin)"

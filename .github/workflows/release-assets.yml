@@ -1,0 +1,64 @@
+# Builds the encoded release packages and the three demo installers, and attaches them to
+# the GitHub release of the version (tag v<version>). See scripts/build-release.sh and
+# scripts/build-demo-installer.sh.
+name: Release assets
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Theme version (style.css Version and encoded/<version>)
+        required: true
+  push:
+    branches:
+      - claude/festive-babbage-fgdvz8
+    paths:
+      - .github/workflows/release-assets.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-assets
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      VERSION: ${{ inputs.version || '1.5.0' }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Theme packages
+        run: ./scripts/build-release.sh "$VERSION"
+
+      - name: Demo installers
+        run: |
+          set -euo pipefail
+          base="https://github.com/${GITHUB_REPOSITORY}/releases/download"
+          while read -r demo url sha; do
+            mkdir -p "src/$demo"
+            curl -fSL --retry 4 -o "src/$demo/outer.zip" "$base/$url"
+            echo "$sha  src/$demo/outer.zip" | sha256sum -c -
+            unzip -q "src/$demo/outer.zip" -d "src/$demo" 'demo_*_archive.zip'
+            rm "src/$demo/outer.zip"
+            ./scripts/build-demo-installer.sh "$VERSION" "$demo" src/$demo/demo_*_archive.zip
+            rm -rf "src/$demo"
+          done <<'EOF'
+          1 akam-installer/demo_1_9686c7ded46b2b036706_20260805083539_archive.zip 9828cba4c3ebcd8f5c14ab80efbda58d53707fcfd3bb98bb43e148b9b89a2af1
+          2 akam-installer/demo_2_4765e2a7d54c430b7385_20260805083541_archive.zip dffbf940fd097b9e037c373bbcad174fdc5edf4c46d62c8966a4de80b8204f71
+          3 akam-installer-demo3/demo_3_aeaa929e0c52f0a71435_20260805083542_archive.zip 161bf043dcb0e3db5478aba063ae2916455e854a6e7c32df4a8251aa955538bb
+          EOF
+
+      - name: Checksums
+        run: cd "dist/$VERSION" && sha256sum *.zip | tee SHA256SUMS.txt
+
+      - name: Upload to release v${{ env.VERSION }}
+        run: |
+          cd "dist/$VERSION"
+          gh release upload "v$VERSION" --repo "$GITHUB_REPOSITORY" --clobber \
+            "akam-$VERSION.zip" "akam-child-$VERSION.zip" "akam-$VERSION-update.zip" "akam-$VERSION-package.zip" \
+            "akam-$VERSION-demo-1.zip" "akam-$VERSION-demo-2.zip" "akam-$VERSION-demo-3.zip" SHA256SUMS.txt

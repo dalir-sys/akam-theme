@@ -561,7 +561,8 @@
                     delay: Number(configData.delay || 6000),
                     disableOnInteraction: false
                 } : false,
-                navigation: configData.showArrows === false ? undefined : {
+                // false, not undefined: the theme's Swiper build reads navigation.enabled and crashes on undefined.
+                navigation: configData.showArrows === false ? false : {
                     nextEl: slider.querySelector('.webmz-sos__arrow--next'),
                     prevEl: slider.querySelector('.webmz-sos__arrow--prev')
                 },
