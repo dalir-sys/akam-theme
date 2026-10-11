@@ -1,0 +1,11 @@
+{
+  "name": "akam-demo-builder",
+  "private": true,
+  "description": "Builds the Akam file-shop and psychology demos (images, content, pages).",
+  "dependencies": {
+    "@iconify-json/fluent-emoji": "^1.2.0",
+    "@iconify-json/fluent-emoji-flat": "^1.2.0",
+    "@iconify-json/tabler": "^1.2.0",
+    "playwright": "^1.50.0"
+  }
+}

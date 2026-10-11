@@ -1,0 +1,15 @@
+node_modules/
+package-lock.json
+d4img/
+d5img/
+d4out/
+d5out/
+d4_map.json
+d5_map.json
+d4_products.json
+d4_posts.json
+d4_cats.json
+d5_data.json
+brandfix.css
+d4-custom.css
+__pycache__/
