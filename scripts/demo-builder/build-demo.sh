@@ -4,7 +4,6 @@
 #
 # Usage: ./build-demo.sh 4|5 [demo-dir]
 # Needs: the base site from clone-base.sh, Node.js (Playwright + Chromium) and Python 3 with Pillow.
-# Demo 4 also needs demos 1–3 running on ports 8081, 8082 and 8080 the first time (theme screenshots for covers).
 set -euo pipefail
 cd "$(dirname "$0")"
 HERE="$PWD"
@@ -19,9 +18,10 @@ if [ -z "${CHROME_PATH:-}" ]; then
 fi
 
 if [ "$DEMO" = 4 ]; then
+	# Screenshots of demos 1-3 used on the theme product covers (refresh with tools/vshot.js when the demos change).
 	if [ ! -f d4img/src/site4-m.png ]; then
 		mkdir -p d4img/src
-		node tools/vshot.js "$HERE/d4img/src" http://localhost:8081/ http://localhost:8082/ http://localhost:8080/ http://localhost:8081/shop/
+		cp assets/site-shots/*.png d4img/src/
 	fi
 	python3 -I d4_data.py
 	python3 -I gen_d4.py && node lib/render.js d4img/jobs.json

@@ -1,0 +1,133 @@
+# Builds the full product package and attaches it to release v<version>:
+#   easyInstaller/  Duplicator installers of demos 1-5 (encoded theme only)
+#   plugins/        latest Elementor and WooCommerce from wordpress.org
+#   theme/          encoded theme and child theme
+#   help.pdf        Persian installation guide (package/help)
+# Demos 1-3 come from the release (see release-assets.yml); demos 4 and 5 are built here with scripts/demo-builder.
+name: Product package
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Theme version (style.css Version and encoded/<version>)
+        required: true
+  push:
+    branches:
+      - claude/festive-babbage-fgdvz8
+    paths:
+      - .github/workflows/product-package.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: product-package
+  cancel-in-progress: false
+
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    env:
+      VERSION: ${{ inputs.version || '1.5.0' }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/local/lib/android /opt/ghc /usr/share/dotnet /opt/hostedtoolcache/CodeQL /usr/local/share/boost
+          df -h /
+
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mysqli, zip, gd, intl, mbstring, exif
+          ini-values: memory_limit=2048M, max_execution_time=0
+          coverage: none
+          tools: none
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: MariaDB
+        run: |
+          sudo systemctl stop mysql || true
+          sudo apt-get remove --purge -y -qq 'mysql-server*' 'mysql-client*' mysql-common >/dev/null || true
+          sudo rm -rf /var/lib/mysql /etc/mysql
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq mariadb-server mariadb-client zip unzip jq
+          sudo systemctl start mariadb
+          sudo mysql -e "CREATE USER IF NOT EXISTS '$USER'@'localhost' IDENTIFIED VIA unix_socket; GRANT ALL ON *.* TO '$USER'@'localhost' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+          mysqladmin ping
+
+      - name: Encoded theme
+        run: ./scripts/build-release.sh "$VERSION"
+
+      - name: Base demos 2 and 3
+        run: |
+          ./scripts/setup-demo.sh 2
+          ./scripts/setup-demo.sh 3
+
+      - name: Builder dependencies
+        working-directory: scripts/demo-builder
+        run: |
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps chromium
+
+      - name: Build demos 4 and 5
+        working-directory: scripts/demo-builder
+        run: |
+          ./clone-base.sh ../../../akam-demo-2 akam_demo2 http://localhost:8082 4 8084
+          ./clone-base.sh ../../../akam-demo-3 akam_demo3 http://localhost:8080 5 8085
+          rm -rf ../../../akam-demo-2/site ../../../akam-demo-3/site
+          ./build-demo.sh 4
+          ./build-demo.sh 5
+
+      - name: Installers for demos 4 and 5
+        working-directory: scripts/demo-builder
+        run: |
+          ./package-copy.sh 4 ../../../akam-demo-2/pkg/archive.zip https://tadris.webmz.ir/demo-04 "$VERSION"
+          rm -rf ../../../akam-demo-4
+          ./dup-package.sh 4 "$VERSION"
+          rm -rf ../../../akam-pkg-4
+          ./package-copy.sh 5 ../../../akam-demo-3/pkg/archive.zip https://tadris.webmz.ir/demo-05 "$VERSION"
+          rm -rf ../../../akam-demo-5
+          ./dup-package.sh 5 "$VERSION"
+          rm -rf ../../../akam-pkg-5
+          df -h /
+
+      - name: Installers for demos 1 to 3
+        run: |
+          for n in 1 2 3; do
+            curl -fSL --retry 4 -o "dist/$VERSION/akam-$VERSION-demo-$n.zip" \
+              "https://github.com/${GITHUB_REPOSITORY}/releases/download/v$VERSION/akam-$VERSION-demo-$n.zip"
+          done
+
+      - name: Latest Elementor and WooCommerce
+        run: |
+          mkdir -p plugins
+          for p in elementor woocommerce; do
+            info="$(curl -fsSL --retry 4 "https://api.wordpress.org/plugins/info/1.2/?action=plugin_information&request%5Bslug%5D=$p")"
+            v="$(jq -r .version <<<"$info")"; url="$(jq -r .download_link <<<"$info")"
+            curl -fSL --retry 4 -o "plugins/$p.$v.zip" "$url"
+            unzip -tq "plugins/$p.$v.zip"
+            echo "$p $v"
+          done
+
+      - name: Help PDF
+        run: NODE_PATH=scripts/demo-builder/node_modules node package/help/build-help.js "dist/$VERSION/help.pdf"
+
+      - name: Product package
+        run: ./scripts/build-product-package.sh "$VERSION" plugins "dist/$VERSION/help.pdf"
+
+      - name: Checksums
+        run: cd "dist/$VERSION" && sha256sum akam-$VERSION-demo-4.zip akam-$VERSION-demo-5.zip akam-$VERSION-full-package.zip help.pdf | tee SHA256SUMS-package.txt
+
+      - name: Upload to release v${{ env.VERSION }}
+        run: |
+          cd "dist/$VERSION"
+          gh release upload "v$VERSION" --repo "$GITHUB_REPOSITORY" --clobber \
+            "akam-$VERSION-demo-4.zip" "akam-$VERSION-demo-5.zip" "akam-$VERSION-full-package.zip" help.pdf SHA256SUMS-package.txt

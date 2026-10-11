@@ -1,0 +1,161 @@
+<!doctype html>
+<html dir="rtl" lang="fa">
+<head>
+<meta charset="utf-8">
+<title>راهنمای نصب پوسته آکام</title>
+<link rel="stylesheet" href="../../akam/assets/fonts/peyda/font.css">
+<link rel="stylesheet" href="../../akam/assets/fonts/dana/font.css">
+<style>
+@page { size: A4; margin: 18mm 16mm 18mm 16mm; }
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; font-family: dana, sans-serif; font-size: 11.5pt; line-height: 2; color: #1f2937; }
+h1, h2, h3 { font-family: peyda, dana, sans-serif; color: #0b1b4d; line-height: 1.5; }
+h1 { font-size: 26pt; margin: 0 0 6px; }
+h2 { font-size: 16pt; margin: 26px 0 8px; padding-bottom: 6px; border-bottom: 2px solid #e5e7eb; page-break-after: avoid; }
+h3 { font-size: 12.5pt; margin: 16px 0 4px; page-break-after: avoid; }
+p { margin: 6px 0; }
+ul, ol { margin: 4px 0; padding-inline-start: 22px; }
+li { margin: 3px 0; }
+code, .en { font-family: Consolas, "DejaVu Sans Mono", monospace; direction: ltr; unicode-bidi: isolate; font-size: 10pt; background: #f1f5f9; padding: 1px 6px; border-radius: 4px; }
+.cover { height: 250mm; display: flex; flex-direction: column; justify-content: center; page-break-after: always; }
+.cover .brand { display: inline-block; font: 900 15pt peyda; color: #fff; background: linear-gradient(135deg, #3b5bfd, #7a8dff); padding: 6px 18px; border-radius: 12px; margin-bottom: 18px; width: max-content; }
+.cover .sub { font-size: 14pt; color: #475569; }
+.cover .ver { margin-top: 26px; font: 700 12pt peyda; color: #3b5bfd; }
+.toc { margin-top: 36px; padding: 16px 20px; border: 1px solid #e5e7eb; border-radius: 14px; background: #f8fafc; font-size: 11pt; }
+.toc ol { margin: 0; }
+table { width: 100%; border-collapse: collapse; margin: 8px 0 12px; font-size: 10.5pt; page-break-inside: avoid; }
+th, td { border: 1px solid #e2e8f0; padding: 7px 10px; text-align: right; vertical-align: top; }
+th { background: #eef2ff; color: #0b1b4d; font-family: peyda, dana; }
+.note { margin: 10px 0; padding: 10px 14px; border-radius: 12px; background: #fff7ed; border: 1px solid #fed7aa; page-break-inside: avoid; }
+.tip { margin: 10px 0; padding: 10px 14px; border-radius: 12px; background: #ecfdf5; border: 1px solid #a7f3d0; page-break-inside: avoid; }
+figure { margin: 10px 0 14px; text-align: center; page-break-inside: avoid; }
+figure img { max-width: 100%; max-height: 105mm; border: 1px solid #e2e8f0; border-radius: 10px; }
+figcaption { font-size: 9.5pt; color: #64748b; }
+.steps > li { margin-bottom: 8px; }
+.ltr { direction: ltr; unicode-bidi: isolate; }
+</style>
+</head>
+<body>
+
+<section class="cover">
+	<div class="brand">پوسته آکام</div>
+	<h1>راهنمای نصب و راه‌اندازی</h1>
+	<p class="sub">پوسته آموزشی و فروشگاهی آکام برای وردپرس و المنتور</p>
+	<p class="ver">نسخه ۱٫۵٫۰</p>
+	<div class="toc">
+		<ol>
+			<li>محتویات بسته</li>
+			<li>پیش‌نیازهای هاست</li>
+			<li>دموهای آماده</li>
+			<li>روش اول: نصب آسان دمو (پیشنهادی)</li>
+			<li>روش دوم: نصب پوسته روی وردپرس موجود</li>
+			<li>فعال‌سازی لایسنس</li>
+			<li>تنظیمات پوسته</li>
+			<li>به‌روزرسانی پوسته</li>
+			<li>رفع مشکلات رایج و پشتیبانی</li>
+		</ol>
+	</div>
+</section>
+
+<h2>۱. محتویات بسته</h2>
+<table>
+	<tr><th style="width:28%">پوشه / فایل</th><th>توضیح</th></tr>
+	<tr><td><span class="en">easyInstaller</span></td><td>بسته‌های «نصب آسان» هر پنج دمو. هر فایل zip شامل <span class="en">installer.php</span> و فایل آرشیو همان دمو است و سایت را دقیقاً مانند دموی آنلاین (با محتوا، تنظیمات، افزونه‌ها و پوسته) نصب می‌کند.</td></tr>
+	<tr><td><span class="en">plugins</span></td><td>آخرین نسخه افزونه‌های <strong>المنتور</strong> و <strong>ووکامرس</strong> برای نصب دستی.</td></tr>
+	<tr><td><span class="en">theme</span></td><td>پوسته اصلی (<span class="en">akam-1.5.0.zip</span>) و پوسته فرزند (<span class="en">akam-child-1.5.0.zip</span>).</td></tr>
+	<tr><td><span class="en">help.pdf</span></td><td>همین راهنما.</td></tr>
+</table>
+
+<h2>۲. پیش‌نیازهای هاست</h2>
+<ul>
+	<li>وردپرس ۶٫۰ یا بالاتر و PHP نسخه ۷٫۴ یا بالاتر (پیشنهاد: PHP ۸٫۱ یا ۸٫۳)</li>
+	<li>MySQL ۵٫۷+ یا MariaDB ۱۰٫۳+</li>
+	<li><strong>ionCube Loader</strong> فعال (برای فایل لایسنس راست‌چین ضروری است؛ در بیشتر هاست‌ها از بخش «Select PHP Version» یا با درخواست از پشتیبانی هاست فعال می‌شود)</li>
+	<li>افزونه‌های PHP: <span class="en">zip</span>، <span class="en">mysqli</span>، <span class="en">mbstring</span>، <span class="en">gd</span> یا <span class="en">imagick</span>، <span class="en">intl</span></li>
+	<li>تنظیمات پیشنهادی: <span class="en">memory_limit = 256M</span>، <span class="en">max_execution_time = 300</span>، <span class="en">upload_max_filesize = 512M</span></li>
+	<li>فضای خالی هاست حداقل ۲ گیگابایت برای نصب دموها</li>
+</ul>
+
+<h2>۳. دموهای آماده</h2>
+<table>
+	<tr><th style="width:12%">دمو</th><th style="width:34%">فایل در پوشه easyInstaller</th><th>مناسب برای</th></tr>
+	<tr><td>دمو ۱</td><td><span class="en">akam-1.5.0-demo-1.zip</span></td><td>آکادمی آموزش آنلاین (دوره‌های ویدیویی، پادکست، ویدیوهای رایگان)</td></tr>
+	<tr><td>دمو ۲</td><td><span class="en">akam-1.5.0-demo-2.zip</span></td><td>آموزش طراحی وب و برنامه‌نویسی، فروش دوره و محصولات دیجیتال</td></tr>
+	<tr><td>دمو ۳</td><td><span class="en">akam-1.5.0-demo-3.zip</span></td><td>آموزشگاه زبان (استوری، پلی‌لیست ویدیویی، معرفی اساتید)</td></tr>
+	<tr><td>دمو ۴</td><td><span class="en">akam-1.5.0-demo-4.zip</span></td><td>فروشگاه فایل: قالب، افزونه، فونت، فایل گرافیکی و کتاب الکترونیک</td></tr>
+	<tr><td>دمو ۵</td><td><span class="en">akam-1.5.0-demo-5.zip</span></td><td>آکادمی روانشناسی و مشاوره (دوره‌ها، روانشناسان، بسته‌های مشاوره)</td></tr>
+</table>
+<div class="note">نصب آسان، محتوای فعلی سایت را جایگزین می‌کند. آن را روی دامنه یا پوشه‌ای خالی اجرا کنید یا پیش از نصب از سایت فعلی نسخه پشتیبان بگیرید.</div>
+
+<h2>۴. روش اول: نصب آسان دمو (پیشنهادی)</h2>
+<p>در این روش وردپرس، پوسته، افزونه‌ها و تمام محتوای دمو یکجا نصب می‌شوند و به نصب جداگانه وردپرس نیازی نیست.</p>
+<ol class="steps">
+	<li><strong>ساخت دیتابیس:</strong> از کنترل‌پنل هاست (سی‌پنل یا دایرکت‌ادمین) یک دیتابیس خالی و یک کاربر دیتابیس بسازید و کاربر را با همه دسترسی‌ها به دیتابیس متصل کنید. نام دیتابیس، نام کاربری و رمز را یادداشت کنید.</li>
+	<li><strong>آماده‌سازی پوشه:</strong> پوشه اصلی سایت (معمولاً <span class="en">public_html</span>) باید خالی باشد.</li>
+	<li><strong>آپلود فایل‌ها:</strong> فایل zip دموی دلخواه را از پوشه <span class="en">easyInstaller</span> روی کامپیوتر خود باز کنید. دو فایل <span class="en">installer.php</span> و <span class="en">demo_N_..._archive.zip</span> را <strong>بدون تغییر نام و بدون اکسترکت کردن آرشیو</strong> در پوشه اصلی سایت آپلود کنید.</li>
+	<li><strong>اجرای نصب‌کننده:</strong> آدرس <span class="en">https://yourdomain.com/installer.php</span> را در مرورگر باز کنید.</li>
+	<li><strong>مرحله ۱ (Deployment):</strong> بالای صفحه گزینه <span class="en">Advanced</span> را انتخاب کنید. در بخش <span class="en">Database Connection</span> مقدار <span class="en">Action</span> را روی <span class="en">Empty Database</span> بگذارید و <span class="en">Host</span> (معمولاً <span class="en">localhost</span>)، نام دیتابیس، نام کاربری و رمز را وارد کنید. آدرس جدید سایت (<span class="en">New Site URL</span>) خودکار پر می‌شود؛ آن را بررسی کنید.</li>
+</ol>
+<figure><img src="img/01-step1-db.jpg"><figcaption>مرحله ۱: انتخاب حالت Advanced و وارد کردن اطلاعات دیتابیس</figcaption></figure>
+<ol class="steps" start="6">
+	<li>روی <span class="en">Validate</span> کلیک کنید. وقتی همه موارد <span class="en">Pass</span> شدند، تیک <span class="en">I have read and accept all terms &amp; notices</span> را بزنید و <span class="en">Next</span> را بزنید و پنجره تأیید را با <span class="en">OK</span> بپذیرید. استخراج فایل‌ها چند دقیقه طول می‌کشد.</li>
+</ol>
+<figure><img src="img/02-step1-validate.jpg"><figcaption>بررسی پیش‌نیازها و پذیرش شرایط</figcaption></figure>
+<ol class="steps" start="7">
+	<li><strong>مرحله ۲ (Install Database):</strong> تغییری لازم نیست؛ روی <span class="en">Next</span> کلیک کنید.</li>
+	<li><strong>مرحله ۳ (Update Data) – ساخت مدیر سایت:</strong> در بخش <span class="en">Options</span> تب <span class="en">Admin Account</span> را باز کنید، گزینه <span class="en">Create New User</span> را روشن کنید و نام کاربری، رمز عبور قوی و ایمیل مدیر را وارد کنید. سپس <span class="en">Next</span> را بزنید. (یا در بخش <span class="en">Existing Admin Password Reset</span> برای مدیر موجود دمو رمز جدید تعیین کنید.)</li>
+</ol>
+<figure><img src="img/04-step3-admin.jpg"><figcaption>مرحله ۳: ساخت حساب مدیر با نام کاربری و رمز دلخواه</figcaption></figure>
+<ol class="steps" start="9">
+	<li><strong>مرحله ۴ (Test Site):</strong> روی <span class="en">Admin Login</span> کلیک کنید و با نام کاربری و رمزی که در مرحله ۳ ساختید وارد پیشخوان شوید. با ورود، فایل‌های نصب‌کننده به‌صورت خودکار از هاست حذف می‌شوند.</li>
+</ol>
+<figure><img src="img/05-step4.jpg"><figcaption>مرحله ۴: ورود به پیشخوان و پایان نصب</figcaption></figure>
+<div class="tip"><strong>پس از نصب:</strong> یک بار به «تنظیمات ← پیوندهای یکتا» بروید و «ذخیره تغییرات» را بزنید. سپس لایسنس پوسته را فعال کنید (بخش ۶). افزونه Duplicator Pro فقط برای نصب لازم بود و می‌توانید آن را غیرفعال و حذف کنید.</div>
+
+<h2>۵. روش دوم: نصب پوسته روی وردپرس موجود</h2>
+<ol class="steps">
+	<li>از پیشخوان وردپرس به «نمایش ← پوسته‌ها ← افزودن ← بارگذاری پوسته» بروید و فایل <span class="en">theme/akam-1.5.0.zip</span> را نصب کنید.</li>
+	<li>به همین روش فایل <span class="en">theme/akam-child-1.5.0.zip</span> را نصب و <strong>پوسته فرزند را فعال کنید</strong>. تغییرات شخصی (کدهای CSS یا PHP) را فقط در پوسته فرزند انجام دهید تا با به‌روزرسانی از بین نروند.</li>
+	<li>از «افزونه‌ها ← افزودن ← بارگذاری افزونه» فایل‌های پوشه <span class="en">plugins</span> (المنتور و ووکامرس) را نصب و فعال کنید.</li>
+	<li>لایسنس پوسته را فعال کنید (بخش ۶) و از منوی «آکام» در پیشخوان تنظیمات پوسته را انجام دهید.</li>
+</ol>
+<div class="note">در این روش محتوای دموها نصب نمی‌شود و سایت را با ویجت‌های المنتور پوسته (دسته «آکام» در المنتور) از ابتدا می‌سازید. برای داشتن ظاهر و محتوای دموها از روش اول استفاده کنید.</div>
+
+<h2>۶. فعال‌سازی لایسنس</h2>
+<ul>
+	<li>پس از فعال کردن پوسته، پیغام «لطفا لایسنس پوسته آکام را از پنل وارد کنید» در پیشخوان نمایش داده می‌شود.</li>
+	<li>کد لایسنس را از حساب کاربری خود در راست‌چین (بخش دانلودها) دریافت کنید و در صفحه فعال‌سازی لایسنسی که پوسته به پیشخوان اضافه می‌کند وارد کنید.</li>
+	<li>تا پیش از فعال‌سازی لایسنس، تنظیمات پیشرفته پوسته در دسترس نیست. برای تست روی کامپیوتر شخصی (<span class="en">localhost</span>) به لایسنس نیازی نیست.</li>
+	<li>اگر پیغام <span class="en">ionCube Loader</span> نمایش داده شد، ionCube را از کنترل‌پنل هاست فعال کنید یا از پشتیبانی هاست بخواهید.</li>
+</ul>
+
+<h2>۷. تنظیمات پوسته</h2>
+<ul>
+	<li><strong>منوی «آکام» در پیشخوان:</strong> رنگ‌ها و فونت پوسته، لایه‌بندی هدر و فوتر، حساب کاربری و پیامک، افکت‌های هاور، دستیار هوشمند پشتیبانی (AvalAI / GapGPT) و سایر تنظیمات.</li>
+	<li><strong>لایه‌بندی‌ها:</strong> هدر، فوتر، صفحه محصول، صفحه نوشته و آرشیوها با المنتور ساخته شده‌اند و از منوی «لایه‌بندی‌ها» قابل ویرایش هستند.</li>
+	<li><strong>محصولات و دوره‌ها:</strong> در صفحه ویرایش هر محصول، سرفصل‌ها، سوالات متداول، ویژگی‌ها، مدرس دوره، متن دکمه خرید و ویدیوی معرفی (لینک مستقیم، آپارات یا یوتیوب) را وارد کنید.</li>
+	<li><strong>مدرسین، استوری‌ها و مگامنو:</strong> از منوهای «مدرسین»، «استوری‌ها» و «محتوای مگامنو» مدیریت می‌شوند.</li>
+</ul>
+
+<h2>۸. به‌روزرسانی پوسته</h2>
+<ol class="steps">
+	<li>پیش از به‌روزرسانی از سایت نسخه پشتیبان بگیرید.</li>
+	<li>فایل بروزرسان (نسخه جدید <span class="en">akam-x.y.z.zip</span>) را از حساب راست‌چین دریافت کنید.</li>
+	<li>از «نمایش ← پوسته‌ها ← افزودن ← بارگذاری پوسته» فایل را انتخاب کنید و در صفحه بعد گزینه «جایگزینی نسخه فعلی با نسخه بارگذاری‌شده» را بزنید.</li>
+	<li>پوسته فرزند را به‌روزرسانی نکنید؛ تغییرات شما در آن حفظ می‌شود.</li>
+</ol>
+
+<h2>۹. رفع مشکلات رایج و پشتیبانی</h2>
+<table>
+	<tr><th style="width:36%">مشکل</th><th>راه‌حل</th></tr>
+	<tr><td>صفحه سفید یا خطای ۵۰۰ هنگام نصب آسان</td><td>مقدار <span class="en">memory_limit</span> و <span class="en">max_execution_time</span> را افزایش دهید و نصب را دوباره اجرا کنید.</td></tr>
+	<tr><td>آپلود فایل آرشیو ناقص می‌ماند</td><td>فایل را با FTP یا File Manager آپلود کنید و حجم آن را با فایل اصلی مقایسه کنید.</td></tr>
+	<tr><td>لینک صفحات خطای ۴۰۴ می‌دهد</td><td>«تنظیمات ← پیوندهای یکتا ← ذخیره تغییرات» را بزنید.</td></tr>
+	<tr><td>ظاهر صفحات به‌هم‌ریخته است</td><td>از «المنتور ← ابزارها» گزینه «بازسازی CSS و داده‌ها» را بزنید و کش افزونه‌ها و مرورگر را پاک کنید.</td></tr>
+	<tr><td>پیغام فعال‌سازی لایسنس</td><td>بخش ۶ را ببینید؛ ionCube باید فعال باشد.</td></tr>
+</table>
+<p>برای پشتیبانی از طریق سیستم تیکت در حساب کاربری راست‌چین با ما در ارتباط باشید و آدرس سایت و شرح کامل مشکل را بنویسید.</p>
+
+</body>
+</html>
