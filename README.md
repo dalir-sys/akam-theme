@@ -29,7 +29,11 @@ GitHub tag (مثلاً `v1.0.1`) باید با Version در `style.css` یکی �
 ```bash
 ./scripts/bump-version.sh 1.0.1
 ./scripts/sync-encoded.sh 1.0.1 /path/to/encoded-output
+./scripts/build-release.sh 1.0.1                       # dist/1.0.1: قالب، چایلد، فایل بروزرسان، پکیج محصول
+./scripts/build-demo-installer.sh 1.0.1 3 ../akam-demo-3/pkg/archive.zip   # بسته نصبی دمو با قالب جدید
 ```
+
+`build-release.sh` اگر هش لایسنس در `functions.php` با فایل `RTL_License_1caedf22ac6ba764.php` یکی نباشد، بسته نمی‌سازد.
 
 ## محیط توسعه محلی (دمو ۳)
 
