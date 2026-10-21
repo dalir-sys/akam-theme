@@ -29,7 +29,8 @@
 #   PKG_DIR=/root/akam  use akam-VERSION-demo-N.zip / akam-VERSION.zip from this folder instead of
 #                       downloading them from the GitHub release (with SHA256SUMS*.txt if present)
 #   IONCUBE_TGZ=…      local ioncube_loaders_lin_<arch>.tar.gz instead of downloading it
-#   MYSQL_DEFAULTS=…   option file with MySQL admin credentials if `mysql` as root does not log in
+#   DB_CNF=/root/tadris-mysql.cnf   MySQL account of the demos (written on the first run, together
+#                      with the SQL you run once as your MySQL admin to create it)
 set -euo pipefail
 
 DOMAIN="${DOMAIN:-tadris.webmz.ir}"
@@ -41,7 +42,8 @@ ADMIN_USER="${ADMIN_USER:-tadris}"
 ADMIN_EMAIL="${ADMIN_EMAIL:-admin@$DOMAIN}"
 PKG_DIR="${PKG_DIR:-}"
 IONCUBE_TGZ="${IONCUBE_TGZ:-}"
-MYSQL_DEFAULTS="${MYSQL_DEFAULTS:-}"
+DB_CNF="${DB_CNF:-/root/tadris-mysql.cnf}"
+DB_ACCOUNT=tadris_demos
 SKIP_IONCUBE="${SKIP_IONCUBE:-0}"   # testing only: the theme license needs ionCube
 SKIP_VERIFY="${SKIP_VERIFY:-0}"     # testing only: skip SHA-256 checks of the packages
 
@@ -95,12 +97,41 @@ guard_path() {
 	esac
 }
 
-mysql_root() {
-	if [[ -n "$MYSQL_DEFAULTS" ]]; then
-		mysql --defaults-extra-file="$MYSQL_DEFAULTS" "$@"
-	else
-		mysql "$@"
+# All demo databases use one MySQL account that can only reach databases named tadris_*.
+# The script never uses any other MySQL account: you create this one once as your MySQL admin.
+mysql_db() { mysql --defaults-file="$DB_CNF" "$@"; }
+db_cnf_get() { awk -F= -v k="$1" '$1 ~ "^ *"k" *$" {sub(/^[^=]*= */, ""); print; exit}' "$DB_CNF"; }
+
+require_db_account() {
+	local sqlfile=/root/tadris-mysql-setup.sql pass
+	if [[ ! -f "$DB_CNF" ]]; then
+		pass="$(rand 24)-Ta9_$(rand 4)"
+		( umask 077; printf '[client]\nuser=%s\npassword=%s\nhost=127.0.0.1\n' "$DB_ACCOUNT" "$pass" > "$DB_CNF" )
 	fi
+	if ! mysql_db -N -e "CREATE DATABASE IF NOT EXISTS tadris_check; DROP DATABASE tadris_check;" >/dev/null 2>&1; then
+		pass="$(db_cnf_get password)"
+		( umask 077; cat > "$sqlfile" <<-SQL
+			CREATE USER IF NOT EXISTS '$DB_ACCOUNT'@'localhost' IDENTIFIED BY '$pass';
+			CREATE USER IF NOT EXISTS '$DB_ACCOUNT'@'127.0.0.1' IDENTIFIED BY '$pass';
+			GRANT ALL PRIVILEGES ON \`tadris\\_%\`.* TO '$DB_ACCOUNT'@'localhost';
+			GRANT ALL PRIVILEGES ON \`tadris\\_%\`.* TO '$DB_ACCOUNT'@'127.0.0.1';
+		SQL
+		)
+		cat >&2 <<-MSG
+
+			The demos need their own MySQL account ($DB_ACCOUNT), allowed to use only databases
+			named tadris_*. Create it once with your MySQL admin login, then run this script again:
+
+			  mysql --no-defaults -u root -p < $sqlfile
+
+			(or run the four statements in $sqlfile from any MySQL admin client)
+		MSG
+		exit 2
+	fi
+	rm -f "$sqlfile"
+	# wp-config.php uses the unix socket when MySQL has one, otherwise TCP.
+	local sock; sock="$(mysql_db -N -e 'SELECT @@socket' 2>/dev/null || true)"
+	if [[ -n "$sock" && -S "$sock" ]]; then DB_HOST=localhost; else DB_HOST=127.0.0.1; fi
 }
 
 wp_cli() {
@@ -117,8 +148,6 @@ preflight() {
 	[[ "$os" == "ubuntu 24.04" ]] || warn "Written for Ubuntu 24.04, this is $os"
 	command -v nginx >/dev/null || die "nginx is not installed"
 	command -v mysql >/dev/null || die "The mysql client is not installed"
-	mysql_root -N -e 'SELECT 1' >/dev/null 2>&1 \
-		|| die "Cannot log in to MySQL as root. Put the admin credentials in an option file ([client] user=… password=…) and run with MYSQL_DEFAULTS=/path/to/file"
 	local free; free="$(df -Pk /var/www 2>/dev/null | awk 'NR==2 {print $4}')"
 	[[ -z "$free" || "$free" -gt $((8 * 1024 * 1024)) ]] || die "Need at least 8 GB free on /var/www"
 	exec 9>"$LOCK"; flock -n 9 || die "Another run is in progress"
@@ -498,7 +527,7 @@ admin_pass() {
 
 install_demo() {
 	local n="$1" force="${2:-0}" s dir db dbuser dbpass zip work archive sql orig desc
-	s="$(slug "$n")"; dir="$PUB/$s"; db="tadris_demo$n"; dbuser="tadris_demo$n"
+	s="$(slug "$n")"; dir="$PUB/$s"; db="tadris_demo$n"
 	guard_path "$dir"
 	if [[ -f "$dir/wp-config.php" && "$force" != 1 ]]; then
 		log "$s is already installed (use: $0 reinstall $n)"
@@ -519,36 +548,31 @@ install_demo() {
 		die "$s contains an unencoded theme"
 	fi
 
-	# Database and its own user.
-	dbpass="$(rand 20)-Ta9_$(rand 4)"   # also passes MySQL validate_password
-	mysql_root -e "DROP DATABASE IF EXISTS \`$db\`;
-		CREATE DATABASE \`$db\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
-		CREATE USER IF NOT EXISTS '$dbuser'@'localhost' IDENTIFIED BY '$dbpass';
-		ALTER USER '$dbuser'@'localhost' IDENTIFIED BY '$dbpass';
-		GRANT ALL PRIVILEGES ON \`$db\`.* TO '$dbuser'@'localhost';
-		FLUSH PRIVILEGES;"
-	mysql_root --default-character-set=utf8mb4 "$db" < "$sql"
-	save_cred "db_$n" "$db / $dbuser / $dbpass"
+	# Database (the demos' MySQL account, see require_db_account).
+	dbuser="$(db_cnf_get user)"; dbpass="$(db_cnf_get password)"
+	mysql_db -e "DROP DATABASE IF EXISTS \`$db\`;
+		CREATE DATABASE \`$db\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;"
+	mysql_db --default-character-set=utf8mb4 "$db" < "$sql"
 
 	local prefix old_url old_path new_url
 	prefix="$("$PHP_BIN" -r 'preg_match("/\\\$table_prefix\s*=\s*[\x27\"]([^\x27\"]+)/", file_get_contents($argv[1]), $m); echo $m[1] ?? "wp_";' "$orig")"
-	old_url="$(mysql_root -N --default-character-set=utf8mb4 "$db" -e "SELECT option_value FROM \`${prefix}options\` WHERE option_name='siteurl'")"
+	old_url="$(mysql_db -N --default-character-set=utf8mb4 "$db" -e "SELECT option_value FROM \`${prefix}options\` WHERE option_name='siteurl'")"
 	old_url="${old_url%/}"
 	old_path="$("$PHP_BIN" -r '$d = json_decode(file_get_contents($argv[1]), true); echo rtrim($d["wpInfo"]["targetRoot"] ?? "", "/");' "$desc")"
 	new_url="$(demo_url "$n")"
 
 	# wp-config.php from the original site, with this database.
 	"$PHP_BIN" -r '
-		[$_, $src, $dst, $db, $user, $pass] = $argv;
+		[$_, $src, $dst, $db, $user, $pass, $host] = $argv;
 		$c = file_get_contents($src);
-		foreach (["DB_NAME" => $db, "DB_USER" => $user, "DB_PASSWORD" => $pass, "DB_HOST" => "localhost"] as $k => $v) {
+		foreach (["DB_NAME" => $db, "DB_USER" => $user, "DB_PASSWORD" => $pass, "DB_HOST" => $host] as $k => $v) {
 			$c = preg_replace("/define\(\s*[\x27\"]" . $k . "[\x27\"]\s*,\s*[\x27\"][^\x27\"]*[\x27\"]\s*\);/", "define( \x27$k\x27, \x27" . addcslashes($v, "\x27\\\\") . "\x27 );", $c, 1);
 		}
 		$c = preg_replace("/^define\(\s*[\x27\"]DUPLICATOR_AUTH_KEY.*$/m", "", $c);
 		$extra = "define( \x27WP_MEMORY_LIMIT\x27, \x27256M\x27 );\ndefine( \x27DISALLOW_FILE_EDIT\x27, true );\ndefine( \x27FS_METHOD\x27, \x27direct\x27 );\n";
 		$c = str_replace("/* That\x27s all, stop editing!", $extra . "/* That\x27s all, stop editing!", $c);
 		file_put_contents($dst, $c);
-	' "$orig" "$dir/wp-config.php" "$db" "$dbuser" "$dbpass"
+	' "$orig" "$dir/wp-config.php" "$db" "$dbuser" "$dbpass" "$DB_HOST"
 	grep -q "'DB_NAME', '$db'" "$dir/wp-config.php" || die "Could not write wp-config.php for $s"
 	rm -rf "$dir"/dup-installer "$dir"/*_installer-backup.php "$dir"/installer.php "$dir"/wp-content/backups-dup-pro
 	# Cache drop-in left by WP Rocket on the original site (the plugin is not in the package).
@@ -576,7 +600,7 @@ install_demo() {
 	fi
 
 	wp_cli "$dir" "${q[@]}" transient delete --all --quiet || true
-	mysql_root "$db" -e "TRUNCATE \`${prefix}woocommerce_sessions\`;" 2>/dev/null || true
+	mysql_db "$db" -e "TRUNCATE \`${prefix}woocommerce_sessions\`;" 2>/dev/null || true
 	wp_cli "$dir" elementor flush-css --quiet 2>/dev/null || true
 	wp_cli "$dir" rewrite flush --quiet 2>/dev/null || true
 	wp_cli "$dir" cache flush --quiet 2>/dev/null || true
@@ -728,10 +752,11 @@ uninstall() {
 		kill "$(cat "$RUN/php-fpm.pid")" || true
 	fi
 	for n in 1 2 3 4 5; do
-		mysql_root -e "DROP DATABASE IF EXISTS \`tadris_demo$n\`; DROP USER IF EXISTS 'tadris_demo$n'@'localhost';"
+		[[ -f "$DB_CNF" ]] && mysql_db -e "DROP DATABASE IF EXISTS \`tadris_demo$n\`;" 2>/dev/null || true
 	done
-	rm -rf "$APP" "$ETC" "$OPT" "$CRED"
+	rm -rf "$APP" "$ETC" "$OPT" "$CRED" "$DB_CNF"
 	id "$SYS_USER" >/dev/null 2>&1 && userdel "$SYS_USER"
+	log "Remove the MySQL account yourself if you like: DROP USER '$DB_ACCOUNT'@'localhost', '$DB_ACCOUNT'@'127.0.0.1';"
 	log "Removed. The certificate stays in /etc/letsencrypt (certbot delete --cert-name $DOMAIN removes it)."
 }
 
@@ -740,6 +765,7 @@ main() {
 	case "$cmd" in
 		install)
 			preflight
+			require_db_account
 			install_packages
 			mkdir -p "$PUB"; guard_path "$PUB"
 			setup_php
@@ -754,7 +780,7 @@ main() {
 			;;
 		reinstall)
 			[[ "${1:-}" =~ ^[1-5]$ ]] || die "Usage: $0 reinstall 1-5"
-			preflight; admin_pass; install_demo "$1" 1; write_landing
+			preflight; require_db_account; admin_pass; install_demo "$1" 1; write_landing
 			;;
 		ssl)
 			preflight

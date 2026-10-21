@@ -8,7 +8,7 @@ Ubuntu 24.04 server that already runs other sites, without changing them:
 | Files | `/var/www/tadris` (sites, logs, backups), `/etc/tadris-demos`, `/opt/tadris-demos` |
 | PHP | own PHP-FPM master `tadris-php-fpm.service` (system `php-fpm8.3` binary, own `php.ini`, ionCube loaded only here, `open_basedir` limited to `/var/www/tadris`) |
 | nginx | one new site file for `tadris.webmz.ir`, checked with `nginx -t` before a graceful reload |
-| MySQL | databases and users `tadris_demo1` … `tadris_demo5` only |
+| MySQL | one account `tadris_demos` that you create once (the script writes the SQL); it can only use databases `tadris_*` |
 | apt | adds missing packages only; stops if anything installed would be upgraded; package scripts may not restart services; the default `php` stays the same |
 | SSL | Let's Encrypt (webroot) once the DNS record points at the server |
 
@@ -21,7 +21,7 @@ Ubuntu 24.04 server that already runs other sites, without changing them:
 mkdir -p /opt/tadris-demos && cd /opt/tadris-demos
 curl -fsSLO https://raw.githubusercontent.com/dalir-sys/akam-theme/refs/heads/claude/festive-babbage-fgdvz8/scripts/vps/tadris-demos.sh
 chmod +x tadris-demos.sh
-EMAIL=you@example.com ./tadris-demos.sh install
+./tadris-demos.sh install    # first run: prints one MySQL command to create the demos' account
 ```
 
 The admin login of every demo (user `tadris` by default) is in `/root/tadris-demos-credentials.txt`.
